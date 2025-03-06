@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          <h5 class="mb-0">🔐 Login</h5>
+        </div>
+        <div class="card-body">
+          <form #loginForm="ngForm" (ngSubmit)="login()">
+            
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Email</label>
+              <input type="email" [(ngModel)]="email" class="form-control" 
+                     name="email" required email #emailInput="ngModel">
+              <div class="text-danger small" *ngIf="emailInput.invalid && emailInput.touched">
+                Please enter a valid email.
+              </div>
+            </div>
+
+            <!-- Password Field with Toggle Eye Icon -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Password</label>
+              <div class="input-group">
+                <input [type]="showPassword ? 'text' : 'password'" 
+                       [(ngModel)]="password" class="form-control" 
+                       name="password" required minlength="6" #passwordInput="ngModel">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+                  <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+              <div class="text-danger small" *ngIf="passwordInput.invalid && passwordInput.touched">
+                Password must be at least 6 characters.
+              </div>
+            </div>
+
+            <!-- Login Button -->
+            <button class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+              <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+          </form>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="card-footer text-center">
+          <small>Don't have an account? 
+            <a routerLink="/register" class="text-primary fw-bold">Register</a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
