@@ -6,6 +6,11 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],  // ✅ Import RouterModule
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css'] // ✅ Fixed incorrect key `styleUrl` to `styleUrls`
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  
+  refreshPage() {
+    window.location.reload(); // ✅ Refresh the page when called
+  }
+}

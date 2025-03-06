@@ -1,35 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-    <div class="container">
-      <!-- Brand -->
-      <a class="navbar-brand fw-bold" routerLink="/">Tracker Manager</a>
-      
-      <!-- Mobile Menu Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <!-- Navigation Links -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
-          </li>
-  
-          <!-- Future Dropdown (for user profile/logout) -->
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
-              User
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
-              <li><a class="dropdown-item text-danger" (click)="logout()">Logout</a></li>
-            </ul>
-          </li> -->
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow py-2">
+  <div class="container d-flex justify-content-between align-items-center">
+    
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">🚀 Tracker Manager</a>
+
+    <!-- Mobile Menu Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/" routerLinkActive="active">🏠 Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/login" routerLinkActive="active">🔑 Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/register" routerLinkActive="active">📝 Register</a>
+        </li>
+      </ul>
     </div>
-  </nav>
-  
+
+    <!-- Refresh Button with Hover Effect -->
+    <button class="btn btn-light shadow-sm ms-3 rounded-circle refresh-btn" (click)="refreshPage()" title="Refresh Page">
+      <i class="bi bi-arrow-repeat fs-5"></i>
+    </button>
+    
+  </div>
+</nav>

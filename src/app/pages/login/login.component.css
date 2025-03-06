@@ -1,13 +1,39 @@
-.card {
+/* Special Effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: 10px;
-  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.card-header {
-  font-size: 1.2rem;
+/* Smooth fade-in effect */
+.fade-in {
+  animation: fadeIn ease-in 1s;
 }
 
-.input-group button {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input field focus effect */
+.input-focus:focus {
+  border-color: #007bff !important;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5) !important;
+}
+
+/* Animated button */
+.animated-btn {
+  transition: all 0.3s ease-in-out;
+}
+
+.animated-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
 }
