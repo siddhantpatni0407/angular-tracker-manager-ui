@@ -1,0 +1,13 @@
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  font-size: 1.2rem;
+}
+
+.input-group button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
