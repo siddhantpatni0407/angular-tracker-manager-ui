@@ -12,16 +12,17 @@
   }
 }
 
-/* Glass effect for cards */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+/* Custom card design */
+.custom-card {
   border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff;
 }
 
-/* Input field focus effect */
-.input-focus:focus {
+/* Glass effect removed for a cleaner look */
+
+/* Updated input focus effect */
+.custom-input:focus {
   border-color: #6f42c1;
   box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
 }
@@ -36,18 +37,24 @@
   transform: translateY(-2px);
 }
 
-/* Success/Error alert styles */
-.alert {
-  transition: opacity 0.5s ease;
+/* Gradient background for card header */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #007bff, #6610f2);
 }
 
-/* Change icon size and spacing for toggle password button */
-.toggle-password i {
-  font-size: 1.2rem;
+/* Adjusted spacing */
+.mb-4 {
+  margin-bottom: 1.5rem;
 }
 
-/* Footer link hover effect */
+/* Custom rounded button */
+.rounded-pill {
+  border-radius: 50rem;
+}
+
+/* Larger footer links */
 .card-footer a {
+  font-size: 0.9rem;
   transition: color 0.3s ease;
 }
 
