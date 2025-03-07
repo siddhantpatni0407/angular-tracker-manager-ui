@@ -1,39 +1,56 @@
-/* Special Effects */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Smooth fade-in effect */
+/* Fade-in effect */
 .fade-in {
-  animation: fadeIn ease-in 1s;
+  animation: fadeIn 1s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(-20px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateY(0);
   }
+}
+
+/* Glass effect for cards */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Input field focus effect */
 .input-focus:focus {
-  border-color: #007bff !important;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5) !important;
+  border-color: #6f42c1;
+  box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
 }
 
-/* Animated button */
+/* Button animations */
 .animated-btn {
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .animated-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.3);
+  background-color: #5a3e9e;
+  transform: translateY(-2px);
+}
+
+/* Success/Error alert styles */
+.alert {
+  transition: opacity 0.5s ease;
+}
+
+/* Change icon size and spacing for toggle password button */
+.toggle-password i {
+  font-size: 1.2rem;
+}
+
+/* Footer link hover effect */
+.card-footer a {
+  transition: color 0.3s ease;
+}
+
+.card-footer a:hover {
+  color: #0056b3;
 }

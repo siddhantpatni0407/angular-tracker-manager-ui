@@ -1,40 +1,56 @@
-/* Special Effects */
+/* Fade-in effect */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Glass effect for cards */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  /* Smooth fade-in effect */
-  .fade-in {
-    animation: fadeIn ease-in 1s;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Input field focus effect */
-  .input-focus:focus {
-    border-color: #28a745 !important;
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5) !important;
-  }
-  
-  /* Animated button */
-  .animated-btn {
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .animated-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(40, 167, 69, 0.3);
-  }
-  
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Input field focus effect */
+.input-focus:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+}
+
+/* Button animations */
+.animated-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.animated-btn:hover {
+  background-color: #5a3e9e;
+  transform: translateY(-2px);
+}
+
+/* Success/Error alert styles */
+.alert {
+  transition: opacity 0.5s ease;
+}
+
+/* Change icon size and spacing for toggle password button */
+.toggle-password i {
+  font-size: 1.2rem;
+}
+
+/* Footer link hover effect */
+.card-footer a {
+  transition: color 0.3s ease;
+}
+
+.card-footer a:hover {
+  color: #0056b3;
+}
