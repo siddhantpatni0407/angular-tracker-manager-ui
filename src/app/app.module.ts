@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component'; // ✅ Import DashboardComponent
+import { DashboardComponent } from './pages/dashboard/dashboard.component'; // Import DashboardComponent
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent, // ✅ Added DashboardComponent
+    DashboardComponent, // Ensure DashboardComponent is declared
   ],
   imports: [
     BrowserModule,
