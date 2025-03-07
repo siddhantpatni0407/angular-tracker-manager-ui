@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';  
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -20,7 +20,7 @@ export class RegisterComponent {
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
-  successMessage: string = '';  // ✅ Added success message property
+  successMessage: string = ''; // ✅ Added success message
 
   private apiUrl = 'http://localhost:8069/api/v1/tracker-manager-service/user/register';
 
@@ -37,10 +37,9 @@ export class RegisterComponent {
       };
 
       console.log('📢 Registering User:', userPayload);
-
       this.isLoading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
+      this.errorMessage = ''; // Reset errors
+      this.successMessage = ''; // Reset success message
 
       this.http.post<any>(this.apiUrl, userPayload).subscribe({
         next: (response) => {
@@ -48,20 +47,19 @@ export class RegisterComponent {
           this.isLoading = false;
 
           if (response.status === 'SUCCESS') {
-            this.successMessage = response.message;  // ✅ Show success message
-            localStorage.setItem('token', response.token);
-            
-            // Redirect to dashboard after a delay
+            this.successMessage = response.message || 'Registration successful! Redirecting...';
+
+            // ✅ Redirect after 2 seconds to a valid route
             setTimeout(() => {
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/home']); // 🔄 Update to your actual route
             }, 2000);
           } else {
-            this.errorMessage = response.message; // ✅ Show backend failure message
+            this.errorMessage = response.message || 'Registration failed.';
           }
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = '❌ Registration failed. Please try again.';
+          this.errorMessage = error.error?.message || '❌ Registration failed. Please try again.';
           console.error('❌ Registration Error:', error);
         }
       });
