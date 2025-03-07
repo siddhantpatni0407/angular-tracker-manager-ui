@@ -1,17 +1,28 @@
-<div class="container mt-5">
+<div class="container mt-5 fade-in">
   <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white text-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg rounded-lg custom-card">
+        <div class="card-header bg-gradient-to-r from-primary to-indigo text-white text-center py-4">
           <h5 class="mb-0">🔐 Login</h5>
         </div>
         <div class="card-body">
+          
+          <!-- ✅ Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success text-center fade-in">
+            ✅ {{ successMessage }}
+          </div>
+
+          <!-- ❌ Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger text-center fade-in">
+            ❌ {{ errorMessage }}
+          </div>
+
           <form #loginForm="ngForm" (ngSubmit)="login()">
             
             <!-- Email Field -->
-            <div class="mb-3">
+            <div class="mb-4">
               <label class="form-label fw-bold">Email</label>
-              <input type="email" [(ngModel)]="email" class="form-control" 
+              <input type="email" [(ngModel)]="email" class="form-control custom-input" 
                      name="email" required email #emailInput="ngModel">
               <div class="text-danger small" *ngIf="emailInput.invalid && emailInput.touched">
                 Please enter a valid email.
@@ -19,11 +30,11 @@
             </div>
 
             <!-- Password Field with Toggle Eye Icon -->
-            <div class="mb-3">
+            <div class="mb-4">
               <label class="form-label fw-bold">Password</label>
               <div class="input-group">
                 <input [type]="showPassword ? 'text' : 'password'" 
-                       [(ngModel)]="password" class="form-control" 
+                       [(ngModel)]="password" class="form-control custom-input" 
                        name="password" required minlength="6" #passwordInput="ngModel">
                 <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
                   <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
@@ -35,14 +46,14 @@
             </div>
 
             <!-- Login Button -->
-            <button class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+            <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn" [disabled]="loginForm.invalid">
               <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
           </form>
         </div>
 
         <!-- Footer Links -->
-        <div class="card-footer text-center">
+        <div class="card-footer text-center py-3">
           <small>Don't have an account? 
             <a routerLink="/register" class="text-primary fw-bold">Register</a>
           </small>

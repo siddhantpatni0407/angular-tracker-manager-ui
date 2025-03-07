@@ -1,4 +1,4 @@
-# 📌 angular-tracker-manaher-ui
+# 📌 angular-tracker-manager-ui
 
 ## 📌 Project Overview
 This is an Angular-based application designed to track work items such as car mileage logs, car expenses, medical records, and more. The project follows the latest Angular standards and uses Bootstrap for styling.

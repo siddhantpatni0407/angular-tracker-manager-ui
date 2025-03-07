@@ -1,13 +1,63 @@
-.card {
-  border-radius: 10px;
+/* Fade-in effect */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Custom card design */
+.custom-card {
+  border-radius: 15px;
   overflow: hidden;
+  background-color: #fff;
 }
 
-.card-header {
-  font-size: 1.2rem;
+/* Glass effect removed for a cleaner look */
+
+/* Updated input focus effect */
+.custom-input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
 }
 
-.input-group button {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+/* Button animations */
+.animated-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.animated-btn:hover {
+  background-color: #5a3e9e;
+  transform: translateY(-2px);
+}
+
+/* Gradient background for card header */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #007bff, #6610f2);
+}
+
+/* Adjusted spacing */
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* Custom rounded button */
+.rounded-pill {
+  border-radius: 50rem;
+}
+
+/* Larger footer links */
+.card-footer a {
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.card-footer a:hover {
+  color: #0056b3;
 }
