@@ -16,10 +16,11 @@ export class RegisterComponent {
   mobile: string = '';
   email: string = '';
   password: string = '';
-  role: string = ''; // ✅ Added role property
+  role: string = '';
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';  // ✅ Added success message property
 
   private apiUrl = 'http://localhost:8069/api/v1/tracker-manager-service/user/register';
 
@@ -29,22 +30,34 @@ export class RegisterComponent {
     if (this.isFormValid()) {
       const userPayload = {
         name: this.name,
-        mobileNumber: this.mobile, // ✅ Fixed: Changed 'mobile' to 'mobileNumber'
+        mobileNumber: this.mobile,
         email: this.email,
         password: this.password,
-        role: this.role // ✅ Sending role in request
+        role: this.role
       };
 
       console.log('📢 Registering User:', userPayload);
 
       this.isLoading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
 
       this.http.post<any>(this.apiUrl, userPayload).subscribe({
         next: (response) => {
           console.log('✅ Registration Successful:', response);
           this.isLoading = false;
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/dashboard']);
+
+          if (response.status === 'SUCCESS') {
+            this.successMessage = response.message;  // ✅ Show success message
+            localStorage.setItem('token', response.token);
+            
+            // Redirect to dashboard after a delay
+            setTimeout(() => {
+              this.router.navigate(['/dashboard']);
+            }, 2000);
+          } else {
+            this.errorMessage = response.message; // ✅ Show backend failure message
+          }
         },
         error: (error) => {
           this.isLoading = false;
@@ -68,7 +81,7 @@ export class RegisterComponent {
       /^[0-9]{10}$/.test(this.mobile) &&
       /\S+@\S+\.\S+/.test(this.email) &&
       this.password.trim().length >= 6 &&
-      this.role.trim().length > 0 // ✅ Ensure role is selected
+      this.role.trim().length > 0
     );
   }
 }

@@ -2,10 +2,25 @@
   <div class="row justify-content-center">
     <div class="col-md-5 col-lg-4">
       <div class="card shadow-lg glass-effect">
+      
+        <!-- Register Header -->
         <div class="card-header bg-success text-white text-center">
           <h5 class="mb-0">📝 Register</h5>
         </div>
+
         <div class="card-body">
+          
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success text-center">
+            {{ successMessage }}
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger text-center">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Registration Form -->
           <form #registerForm="ngForm" (ngSubmit)="register()">
 
             <!-- Name Field -->
@@ -72,7 +87,7 @@
             </div>
 
             <!-- Register Button -->
-            <button class="btn btn-success w-100 animated-btn" [disabled]="registerForm.invalid" (click)="register()">
+            <button class="btn btn-success w-100 animated-btn" [disabled]="registerForm.invalid">
               <i class="bi bi-person-plus"></i> Register
             </button>
           </form>
