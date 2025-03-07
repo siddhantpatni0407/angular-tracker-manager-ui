@@ -51,7 +51,7 @@ export class RegisterComponent {
 
             // ✅ Redirect after 2 seconds to a valid route
             setTimeout(() => {
-              this.router.navigate(['/home']); // 🔄 Update to your actual route
+              this.router.navigate(['/login']); // 🔄 Update to your actual route
             }, 2000);
           } else {
             this.errorMessage = response.message || 'Registration failed.';
