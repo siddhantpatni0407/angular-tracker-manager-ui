@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow py-2">
   <div class="container d-flex justify-content-between align-items-center">
     
-    <!-- Brand -->
-    <a class="navbar-brand fw-bold fs-4" routerLink="/">🚀 Tracker Manager</a>
+    <!-- Take Home (on the left) -->
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">🏠 Home</a>
+
+    <!-- Tracker Manager (in the center) -->
+    <a class="navbar-brand fw-bold fs-4 mx-auto" routerLink="/">Tracker Manager</a>
 
     <!-- Mobile Menu Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -12,14 +15,17 @@
     <!-- Navigation Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link fw-semibold" routerLink="/" routerLinkActive="active">🏠 Home</a>
-        </li>
-        <li class="nav-item">
+
+        <!-- Conditionally render Login/Register or Logout based on authentication -->
+        <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link fw-semibold" routerLink="/login" routerLinkActive="active">🔑 Login</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link fw-semibold" routerLink="/register" routerLinkActive="active">📝 Register</a>
+        </li>
+        
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-link fw-semibold" (click)="logout()">🚪 Logout</a>
         </li>
       </ul>
     </div>
@@ -28,6 +34,5 @@
     <button class="btn btn-light shadow-sm ms-3 rounded-circle refresh-btn" (click)="refreshPage()" title="Refresh Page">
       <i class="bi bi-arrow-repeat fs-5"></i>
     </button>
-    
   </div>
 </nav>

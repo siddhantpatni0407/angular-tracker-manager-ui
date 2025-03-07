@@ -34,12 +34,4 @@ export class DashboardComponent {
     this.router.navigate(['/login']);
   }
 
-  logout(): void {
-    // Clear session data
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('userRole');
-
-    // Redirect to login page
-    this.router.navigate(['/login']);
-  }
 }

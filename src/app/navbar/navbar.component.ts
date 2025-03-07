@@ -1,16 +1,39 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, DoCheck } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Import CommonModule
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [RouterModule],  // ✅ Import RouterModule
+  imports: [CommonModule], // Add CommonModule here
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'] // ✅ Fixed incorrect key `styleUrl` to `styleUrls`
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  
-  refreshPage() {
-    window.location.reload(); // ✅ Refresh the page when called
+export class NavbarComponent implements OnInit, DoCheck {
+  isLoggedIn: boolean = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.checkLoginStatus();
+  }
+
+  ngDoCheck(): void {
+    this.checkLoginStatus();
+  }
+
+  checkLoginStatus(): void {
+    // Check if there's an auth token in sessionStorage
+    this.isLoggedIn = !!sessionStorage.getItem('authToken');
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('userRole');
+    this.isLoggedIn = false; // Update login status
+    this.router.navigate(['/login']); // Redirect to login page after logout
+  }
+
+  refreshPage(): void {
+    window.location.reload();
   }
 }
