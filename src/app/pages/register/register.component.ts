@@ -28,15 +28,16 @@ export class RegisterComponent {
     if (this.isFormValid()) {
       const userPayload = {
         name: this.name,
-        mobile: this.mobile,
+        mobileNumber: this.mobile, // ✅ Fix: Change 'mobile' to 'mobileNumber'
         email: this.email,
-        password: this.password
+        password: this.password,
+        role: "USER" // ✅ Fix: Set a default role (change as per your requirement)
       };
-
+  
       console.log('📢 Registering User:', userPayload); // ✅ Log request in console
-
+  
       this.isLoading = true;
-
+  
       this.http.post<any>(this.apiUrl, userPayload).subscribe({
         next: (response) => {
           console.log('✅ Registration Successful:', response);
@@ -55,6 +56,7 @@ export class RegisterComponent {
       console.warn('⚠️ Invalid Form Submission:', { Name: this.name, Mobile: this.mobile, Email: this.email });
     }
   }
+  
 
   togglePassword(): void {
     this.showPassword = !this.showPassword;
