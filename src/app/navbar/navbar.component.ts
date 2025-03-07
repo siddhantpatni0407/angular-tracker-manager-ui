@@ -27,10 +27,15 @@ export class NavbarComponent implements OnInit, DoCheck {
   }
 
   logout(): void {
+    // Remove auth token and user role from sessionStorage
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userRole');
-    this.isLoggedIn = false; // Update login status
-    this.router.navigate(['/login']); // Redirect to login page after logout
+    
+    // Set login status to false
+    this.isLoggedIn = false;
+
+    // Navigate to the login page
+    this.router.navigate(['/login']);
   }
 
   refreshPage(): void {
