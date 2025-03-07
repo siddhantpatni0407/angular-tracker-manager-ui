@@ -6,6 +6,17 @@
           <h5 class="mb-0">🔐 Login</h5>
         </div>
         <div class="card-body">
+          
+          <!-- ✅ Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success text-center fade-in">
+            ✅ {{ successMessage }}
+          </div>
+
+          <!-- ❌ Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger text-center fade-in">
+            ❌ {{ errorMessage }}
+          </div>
+
           <form #loginForm="ngForm" (ngSubmit)="login()">
             
             <!-- Email Field -->
