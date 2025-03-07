@@ -15,7 +15,7 @@
     <!-- Navigation Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-
+        
         <!-- Conditionally render Login/Register or Logout based on authentication -->
         <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link fw-semibold" routerLink="/login" routerLinkActive="active">🔑 Login</a>
@@ -23,9 +23,10 @@
         <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link fw-semibold" routerLink="/register" routerLinkActive="active">📝 Register</a>
         </li>
-        
+
+        <!-- Logout (only when logged in) -->
         <li class="nav-item" *ngIf="isLoggedIn">
-          <a class="nav-link fw-semibold" (click)="logout()">🚪 Logout</a>
+          <a class="nav-link fw-semibold cursor-pointer" (click)="logout()">🚪 Logout</a>
         </li>
       </ul>
     </div>

@@ -69,3 +69,12 @@
         display: none; /* Hide refresh button on small screens */
     }
 }
+navbar-nav .nav-item {
+    position: relative;
+    z-index: 10; /* Ensure the link is above other elements */
+  }
+  
+  .nav-link.cursor-pointer {
+    cursor: pointer; /* Ensures the cursor is a pointer to indicate it's clickable */
+    z-index: 10;
+  }
