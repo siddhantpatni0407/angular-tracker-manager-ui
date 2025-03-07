@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { API_URLS } from '../../constants/api.constants'; // ✅ Import API constants
 
 @Component({
   selector: 'app-register',
@@ -20,9 +21,9 @@ export class RegisterComponent {
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
-  successMessage: string = ''; // ✅ Added success message
+  successMessage: string = ''; // ✅ Success message added
 
-  private apiUrl = 'http://localhost:8069/api/v1/tracker-manager-service/user/register';
+  private apiUrl = API_URLS.REGISTER; // ✅ Use API constant
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -49,7 +50,7 @@ export class RegisterComponent {
           if (response.status === 'SUCCESS') {
             this.successMessage = response.message || 'Registration successful! Redirecting...';
 
-            // ✅ Redirect after 2 seconds to a valid route
+            // ✅ Redirect after 2 seconds
             setTimeout(() => {
               this.router.navigate(['/login']); // 🔄 Update to your actual route
             }, 2000);
