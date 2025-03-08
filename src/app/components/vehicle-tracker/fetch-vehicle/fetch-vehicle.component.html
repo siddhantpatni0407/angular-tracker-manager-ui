@@ -24,6 +24,7 @@
               class="form-control rounded-3 shadow-sm"
               placeholder="🔍 Search vehicle..."
               [(ngModel)]="searchTerm"
+              (input)="filterVehicles()"
             />
           </div>
           <div class="col-md-6 text-end">
@@ -67,6 +68,9 @@
                 </td>
                 <td>{{ vehicle.ownerName }}</td>
                 <td>
+                  <button class="btn btn-warning btn-sm rounded-circle me-2" (click)="updateVehicle(vehicle)">
+                    ✏️
+                  </button>
                   <button class="btn btn-danger btn-sm rounded-circle" (click)="deleteVehicle(vehicle.vehicleId)">
                     🗑️
                   </button>
@@ -89,4 +93,3 @@
       </div>
     </div>
   </div>
-  

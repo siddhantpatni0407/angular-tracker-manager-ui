@@ -11,6 +11,7 @@ import { MedicalTrackerComponent } from './components/medical-tracker/medical-tr
 import { VehicleTrackerComponent } from './components/vehicle-tracker/vehicle-tracker.component';
 import { RegisterVehicleComponent } from './components/vehicle-tracker/register-vehicle/register-vehicle.component';
 import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicle/fetch-vehicle.component';
+import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -24,7 +25,8 @@ import { CommonModule } from '@angular/common';
     MedicalTrackerComponent, // Added Medical Tracker component
     VehicleTrackerComponent, // Added Vehicle Tracker component
     RegisterVehicleComponent,
-    FetchVehicleComponent
+    FetchVehicleComponent,
+    UpdateVehicleComponent
   ],
   imports: [
     BrowserModule,

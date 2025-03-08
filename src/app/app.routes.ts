@@ -6,6 +6,7 @@ import { MedicalTrackerComponent } from './components/medical-tracker/medical-tr
 import { VehicleTrackerComponent } from './components/vehicle-tracker/vehicle-tracker.component';
 import { RegisterVehicleComponent } from './components/vehicle-tracker/register-vehicle/register-vehicle.component';
 import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicle/fetch-vehicle.component';
+import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { AuthGuard } from './guards/auth.guard'; // Import AuthGuard for route protection
 
 export const appRoutes: Routes = [
@@ -16,6 +17,7 @@ export const appRoutes: Routes = [
   { path: 'vehicle-tracker', component: VehicleTrackerComponent, canActivate: [AuthGuard] },
   { path: 'register-vehicle', component: RegisterVehicleComponent, canActivate: [AuthGuard] },
   { path: 'fetch-vehicle', component: FetchVehicleComponent, canActivate: [AuthGuard] },
+  { path: 'update-vehicle', component: UpdateVehicleComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];

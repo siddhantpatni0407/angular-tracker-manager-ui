@@ -70,6 +70,11 @@ export class FetchVehicleComponent implements OnInit {
     });
   }
 
+  updateVehicle(vehicle: any) {
+    localStorage.setItem('vehicleToEdit', JSON.stringify(vehicle));
+    window.location.href = '/update-vehicle';
+  }
+
   filterVehicles() {
     this.filteredVehicles = this.vehicles.filter(vehicle =>
       vehicle.vehicleModel.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
