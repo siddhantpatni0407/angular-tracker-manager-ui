@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { API_URLS } from '../../constants/api.constants';
+import { API_URLS } from '../../../constants/api.constants';
 
 @Component({
   selector: 'app-login',
