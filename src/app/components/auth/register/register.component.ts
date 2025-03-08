@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { API_URLS } from '../../constants/api.constants'; // ✅ Import API constants
+import { API_URLS } from '../../../constants/api.constants'; // ✅ Import API constants
+import { RegisterRequest } from '../../../models/register-request'; // Import the RegisterRequest model
 
 @Component({
   selector: 'app-register',
@@ -29,7 +30,8 @@ export class RegisterComponent {
 
   register(): void {
     if (this.isFormValid()) {
-      const userPayload = {
+      // Create register request payload using RegisterRequest model
+      const userPayload: RegisterRequest = {
         name: this.name,
         mobileNumber: this.mobile,
         email: this.email,

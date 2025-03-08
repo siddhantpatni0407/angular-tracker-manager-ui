@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-to-r from-primary to-teal shadow-lg py-3">
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-gradient-to-r from-primary to-teal shadow-lg py-3"
+>
   <div class="container d-flex justify-content-between align-items-center">
     <!-- Home (on the left) -->
     <a class="navbar-brand fw-bold fs-4 text-white" routerLink="/"> 🏠 Home </a>
@@ -22,6 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <!-- Conditionally render Login/Register or Logout based on authentication -->
+        <!--
         <li class="nav-item" *ngIf="!isLoggedIn">
           <a
             class="nav-link fw-semibold text-white"
@@ -38,6 +41,7 @@
             >📝 Register</a
           >
         </li>
+      -->
 
         <!-- Logout (only when logged in) -->
         <li class="nav-item" *ngIf="isLoggedIn">
@@ -52,7 +56,7 @@
 
     <!-- Date and Time Display -->
     <div class="text-white ms-3">
-      {{ currentDate | date: 'medium' }}
+      {{ currentDate | date : "medium" }}
     </div>
 
     <!-- Refresh Button with Hover Effect -->
