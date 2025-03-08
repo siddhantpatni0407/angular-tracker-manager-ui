@@ -1,62 +1,85 @@
-/* Gradient Background for Navbar */
-.bg-gradient-to-r {
-    background: linear-gradient(to right, #007bff, #20c997);
-  }
-  
-  /* Navbar Styling */
-  .navbar {
-    border-radius: 10px;
-    padding: 10px 20px;
-  }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-  }
-  
-  .navbar-toggler-icon {
-    background-color: white;
-  }
-  
-  /* Navbar Item Styling */
-  .nav-link {
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: #f8f9fa;
-  }
-  
+/* 🌟 Custom Navbar with a Vibrant Gradient */
+.custom-navbar {
+  background: linear-gradient(135deg, #0d47a1, #42a5f5); /* Beautiful Blue Gradient */
+  color: white;
+  padding: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🌟 Dark Mode Navbar */
+.dark-mode .custom-navbar {
+  background: linear-gradient(135deg, #212121, #424242); /* Dark Grey Gradient */
+}
+
+/* 🔥 Highlighted Title */
+.title-highlight {
+  color: #ffeb3b; /* Bright Yellow */
+  text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+.title-highlight:hover {
+  color: #fff;
+  text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.6);
+}
+
+/* 🚪 Logout Button */
+.logout-btn {
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.3s ease-in-out;
+}
+.logout-btn:hover {
+  color: #ff5733 !important;
+  transform: scale(1.1);
+  text-shadow: 2px 2px 6px rgba(255, 87, 51, 0.7);
+}
+
+/* 📅 Date Display */
+.date-display {
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.4);
+}
+
+/* 🔄 Refresh Button */
+.refresh-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+.refresh-btn:hover {
+  background-color: #ffeb3b !important;
+  transform: rotate(360deg) scale(1.1);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* 🌙 Dark Mode Toggle */
+.mode-toggle {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+.mode-toggle:hover {
+  background-color: #ffeb3b;
+  transform: scale(1.1);
+}
+
+/* 📱 Mobile Navbar Fix */
+@media (max-width: 991px) {
   .navbar-nav {
-    font-size: 1rem;
+    text-align: center;
+    margin-top: 10px;
   }
-  
-  /* Button styling for the refresh button */
-  .refresh-btn {
-    background-color: #fff;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+  .date-display {
+    margin-top: 10px;
   }
-  
-  .refresh-btn:hover {
-    background-color: #f0f0f0;
-    transform: scale(1.1);
-  }
-  
-  /* Active Link Styling */
-  .nav-link.active {
-    color: #28a745;
-  }
-  
-  /* For mobile responsiveness */
-  @media (max-width: 768px) {
-    .navbar-brand {
-      font-size: 1.3rem;
-    }
-  
-    .nav-link {
-      font-size: 1rem;
-    }
-  }
-  
+}
