@@ -10,6 +10,6 @@ export class AuthService {
   constructor(private http: HttpClient) {} // Inject HttpClient
 
   register(user: { name: string; email: string; mobileNumber: string; password: string; role: string }): Observable<any> {
-    return this.http.post(API_URLS.REGISTER, user); // Use API_URLS.REGISTER
+    return this.http.post(API_URLS.USER_REGISTRATION_ENDPOINT, user); // Use API_URLS.REGISTER
   }
 }

@@ -24,7 +24,7 @@ export class RegisterComponent {
   errorMessage: string = '';
   successMessage: string = ''; // ✅ Success message added
 
-  private apiUrl = API_URLS.REGISTER; // ✅ Use API constant
+  private apiUrl = API_URLS.USER_REGISTRATION_ENDPOINT; // ✅ Use API constant
 
   constructor(private http: HttpClient, private router: Router) {}
 
