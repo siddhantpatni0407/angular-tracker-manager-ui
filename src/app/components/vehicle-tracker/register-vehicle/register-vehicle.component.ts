@@ -9,11 +9,10 @@ import { API_URLS } from '../../../constants/api.constants';
   selector: 'app-register-vehicle',
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register-vehicle.component.html',
-  styleUrls: ['./register-vehicle.component.css']
+  styleUrls: ['./register-vehicle.component.css'],
 })
 export class RegisterVehicleComponent {
   vehicleData: any = {
-    vehicleId: null,  // Ensure vehicleId is explicitly set
     vehicleType: '',
     vehicleCompany: '',
     vehicleModel: '',
@@ -22,32 +21,52 @@ export class RegisterVehicleComponent {
     registrationNumber: '',
     registrationDate: '',
     registrationValidityDate: '',
-    ownerName: ''
+    ownerName: '',
   };
+  isLoading = false;
+  successMessage = '';
+  errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   registerVehicle() {
-    console.log('🚀 Sending request:', this.vehicleData); // Debugging log
+    this.isLoading = true;
+    this.successMessage = '';
+    this.errorMessage = '';
 
-    this.http.post(API_URLS.VEHICLE_REGISTRATION_ENDPOINT, this.vehicleData)
-      .subscribe({
-        next: (response) => {
-          alert('✅ Vehicle registered successfully!');
-          this.router.navigate(['/vehicle-tracker']);
-        },
-        error: (error) => {
-          console.error('❌ Error:', error);
-          if (error.status === 409) {
-            alert('⚠️ Vehicle already registered with the given details.');
-          } else {
-            alert('❌ Registration failed. Please try again.');
-          }
+    this.http.post(API_URLS.VEHICLE_REGISTRATION_ENDPOINT, this.vehicleData).subscribe({
+      next: (response: any) => {
+        if (response.status === 'SUCCESS') {
+          this.successMessage = '🎉 Vehicle registered successfully!';
+          this.resetForm();
+        } else {
+          this.errorMessage = '⚠️ Failed to register the vehicle.';
         }
-      });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error registering vehicle:', error);
+        this.errorMessage = '❌ Failed to register the vehicle. Please try again.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  resetForm() {
+    this.vehicleData = {
+      vehicleType: '',
+      vehicleCompany: '',
+      vehicleModel: '',
+      chassisNumber: '',
+      engineNumber: '',
+      registrationNumber: '',
+      registrationDate: '',
+      registrationValidityDate: '',
+      ownerName: '',
+    };
   }
 
   navigateToVehicleTracker() {
-    this.router.navigate(['/vehicle-tracker']);
+    window.history.back();
   }
 }
