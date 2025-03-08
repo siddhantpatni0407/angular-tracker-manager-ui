@@ -13,6 +13,14 @@ export class VehicleTrackerComponent {
     this.router.navigate(['/dashboard']);
   }
 
+  registerVehicle() {
+    this.router.navigate(['/register-vehicle']);
+  }
+
+  fetchVehicles() {
+    this.router.navigate(['/fetch-vehicle']);
+  }
+
   viewVehicleList() {
     this.router.navigate(['/vehicle-list']);
   }

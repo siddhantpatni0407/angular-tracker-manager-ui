@@ -1,0 +1,113 @@
+<div class="container mt-5">
+  <h2 class="text-center text-primary">🚗 Register a New Vehicle</h2>
+  <form (ngSubmit)="registerVehicle()">
+    <div class="mb-3">
+      <label class="form-label">Vehicle Type</label>
+      <input
+        type="text"
+        class="form-control"
+        name="vehicleType"
+        [(ngModel)]="vehicleData.vehicleType"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Company</label>
+      <input
+        type="text"
+        class="form-control"
+        name="vehicleCompany"
+        [(ngModel)]="vehicleData.vehicleCompany"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Model</label>
+      <input
+        type="text"
+        class="form-control"
+        name="vehicleModel"
+        [(ngModel)]="vehicleData.vehicleModel"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Chassis Number</label>
+      <input
+        type="text"
+        class="form-control"
+        name="chassisNumber"
+        [(ngModel)]="vehicleData.chassisNumber"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Engine Number</label>
+      <input
+        type="text"
+        class="form-control"
+        name="engineNumber"
+        [(ngModel)]="vehicleData.engineNumber"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Registration Number</label>
+      <input
+        type="text"
+        class="form-control"
+        name="registrationNumber"
+        [(ngModel)]="vehicleData.registrationNumber"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Registration Date</label>
+      <input
+        type="date"
+        class="form-control"
+        name="registrationDate"
+        [(ngModel)]="vehicleData.registrationDate"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Registration Validity Date</label>
+      <input
+        type="date"
+        class="form-control"
+        name="registrationValidityDate"
+        [(ngModel)]="vehicleData.registrationValidityDate"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Owner Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name="ownerName"
+        [(ngModel)]="vehicleData.ownerName"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">
+      Register Vehicle
+    </button>
+  </form>
+
+  <div class="text-center mt-3">
+    <button class="btn btn-secondary" (click)="navigateToVehicleTracker()">
+      Back to Dashboard
+    </button>
+  </div>
+</div>

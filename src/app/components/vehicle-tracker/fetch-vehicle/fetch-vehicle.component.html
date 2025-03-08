@@ -1,0 +1,55 @@
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary">🚗 Registered Vehicles</h2>
+    
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="text-center mt-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage && !isLoading" class="alert alert-warning text-center">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Vehicle Table -->
+    <div *ngIf="vehicles.length > 0 && !isLoading" class="table-responsive mt-4">
+      <table class="table table-hover table-bordered text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Company</th>
+            <th>Model</th>
+            <th>Chassis Number</th>
+            <th>Engine Number</th>
+            <th>Registration Number</th>
+            <th>Registration Date</th>
+            <th>Validity Date</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehicle of vehicles">
+            <td>{{ vehicle.vehicleId }}</td>
+            <td>{{ vehicle.vehicleType }}</td>
+            <td>{{ vehicle.vehicleCompany }}</td>
+            <td>{{ vehicle.vehicleModel }}</td>
+            <td>{{ vehicle.chassisNumber }}</td>
+            <td>{{ vehicle.engineNumber }}</td>
+            <td>{{ vehicle.registrationNumber }}</td>
+            <td>{{ vehicle.registrationDate }}</td>
+            <td>{{ vehicle.registrationValidityDate }}</td>
+            <td>{{ vehicle.ownerName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Back to Dashboard Button -->
+    <div class="text-center mt-4">
+      <button class="btn btn-secondary" (click)="goToDashboard()">⬅️ Back to Vehicle Tracker</button>
+    </div>
+  </div>
+  
