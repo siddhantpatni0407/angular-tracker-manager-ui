@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { API_URLS } from '../../../constants/api.constants';
+import { LoginRequest } from '../../../models/login-request'; // Import the LoginRequest model
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent {
       return;
     }
 
-    const loginPayload = { email: this.email, password: this.password };
+    // Create a login request payload using the LoginRequest model
+    const loginPayload: LoginRequest = { email: this.email, password: this.password };
     console.log('📢 Logging in with:', loginPayload);
 
     this.isLoading = true;
