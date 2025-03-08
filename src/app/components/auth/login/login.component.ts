@@ -20,7 +20,7 @@ export class LoginComponent {
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
-  private apiUrl = API_URLS.LOGIN;
+  private apiUrl = API_URLS.USER_LOGIN_ENDPOINT;
 
   // Use `inject()` for standalone components
   private http = inject(HttpClient);

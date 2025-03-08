@@ -1,11 +1,11 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { DatePipe } from '@angular/common'; // Import DatePipe
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule], // Add CommonModule here
+  standalone: true,
+  imports: [CommonModule], // Enable Standalone Component
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
   providers: [DatePipe] // Provide DatePipe
@@ -13,14 +13,18 @@ import { DatePipe } from '@angular/common'; // Import DatePipe
 export class NavbarComponent implements OnInit, DoCheck {
   isLoggedIn: boolean = false;
   currentDate: Date = new Date();
+  isDarkMode: boolean = false;
 
-  constructor(private router: Router, private datePipe: DatePipe) {}
+  constructor(private router: Router, private datePipe: DatePipe, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.checkLoginStatus();
-    // Update the date every second
+    this.loadDarkModePreference();
+
+    // Update the date every second without triggering unnecessary change detection
     setInterval(() => {
       this.currentDate = new Date();
+      this.cdr.detectChanges(); // Manually trigger change detection
     }, 1000);
   }
 
@@ -29,23 +33,32 @@ export class NavbarComponent implements OnInit, DoCheck {
   }
 
   checkLoginStatus(): void {
-    // Check if there's an auth token in sessionStorage
     this.isLoggedIn = !!sessionStorage.getItem('authToken');
   }
 
   logout(): void {
-    // Remove auth token and user role from sessionStorage
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userRole');
-    
-    // Set login status to false
     this.isLoggedIn = false;
-
-    // Navigate to the login page
     this.router.navigate(['/login']);
   }
 
   refreshPage(): void {
     window.location.reload();
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('darkMode', String(this.isDarkMode));
+    this.applyDarkMode();
+  }
+
+  loadDarkModePreference(): void {
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    this.applyDarkMode();
+  }
+
+  applyDarkMode(): void {
+    document.body.classList.toggle('dark-mode', this.isDarkMode);
   }
 }

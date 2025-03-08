@@ -1,18 +1,18 @@
-<nav
-  class="navbar navbar-expand-lg navbar-dark bg-gradient-to-r from-primary to-teal shadow-lg py-3"
->
-  <div class="container d-flex justify-content-between align-items-center">
-    <!-- Home (on the left) -->
-    <a class="navbar-brand fw-bold fs-4 text-white" routerLink="/"> 🏠 Home </a>
-
-    <!-- Tracker Manager (centered) -->
-    <a class="navbar-brand fw-bold fs-4 mx-auto text-white" routerLink="/">
-      Tracker Manager
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container">
+    <!-- Home Link -->
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">
+      🏠 Home
     </a>
 
-    <!-- Mobile Menu Button -->
+    <!-- Centered Tracker Manager Title -->
+    <a class="navbar-brand fw-bold fs-4 mx-auto title-highlight" routerLink="/">
+      📊 Tracker Manager
+    </a>
+
+    <!-- Mobile Toggle Button -->
     <button
-      class="navbar-toggler"
+      class="navbar-toggler border-0"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNav"
@@ -21,51 +21,41 @@
     </button>
 
     <!-- Navigation Links -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <!-- Conditionally render Login/Register or Logout based on authentication -->
-        <!--
-        <li class="nav-item" *ngIf="!isLoggedIn">
-          <a
-            class="nav-link fw-semibold text-white"
-            routerLink="/login"
-            routerLinkActive="active"
-            >🔑 Login</a
-          >
-        </li>
-        <li class="nav-item" *ngIf="!isLoggedIn">
-          <a
-            class="nav-link fw-semibold text-white"
-            routerLink="/register"
-            routerLinkActive="active"
-            >📝 Register</a
-          >
-        </li>
-      -->
-
-        <!-- Logout (only when logged in) -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- Logout Button (Only if Logged In) -->
         <li class="nav-item" *ngIf="isLoggedIn">
-          <a
-            class="nav-link fw-semibold text-white cursor-pointer"
-            (click)="logout()"
-            >🚪 Logout</a
-          >
+          <a class="nav-link fw-semibold logout-btn" (click)="logout()">
+            🚪 Logout
+          </a>
         </li>
       </ul>
     </div>
 
-    <!-- Date and Time Display -->
-    <div class="text-white ms-3">
-      {{ currentDate | date : "medium" }}
-    </div>
+    <!-- Date, Refresh, and Dark Mode Toggle -->
+    <div class="d-flex align-items-center">
+      <div class="date-display me-3">
+        📅 {{ currentDate | date: 'medium' }}
+      </div>
 
-    <!-- Refresh Button with Hover Effect -->
-    <button
-      class="btn btn-light shadow-sm ms-3 rounded-circle refresh-btn"
-      (click)="refreshPage()"
-      title="Refresh Page"
-    >
-      <i class="bi bi-arrow-repeat fs-5"></i>
-    </button>
+      <!-- Refresh Button -->
+      <button
+        class="btn refresh-btn me-3"
+        (click)="refreshPage()"
+        title="Refresh Page"
+      >
+        <i class="bi bi-arrow-repeat fs-5"></i>
+      </button>
+
+      <!-- Dark Mode Toggle -->
+      <button
+        class="btn mode-toggle"
+        (click)="toggleDarkMode()"
+        title="Toggle Dark Mode"
+      >
+        <i class="bi bi-moon-fill fs-5" *ngIf="isDarkMode"></i>
+        <i class="bi bi-sun-fill fs-5" *ngIf="!isDarkMode"></i>
+      </button>
+    </div>
   </div>
 </nav>
