@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component'; // Import DashboardComponent
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MedicalTrackerComponent } from './components/medical-tracker/medical-tracker.component';
+import { VehicleTrackerComponent } from './components/vehicle-tracker/vehicle-tracker.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +18,9 @@ import { CommonModule } from '@angular/common';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent, // Ensure DashboardComponent is declared
+    DashboardComponent,
+    MedicalTrackerComponent, // Added Medical Tracker component
+    VehicleTrackerComponent, // Added Vehicle Tracker component
   ],
   imports: [
     BrowserModule,
