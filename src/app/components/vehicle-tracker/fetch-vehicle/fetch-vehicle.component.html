@@ -1,6 +1,6 @@
 <div class="container mt-5">
     <h2 class="text-center fw-bold text-primary">🚗 Registered Vehicles</h2>
-    
+  
     <!-- Loading Spinner -->
     <div *ngIf="isLoading" class="text-center mt-4">
       <div class="spinner-border text-primary" role="status">
@@ -28,6 +28,7 @@
             <th>Registration Date</th>
             <th>Validity Date</th>
             <th>Owner</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -42,6 +43,11 @@
             <td>{{ vehicle.registrationDate }}</td>
             <td>{{ vehicle.registrationValidityDate }}</td>
             <td>{{ vehicle.ownerName }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteVehicle(vehicle.vehicleId)">
+                🗑️ Delete
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
