@@ -1,10 +1,83 @@
-<div class="container mt-4">
-    <h2 class="text-center">Vehicle Tracker</h2>
-    <p class="text-center">Monitor vehicle expenses and mileage logs.</p>
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary">🚗 Vehicle Tracker</h2>
+    <p class="text-center text-muted">Monitor vehicle expenses, servicing, and mileage logs.</p>
   
     <!-- Back to Dashboard Button -->
     <div class="text-center mt-3">
-      <button class="btn btn-secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      <button class="btn btn-outline-secondary btn-lg" (click)="navigateToDashboard()">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </button>
+    </div>
+  
+    <!-- Vehicle Tracker Sections (4 Sections Per Row) -->
+    <div class="row mt-4 justify-content-center">
+      
+      <!-- Vehicle List -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-car fa-2x text-primary mb-2"></i>
+            <h6 class="card-title fw-bold">Vehicle List</h6>
+            <button class="btn btn-outline-primary btn-sm mt-2" (click)="viewVehicleList()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Car Expenses -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-wallet fa-2x text-success mb-2"></i>
+            <h6 class="card-title fw-bold">Car Expenses</h6>
+            <button class="btn btn-outline-success btn-sm mt-2" (click)="viewCarExpenses()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Servicing Details -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-tools fa-2x text-warning mb-2"></i>
+            <h6 class="card-title fw-bold">Servicing Details</h6>
+            <button class="btn btn-outline-warning btn-sm mt-2" (click)="viewServicingDetails()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Tyre Details -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-tire fa-2x text-danger mb-2"></i>
+            <h6 class="card-title fw-bold">Tyre Details</h6>
+            <button class="btn btn-outline-danger btn-sm mt-2" (click)="viewTyreDetails()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Petrol Expenses -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-gas-pump fa-2x text-info mb-2"></i>
+            <h6 class="card-title fw-bold">Petrol Expenses</h6>
+            <button class="btn btn-outline-info btn-sm mt-2" (click)="viewPetrolExpenses()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Insurance Details -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-file-contract fa-2x text-secondary mb-2"></i>
+            <h6 class="card-title fw-bold">Insurance Details</h6>
+            <button class="btn btn-outline-secondary btn-sm mt-2" (click)="viewInsuranceDetails()">View</button>
+          </div>
+        </div>
+      </div>
+  
     </div>
   </div>
   

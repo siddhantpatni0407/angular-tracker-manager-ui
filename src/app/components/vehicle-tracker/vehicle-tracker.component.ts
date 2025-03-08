@@ -12,4 +12,28 @@ export class VehicleTrackerComponent {
   navigateToDashboard() {
     this.router.navigate(['/dashboard']);
   }
+
+  viewVehicleList() {
+    this.router.navigate(['/vehicle-list']);
+  }
+
+  viewCarExpenses() {
+    this.router.navigate(['/car-expenses']);
+  }
+
+  viewServicingDetails() {
+    this.router.navigate(['/servicing-details']);
+  }
+
+  viewTyreDetails() {
+    this.router.navigate(['/tyre-details']);
+  }
+
+  viewPetrolExpenses() {
+    this.router.navigate(['/petrol-expenses']);
+  }
+
+  viewInsuranceDetails() {
+    this.router.navigate(['/insurance-details']);
+  }
 }
