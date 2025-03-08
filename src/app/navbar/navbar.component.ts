@@ -1,20 +1,27 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { DatePipe } from '@angular/common'; // Import DatePipe
 
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule], // Add CommonModule here
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  providers: [DatePipe] // Provide DatePipe
 })
 export class NavbarComponent implements OnInit, DoCheck {
   isLoggedIn: boolean = false;
+  currentDate: Date = new Date();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.checkLoginStatus();
+    // Update the date every second
+    setInterval(() => {
+      this.currentDate = new Date();
+    }, 1000);
   }
 
   ngDoCheck(): void {
