@@ -1,52 +1,62 @@
-<div class="container mt-4">  
-    <h2 class="text-center">Welcome to the Dashboard</h2>
-  
-    <!-- Displaying the user's role -->
-    <p class="text-center">
-      Your Role: <strong>{{ userRole }}</strong>
-    </p>
-  
-    <div class="row justify-content-center">
-      <!-- Dashboard Overview Card -->
-      <div class="col-md-6">
-        <div class="card shadow-lg">
-          <div class="card-body text-center">
-            <h5 class="card-title">Dashboard Overview</h5>
-            <p class="card-text">
-              Manage your activities and view insights here.
-            </p>
-  
-            <!-- Dynamic content based on role -->
-            <div *ngIf="userRole === 'Admin'">
-              <h6 class="text-success">
-                As an Admin, you can manage users, monitor activities, and
-                generate reports.
-              </h6>
-              <button class="btn btn-success" (click)="viewReports()">
-                View Admin Reports
-              </button>
-            </div>
-  
-            <div *ngIf="userRole === 'User'">
-              <h6 class="text-info">
-                As a User, you can track your progress, log activities, and view
-                personal insights.
-              </h6>
-              <button class="btn btn-info" (click)="viewUserReports()">
-                View My Reports
-              </button>
-            </div>
-  
-            <div *ngIf="userRole === 'Guest'">
-              <h6 class="text-warning">
-                Welcome, Guest! Please login to access more features.
-              </h6>
-              <button class="btn btn-warning" (click)="redirectToLogin()">
-                Login
-              </button>
-            </div>
+<div *ngIf="userRole; else notLoggedIn" class="container mt-4">
+  <h2 class="text-center">Welcome to the Dashboard</h2>
+
+  <!-- Displaying the user's role -->
+  <p class="text-center">
+    Your Role: <strong>{{ userRole }}</strong>
+  </p>
+
+  <div class="row justify-content-center">
+    <!-- Dashboard Overview Card -->
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body text-center">
+          <h5 class="card-title">Dashboard Overview</h5>
+          <p class="card-text">
+            Manage your activities and view insights here.
+          </p>
+
+          <!-- Dynamic content based on role -->
+          <div *ngIf="userRole === 'Admin'">
+            <h6 class="text-success">
+              As an Admin, you can manage users, monitor activities, and generate
+              reports.
+            </h6>
+            <button class="btn btn-success" (click)="viewReports()">
+              View Admin Reports
+            </button>
+          </div>
+
+          <div *ngIf="userRole === 'User'">
+            <h6 class="text-info">
+              As a User, you can track your progress, log activities, and view
+              personal insights.
+            </h6>
+            <button class="btn btn-info" (click)="viewUserReports()">
+              View My Reports
+            </button>
+          </div>
+
+          <div *ngIf="userRole === 'Guest'">
+            <h6 class="text-warning">
+              Welcome, Guest! Please login to access more features.
+            </h6>
+            <button class="btn btn-warning" (click)="redirectToLogin()">
+              Login
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<ng-template #notLoggedIn>
+  <div class="container mt-4 text-center">
+    <h2 class="text-danger">Access Denied</h2>
+    <p>You must be logged in to access the dashboard.</p>
+    <button class="btn btn-primary" (click)="redirectToLogin()">
+      Go to Login
+    </button>
+  </div>
+</ng-template>
