@@ -6,70 +6,51 @@
       <div class="card-body">
         <!-- Success Message -->
         <div *ngIf="successMessage" class="alert alert-success text-center">
-          {{ successMessage }}
+          ✅ {{ successMessage }}
         </div>
   
         <!-- Error Message -->
         <div *ngIf="errorMessage" class="alert alert-danger text-center">
-          {{ errorMessage }}
+          ❌ {{ errorMessage }}
         </div>
   
         <form (ngSubmit)="registerVehicle()">
+          <!-- Vehicle Type -->
           <div class="mb-3">
             <label class="form-label">Vehicle Type</label>
-            <input
-              type="text"
-              class="form-control"
-              name="vehicleType"
-              [(ngModel)]="vehicleData.vehicleType"
-              required
-            />
+            <input type="text" class="form-control" name="vehicleType" [(ngModel)]="vehicleData.vehicleType" required />
+            <div *ngIf="submitted && !vehicleData.vehicleType" class="text-danger">⚠️ Vehicle Type is required.</div>
           </div>
   
+          <!-- Company -->
           <div class="mb-3">
             <label class="form-label">Company</label>
-            <input
-              type="text"
-              class="form-control"
-              name="vehicleCompany"
-              [(ngModel)]="vehicleData.vehicleCompany"
-              required
-            />
+            <input type="text" class="form-control" name="vehicleCompany" [(ngModel)]="vehicleData.vehicleCompany" required />
+            <div *ngIf="submitted && !vehicleData.vehicleCompany" class="text-danger">⚠️ Company is required.</div>
           </div>
   
+          <!-- Model -->
           <div class="mb-3">
             <label class="form-label">Model</label>
-            <input
-              type="text"
-              class="form-control"
-              name="vehicleModel"
-              [(ngModel)]="vehicleData.vehicleModel"
-              required
-            />
+            <input type="text" class="form-control" name="vehicleModel" [(ngModel)]="vehicleData.vehicleModel" required />
+            <div *ngIf="submitted && !vehicleData.vehicleModel" class="text-danger">⚠️ Model is required.</div>
           </div>
   
+          <!-- Chassis Number -->
           <div class="mb-3">
             <label class="form-label">Chassis Number</label>
-            <input
-              type="text"
-              class="form-control"
-              name="chassisNumber"
-              [(ngModel)]="vehicleData.chassisNumber"
-              required
-            />
+            <input type="text" class="form-control" name="chassisNumber" [(ngModel)]="vehicleData.chassisNumber" required />
+            <div *ngIf="submitted && !vehicleData.chassisNumber" class="text-danger">⚠️ Chassis Number is required.</div>
           </div>
   
+          <!-- Engine Number -->
           <div class="mb-3">
             <label class="form-label">Engine Number</label>
-            <input
-              type="text"
-              class="form-control"
-              name="engineNumber"
-              [(ngModel)]="vehicleData.engineNumber"
-              required
-            />
+            <input type="text" class="form-control" name="engineNumber" [(ngModel)]="vehicleData.engineNumber" required />
+            <div *ngIf="submitted && !vehicleData.engineNumber" class="text-danger">⚠️ Engine Number is required.</div>
           </div>
   
+          <!-- Registration Number -->
           <div class="mb-3">
             <label class="form-label">Registration Number</label>
             <input
@@ -77,49 +58,42 @@
               class="form-control"
               name="registrationNumber"
               [(ngModel)]="vehicleData.registrationNumber"
+              (blur)="validateRegistrationNumber()"
               required
             />
+            <div *ngIf="submitted && !vehicleData.registrationNumber" class="text-danger">⚠️ Registration Number is required.</div>
+            <div *ngIf="registrationError" class="text-danger">❌ Invalid format! Use MH20AB1234.</div>
           </div>
   
+          <!-- Registration Date -->
           <div class="mb-3">
             <label class="form-label">Registration Date</label>
-            <input
-              type="date"
-              class="form-control"
-              name="registrationDate"
-              [(ngModel)]="vehicleData.registrationDate"
-              required
-            />
+            <input type="date" class="form-control" name="registrationDate" [(ngModel)]="vehicleData.registrationDate" required />
+            <div *ngIf="submitted && !vehicleData.registrationDate" class="text-danger">⚠️ Registration Date is required.</div>
           </div>
   
+          <!-- Registration Validity Date -->
           <div class="mb-3">
             <label class="form-label">Registration Validity Date</label>
-            <input
-              type="date"
-              class="form-control"
-              name="registrationValidityDate"
-              [(ngModel)]="vehicleData.registrationValidityDate"
-              required
-            />
+            <input type="date" class="form-control" name="registrationValidityDate" [(ngModel)]="vehicleData.registrationValidityDate" required />
+            <div *ngIf="submitted && !vehicleData.registrationValidityDate" class="text-danger">⚠️ Validity Date is required.</div>
           </div>
   
+          <!-- Owner Name -->
           <div class="mb-3">
             <label class="form-label">Owner Name</label>
-            <input
-              type="text"
-              class="form-control"
-              name="ownerName"
-              [(ngModel)]="vehicleData.ownerName"
-              required
-            />
+            <input type="text" class="form-control" name="ownerName" [(ngModel)]="vehicleData.ownerName" required />
+            <div *ngIf="submitted && !vehicleData.ownerName" class="text-danger">⚠️ Owner Name is required.</div>
           </div>
   
+          <!-- Submit Button -->
           <button type="submit" class="btn btn-primary w-100" [disabled]="isLoading">
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
             <span *ngIf="!isLoading">🚗 Register Vehicle</span>
           </button>
         </form>
   
+        <!-- Back Button -->
         <div class="text-center mt-3">
           <button class="btn btn-secondary" (click)="navigateToVehicleTracker()">⬅️ Back to Dashboard</button>
         </div>
