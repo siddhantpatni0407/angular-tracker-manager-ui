@@ -48,19 +48,18 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Handles admin reports viewing.
+   * Navigates to User Profile page.
    */
-  viewReports(): void {
-    console.log('Admin reports button clicked!');
-    // Future implementation can go here
+  navigateToProfile(): void {
+    this.router.navigate(['/profile']);
   }
 
   /**
-   * Handles user-specific reports viewing.
+   * Logs out the user and redirects to login page.
    */
-  viewUserReports(): void {
-    console.log('User reports button clicked!');
-    // Future implementation can go here
+  logout(): void {
+    sessionStorage.clear(); // Clears session data
+    this.router.navigate(['/login']);
   }
 
   /**

@@ -1,3 +1,25 @@
+<!-- User Profile Section (Top Right) -->
+<div class="d-flex justify-content-end me-3 mt-3">
+  <div class="dropdown">
+    <button
+      class="btn btn-primary dropdown-toggle"
+      type="button"
+      id="userProfileDropdown"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="fas fa-user-circle"></i> Profile
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+      <li><a class="dropdown-item" href="#">👤 {{ userRole }}</a></li>
+      <li><a class="dropdown-item" (click)="navigateToProfile()">🔧 Edit Profile</a></li>
+      <li><hr class="dropdown-divider" /></li>
+      <li><a class="dropdown-item text-danger" (click)="logout()">🚪 Logout</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Dashboard Content -->
 <div *ngIf="userRole; else notLoggedIn" class="container mt-4">
   <h2 class="text-center fw-bold text-primary">Welcome to the Tracker Management System</h2>
 
