@@ -11,36 +11,61 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  userRole: string = '';
+  userRole: string = 'Guest'; // Default role
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    const isLoggedIn = !!sessionStorage.getItem('authToken');
+    this.checkAuthentication();
+  }
 
-    if (!isLoggedIn) {
-      this.router.navigate(['/login']);
+  /**
+   * Checks if the user is authenticated and sets the role accordingly.
+   * Redirects to login page if not authenticated.
+   */
+  private checkAuthentication(): void {
+    const authToken = sessionStorage.getItem('authToken');
+    
+    if (!authToken) {
+      this.redirectToLogin();
     } else {
       this.userRole = sessionStorage.getItem('userRole') || 'Guest';
     }
   }
 
+  /**
+   * Navigates to Medical Tracker page.
+   */
   navigateToMedicalTracker(): void {
-    this.router.navigate(['/medical-tracker']); // ✅ Update route accordingly
+    this.router.navigate(['/medical-tracker']);
   }
 
+  /**
+   * Navigates to Vehicle Tracker page.
+   */
   navigateToVehicleTracker(): void {
-    this.router.navigate(['/vehicle-tracker']); // ✅ Update route accordingly
+    this.router.navigate(['/vehicle-tracker']);
   }
 
+  /**
+   * Handles admin reports viewing.
+   */
   viewReports(): void {
     console.log('Admin reports button clicked!');
+    // Future implementation can go here
   }
 
+  /**
+   * Handles user-specific reports viewing.
+   */
   viewUserReports(): void {
     console.log('User reports button clicked!');
+    // Future implementation can go here
   }
 
+  /**
+   * Redirects the user to the login page.
+   */
   redirectToLogin(): void {
     this.router.navigate(['/login']);
   }
