@@ -4,6 +4,8 @@ export const API_URLS = {
     VEHICLE_REGISTRATION_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/register',
     FETCH_ALL_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/fetch',
     DELETE_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle',
-    UPDATE_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle'
+    UPDATE_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle',
+    FETCH_ALL_USERS_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user/fetch',
+    USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user',
   };
   

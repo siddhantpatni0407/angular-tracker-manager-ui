@@ -1,0 +1,19 @@
+.card {
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .table th, .table td {
+    text-align: center;
+  }
+  
+  .badge {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  
