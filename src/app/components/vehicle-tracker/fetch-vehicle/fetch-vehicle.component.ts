@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { API_URLS } from '../../../constants/api.constants';
 
 @Component({
   selector: 'app-fetch-vehicle',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './fetch-vehicle.component.html',
   styleUrls: ['./fetch-vehicle.component.css'],
 })
@@ -31,14 +31,15 @@ export class FetchVehicleComponent implements OnInit {
 
     this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
       next: (response) => {
-        if (response.status === 'SUCCESS' && response.data.length > 0) {
+        if (response.status === 'SUCCESS' && Array.isArray(response.data) && response.data.length > 0) {
           this.vehicles = response.data;
-          this.filteredVehicles = this.vehicles;
+          this.filteredVehicles = [...this.vehicles]; // Ensure a separate copy
         } else {
           this.vehicles = [];
           this.filteredVehicles = [];
           this.errorMessage = '🚘 No vehicles registered in the system.';
         }
+        console.log('Fetched Vehicles:', this.vehicles); // Debugging Log
         this.isLoading = false;
       },
       error: (error) => {
@@ -72,15 +73,24 @@ export class FetchVehicleComponent implements OnInit {
 
   updateVehicle(vehicle: any) {
     localStorage.setItem('vehicleToEdit', JSON.stringify(vehicle));
-    window.location.href = '/update-vehicle';
+    this.router.navigate(['/update-vehicle']); // ✅ Corrected navigation
   }
 
   filterVehicles() {
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    if (!searchLower) {
+      this.filteredVehicles = [...this.vehicles]; // Reset to full list if empty
+      return;
+    }
+
     this.filteredVehicles = this.vehicles.filter(vehicle =>
-      vehicle.vehicleModel.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      vehicle.registrationNumber.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      vehicle.vehicleCompany.toLowerCase().includes(this.searchTerm.toLowerCase())
+      (vehicle.vehicleModel?.toLowerCase() ?? '').includes(searchLower) ||
+      (vehicle.registrationNumber?.toLowerCase() ?? '').includes(searchLower) ||
+      (vehicle.vehicleCompany?.toLowerCase() ?? '').includes(searchLower)
     );
+
+    console.log('Search Term:', this.searchTerm, 'Filtered Vehicles:', this.filteredVehicles); // Debugging Log
   }
 
   goToDashboard() {
