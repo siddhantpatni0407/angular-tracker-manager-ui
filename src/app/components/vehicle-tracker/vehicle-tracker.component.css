@@ -1,52 +1,22 @@
-/* Enhance hover effect on cards */
-.tracker-card {
+/* Gradient Backgrounds */
+.gradient-blue { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+.gradient-green { background: linear-gradient(135deg, #22c55e, #065f46); }
+.gradient-orange { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.gradient-purple { background: linear-gradient(135deg, #8b5cf6, #4c1d95); }
+.gradient-red { background: linear-gradient(135deg, #ef4444, #7f1d1d); }
+.gradient-teal { background: linear-gradient(135deg, #14b8a6, #0f766e); }
+.gradient-dark { background: linear-gradient(135deg, #374151, #111827); }
+
+/* Smooth Hover Effects */
+.hover-effect {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-.tracker-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Add smooth fade-in effect */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Soft shadows for buttons */
-button {
-  transition: all 0.2s ease-in-out;
-}
-button:hover {
-  transform: scale(1.08);
-}
-
-/* Enhance section box appearance */
-.bg-gradient {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-/* Custom background colors for cards */
-.bg-warning {
-  background: linear-gradient(135deg, #ffc107, #ffcd38) !important;
-}
-.bg-danger {
-  background: linear-gradient(135deg, #dc3545, #ff6b6b) !important;
-}
-.bg-info {
-  background: linear-gradient(135deg, #17a2b8, #66d9e8) !important;
-}
-.bg-secondary {
-  background: linear-gradient(135deg, #6c757d, #adb5bd) !important;
-}
-
-/* Ensure text contrasts well on colored backgrounds */
-.bg-warning h6,
-.bg-danger h6,
-.bg-info h6,
-.bg-secondary h6 {
-  color: white !important;
+/* Icon Styling */
+.card-body i {
+  font-size: 2.5rem;
 }

@@ -5,95 +5,146 @@
       <i class="bi bi-truck"></i> Vehicle Tracker
     </h2>
 
-    <!-- Back to Dashboard Button (Top-Right) -->
-    <button class="btn btn-outline-secondary btn-lg shadow-sm rounded-pill" (click)="navigateToDashboard()">
+    <!-- Back to Dashboard Button -->
+    <button
+      class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+      (click)="navigateToDashboard()"
+    >
       <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
     </button>
   </div>
 
   <p class="text-muted text-center mt-2">
-    <i class="bi bi-speedometer2"></i> Monitor vehicle expenses, servicing, and mileage logs.
+    <i class="bi bi-speedometer2"></i> Monitor vehicle expenses, servicing, and
+    mileage logs.
   </p>
 
-  <!-- Vehicle Tracker Sections (4 Sections Per Row) -->
+  <!-- Vehicle Tracker Sections -->
   <div class="row mt-4 justify-content-center">
-      
     <!-- Register Vehicle -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-light shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-clipboard-check-fill fa-2x text-success mb-3"></i>
+      <div
+        class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-clipboard-check-fill fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Register Vehicle</h6>
-          <button class="btn btn-success btn-sm mt-2 shadow-sm px-3" (click)="registerVehicle()">Register</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="registerVehicle()"
+          >
+            Register
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Vehicle List -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-light shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-car-front fa-2x text-info mb-3"></i>
+      <div
+        class="card tracker-card gradient-green shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-car-front fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Vehicle List</h6>
-          <button class="btn btn-info btn-sm mt-2 shadow-sm px-3" (click)="fetchVehicles()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="fetchVehicles()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Car Expenses -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-light shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-wallet2 fa-2x text-success mb-3"></i>
+      <div
+        class="card tracker-card gradient-orange shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-wallet2 fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Car Expenses</h6>
-          <button class="btn btn-success btn-sm mt-2 shadow-sm px-3" (click)="viewCarExpenses()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="viewCarExpenses()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Servicing Details -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-warning text-white shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-tools fa-2x text-dark mb-3"></i>
+      <div
+        class="card tracker-card gradient-purple shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-tools fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Servicing Details</h6>
-          <button class="btn btn-dark btn-sm mt-2 shadow-sm px-3" (click)="viewServicingDetails()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="viewServicingDetails()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Tyre Details -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-danger text-white shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-life-preserver fa-2x text-light mb-3"></i>
+      <div
+        class="card tracker-card gradient-red shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-life-preserver fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Tyre Details</h6>
-          <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewTyreDetails()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="viewTyreDetails()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Petrol Expenses -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-info text-white shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-fuel-pump fa-2x text-light mb-3"></i>
+      <div
+        class="card tracker-card gradient-teal shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-fuel-pump fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Petrol Expenses</h6>
-          <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewPetrolExpenses()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="viewPetrolExpenses()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Insurance Details -->
     <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card tracker-card bg-gradient bg-secondary text-white shadow-lg rounded-4 border-0">
-        <div class="card-body text-center">
-          <i class="bi bi-file-earmark-check fa-2x text-light mb-3"></i>
+      <div
+        class="card tracker-card gradient-dark shadow-lg rounded-4 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white">
+          <i class="bi bi-file-earmark-check fa-2x mb-3"></i>
           <h6 class="card-title fw-bold">Insurance Details</h6>
-          <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewInsuranceDetails()">View</button>
+          <button
+            class="btn btn-light btn-sm mt-2 shadow-sm px-3"
+            (click)="viewInsuranceDetails()"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>
-
   </div>
 </div>
