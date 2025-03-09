@@ -58,9 +58,7 @@
               </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-warning me-2" (click)="editUser(user)">
-                ✏️ Edit
-              </button>
+              <!-- Removed Edit button -->
               <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)" [disabled]="deletingUserId === user.id">
                 <span *ngIf="deletingUserId === user.id" class="spinner-border spinner-border-sm"></span>
                 ❌ Delete

@@ -54,11 +54,6 @@ export class AdminPanelComponent implements OnInit {
       });
   }
 
-  /** Navigate to the update user page */
-  editUser(userId: number): void {
-    this.router.navigate(['/update-user', userId]);
-  }
-
   /** Delete user */
   deleteUser(userId: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
