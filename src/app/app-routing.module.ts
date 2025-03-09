@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MedicalTrackerComponent } from './components/medical-tracker/medical-tracker.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'medical-tracker', component: MedicalTrackerComponent, canActivate: [AuthGuard] },
   { path: 'vehicle-tracker', component: VehicleTrackerComponent, canActivate: [AuthGuard] },
