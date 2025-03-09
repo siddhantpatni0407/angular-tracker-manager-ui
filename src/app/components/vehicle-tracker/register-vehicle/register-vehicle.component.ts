@@ -97,7 +97,7 @@ export class RegisterVehicleComponent {
     };
   }
 
-  navigateToDashboard() {
-    this.router.navigate(['/dashboard']); // Use Router for navigation
+  goToVehicleTracker() {
+    this.router.navigate(['/vehicle-tracker']);
   }
 }

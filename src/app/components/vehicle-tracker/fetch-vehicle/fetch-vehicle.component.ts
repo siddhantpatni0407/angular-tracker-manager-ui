@@ -93,7 +93,7 @@ export class FetchVehicleComponent implements OnInit {
     console.log('Search Term:', this.searchTerm, 'Filtered Vehicles:', this.filteredVehicles); // Debugging Log
   }
 
-  goToDashboard() {
+  goToVehicleTracker() {
     this.router.navigate(['/vehicle-tracker']);
   }
 
