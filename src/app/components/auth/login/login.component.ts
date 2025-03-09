@@ -16,11 +16,12 @@ import { LoginRequest } from '../../../models/login-request'; // Import the Logi
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  selectedRole: string = ''; // Default selected role
+  selectedRole: string = ''; // Default empty role
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  submitted: boolean = false; // Track form submission for validation
   private apiUrl = API_URLS.USER_LOGIN_ENDPOINT;
 
   // Use `inject()` for standalone components
@@ -28,8 +29,10 @@ export class LoginComponent {
   private router = inject(Router);
 
   login(): void {
-    if (!this.email.trim() || !this.password.trim()) {
-      this.errorMessage = '❌ Please enter email and password.';
+    this.submitted = true; // Mark form as submitted
+
+    if (!this.email.trim() || !this.password.trim() || !this.selectedRole) {
+      this.errorMessage = '❌ Please fill all fields and select a role.';
       return;
     }
 
@@ -46,13 +49,12 @@ export class LoginComponent {
         if (response.status === 'SUCCESS') {
           const apiRole = response.role;
 
-          // Validate selected role with API role
           if (apiRole !== this.selectedRole) {
-            this.errorMessage = ` Selected role does not match!`;
+            this.errorMessage = ` Invalid role`;
             return;
           }
 
-          this.successMessage = response.message || 'Login successful! Redirecting...';
+          this.successMessage = response.message || '✅ Login successful! Redirecting...';
 
           // Store token and role in sessionStorage
           sessionStorage.setItem('authToken', response.token);
@@ -73,7 +75,7 @@ export class LoginComponent {
           }, 2000);
           
         } else {
-          this.errorMessage = response.message || 'Invalid credentials.';
+          this.errorMessage = response.message || '❌ Invalid credentials.';
         }
       },
       error: (error) => {

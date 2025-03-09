@@ -2,29 +2,45 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
       <div class="card shadow-lg rounded-lg custom-card">
-        <div class="card-header bg-gradient bg-primary text-white text-center py-4">
+        <div
+          class="card-header bg-gradient bg-primary text-white text-center py-4"
+        >
           <h5 class="mb-0">🔐 Login</h5>
         </div>
         <div class="card-body">
-          
           <!-- ✅ Success Message -->
-          <div *ngIf="successMessage" class="alert alert-success text-center fade-in">
+          <div
+            *ngIf="successMessage"
+            class="alert alert-success text-center fade-in"
+          >
             ✅ {{ successMessage }}
           </div>
 
           <!-- ❌ Error Message -->
-          <div *ngIf="errorMessage" class="alert alert-danger text-center fade-in">
+          <div
+            *ngIf="errorMessage"
+            class="alert alert-danger text-center fade-in"
+          >
             ❌ {{ errorMessage }}
           </div>
 
           <form #loginForm="ngForm" (ngSubmit)="login()">
-            
             <!-- Email Field -->
             <div class="mb-3">
               <label class="form-label fw-bold">Email</label>
-              <input type="email" [(ngModel)]="email" class="form-control custom-input" 
-                     name="email" required email #emailInput="ngModel">
-              <div class="text-danger small" *ngIf="emailInput.invalid && emailInput.touched">
+              <input
+                type="email"
+                [(ngModel)]="email"
+                class="form-control custom-input"
+                name="email"
+                required
+                email
+                #emailInput="ngModel"
+              />
+              <div
+                class="text-danger small"
+                *ngIf="emailInput.invalid && emailInput.touched"
+              >
                 Please enter a valid email.
               </div>
             </div>
@@ -33,14 +49,30 @@
             <div class="mb-3">
               <label class="form-label fw-bold">Password</label>
               <div class="input-group">
-                <input [type]="showPassword ? 'text' : 'password'" 
-                       [(ngModel)]="password" class="form-control custom-input" 
-                       name="password" required minlength="6" #passwordInput="ngModel">
-                <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
-                  <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  [(ngModel)]="password"
+                  class="form-control custom-input"
+                  name="password"
+                  required
+                  minlength="6"
+                  #passwordInput="ngModel"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    class="bi"
+                    [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+                  ></i>
                 </button>
               </div>
-              <div class="text-danger small" *ngIf="passwordInput.invalid && passwordInput.touched">
+              <div
+                class="text-danger small"
+                *ngIf="passwordInput.invalid && passwordInput.touched"
+              >
                 Password must be at least 6 characters.
               </div>
             </div>
@@ -48,15 +80,29 @@
             <!-- Role Selection Dropdown -->
             <div class="mb-3">
               <label class="form-label fw-bold">Select Role</label>
-              <select [(ngModel)]="selectedRole" name="role" class="form-control custom-input" required>
+              <select
+                [(ngModel)]="selectedRole"
+                name="role"
+                class="form-control custom-input"
+                required
+              >
+                <option value="" disabled selected>-- Select Role --</option>
                 <option value="USER">User</option>
                 <option value="ADMIN">Admin</option>
               </select>
+              <div
+                class="text-danger small"
+                *ngIf="selectedRole === '' && submitted"
+              >
+                Please select a role.
+              </div>
             </div>
 
             <!-- Login Button -->
-            <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn" 
-                    [disabled]="loginForm.invalid">
+            <button
+              class="btn btn-primary w-100 rounded-pill py-2 animated-btn"
+              [disabled]="loginForm.invalid"
+            >
               <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
           </form>
@@ -64,7 +110,8 @@
 
         <!-- Footer Links -->
         <div class="card-footer text-center py-3">
-          <small>Don't have an account? 
+          <small
+            >Don't have an account?
             <a routerLink="/register" class="text-primary fw-bold">Register</a>
           </small>
         </div>
