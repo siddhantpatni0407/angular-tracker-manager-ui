@@ -33,13 +33,17 @@ export class AdminPanelComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.status === 'SUCCESS' && response.data) {
-            this.users = response.data.map(user => ({
-              id: user.userId,
-              name: user.username,
-              email: user.email,
-              role: user.role
-            }));
-            this.activeUsers = this.users.filter(u => u.role === 'USER').length;
+            // Filter users with role 'USER' only
+            this.users = response.data
+              .filter(user => user.role === 'USER')
+              .map(user => ({
+                id: user.userId,
+                name: user.username,
+                email: user.email,
+                role: user.role
+              }));
+
+            this.activeUsers = this.users.length;
             this.pendingRequests = Math.floor(Math.random() * 5); // Mock pending requests
           } else {
             this.errorMessage = 'Unexpected response format from server.';
