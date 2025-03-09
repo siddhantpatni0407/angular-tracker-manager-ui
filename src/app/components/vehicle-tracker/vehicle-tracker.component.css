@@ -1,43 +1,52 @@
-/* Vehicle Tracker Section */
+/* Enhance hover effect on cards */
 .tracker-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 15px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: none;
-    min-height: 140px;
-  }
-  
-  .tracker-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Icon Styling */
-  .tracker-card i {
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .tracker-card:hover i {
-    transform: scale(1.1);
-  }
-  
-  /* Button Effects */
-  .btn-sm {
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 14px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .btn-sm:hover {
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .tracker-card {
-      min-height: auto;
-    }
-  }
-  
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.tracker-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Add smooth fade-in effect */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Soft shadows for buttons */
+button {
+  transition: all 0.2s ease-in-out;
+}
+button:hover {
+  transform: scale(1.08);
+}
+
+/* Enhance section box appearance */
+.bg-gradient {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Custom background colors for cards */
+.bg-warning {
+  background: linear-gradient(135deg, #ffc107, #ffcd38) !important;
+}
+.bg-danger {
+  background: linear-gradient(135deg, #dc3545, #ff6b6b) !important;
+}
+.bg-info {
+  background: linear-gradient(135deg, #17a2b8, #66d9e8) !important;
+}
+.bg-secondary {
+  background: linear-gradient(135deg, #6c757d, #adb5bd) !important;
+}
+
+/* Ensure text contrasts well on colored backgrounds */
+.bg-warning h6,
+.bg-danger h6,
+.bg-info h6,
+.bg-secondary h6 {
+  color: white !important;
+}
