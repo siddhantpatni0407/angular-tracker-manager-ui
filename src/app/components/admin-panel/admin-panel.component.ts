@@ -33,13 +33,14 @@ export class AdminPanelComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.status === 'SUCCESS' && response.data) {
-            // Filter users with role 'USER' only
+            // Filter users with role 'USER' only and include mobile number
             this.users = response.data
               .filter(user => user.role === 'USER')
               .map(user => ({
                 id: user.userId,
                 name: user.username,
                 email: user.email,
+                mobileNumber: user.mobileNumber || 'N/A',  // ✅ Include mobile number
                 role: user.role
               }));
 
@@ -63,19 +64,17 @@ export class AdminPanelComponent implements OnInit {
     if (confirm('Are you sure you want to delete this user?')) {
       this.deletingUserId = userId;
   
-      // Log the API endpoint and userId
       console.log('Calling DELETE API:', `${API_URLS.USER_ENDPOINT}?userId=${userId}`);
   
-      // Send userId as a query parameter
       this.http.delete<any>(`${API_URLS.USER_ENDPOINT}`, {
-        params: { userId: userId.toString() }, // Send userId as a query parameter
+        params: { userId: userId.toString() },
         headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}` // Add authorization token if required
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
         }
       })
         .subscribe({
           next: (response) => {
-            console.log('Delete API Response:', response); // Log the response
+            console.log('Delete API Response:', response);
             if (response.status === 'SUCCESS') {
               this.users = this.users.filter(user => user.id !== userId);
               alert(response.message);
@@ -85,7 +84,7 @@ export class AdminPanelComponent implements OnInit {
             this.deletingUserId = null;
           },
           error: (err) => {
-            console.error('Delete API Error:', err); // Log the error
+            console.error('Delete API Error:', err);
             if (err.status === 404) {
               this.errorMessage = err.error.message || 'User not found!';
             } else {

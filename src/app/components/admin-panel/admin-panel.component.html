@@ -1,83 +1,85 @@
 <div class="container mt-5">
-    <h2 class="text-center mb-4">⚙️ Admin Panel</h2>
-    
-    <!-- Admin Dashboard Overview -->
-    <div class="row mb-4">
-      <div class="col-md-4">
-        <div class="card shadow p-3 text-center">
-          <h5>Total Users</h5>
-          <h3>{{ users.length }}</h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow p-3 text-center">
-          <h5>Active Users</h5>
-          <h3>{{ activeUsers }}</h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow p-3 text-center">
-          <h5>Pending Requests</h5>
-          <h3>{{ pendingRequests }}</h3>
-        </div>
+  <h2 class="text-center mb-4">⚙️ Admin Panel</h2>
+  
+  <!-- Admin Dashboard Overview -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card shadow p-3 text-center">
+        <h5>Total Users</h5>
+        <h3>{{ users.length }}</h3>
       </div>
     </div>
-  
-    <!-- User Management Table -->
-    <div class="card shadow-lg p-4">
-      <h5 class="mb-3">👥 User Management</h5>
-  
-      <!-- Loading Spinner -->
-      <div *ngIf="loading" class="text-center">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+    <div class="col-md-4">
+      <div class="card shadow p-3 text-center">
+        <h5>Active Users</h5>
+        <h3>{{ activeUsers }}</h3>
       </div>
-  
-      <!-- Error Message -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        ❌ {{ errorMessage }}
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow p-3 text-center">
+        <h5>Pending Requests</h5>
+        <h3>{{ pendingRequests }}</h3>
       </div>
-  
-      <!-- User Table -->
-      <table class="table table-bordered table-hover mt-3" *ngIf="!loading && users.length">
-        <thead class="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users; let i = index" class="hover-effect">
-            <td>{{ i + 1 }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              <span class="badge" [ngClass]="{'bg-success': user.role === 'ADMIN', 'bg-primary': user.role === 'USER'}">
-                {{ user.role }}
-              </span>
-            </td>
-            <td class="d-flex justify-content-center">
-              <!-- Delete Button with Tooltip -->
-              <button 
-                class="btn btn-sm btn-danger" 
-                (click)="deleteUser(user.id)" 
-                [disabled]="deletingUserId === user.id" 
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User">
-                <span *ngIf="deletingUserId === user.id" class="spinner-border spinner-border-sm"></span>
-                ❌ Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    </div>
+  </div>
 
-      <!-- No Users Found Message -->
-      <div *ngIf="!loading && users.length === 0" class="alert alert-info text-center mt-3">
-        No users found.
+  <!-- User Management Table -->
+  <div class="card shadow-lg p-4">
+    <h5 class="mb-3">👥 User Management</h5>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      ❌ {{ errorMessage }}
+    </div>
+
+    <!-- User Table -->
+    <table class="table table-bordered table-hover mt-3" *ngIf="!loading && users.length">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile Number</th>  <!-- ✅ Added Mobile Number Column -->
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index" class="hover-effect">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.mobileNumber || 'N/A' }}</td>  <!-- ✅ Display Mobile Number -->
+          <td>
+            <span class="badge" [ngClass]="{'bg-success': user.role === 'ADMIN', 'bg-primary': user.role === 'USER'}">
+              {{ user.role }}
+            </span>
+          </td>
+          <td class="d-flex justify-content-center">
+            <!-- Delete Button with Tooltip -->
+            <button 
+              class="btn btn-sm btn-danger" 
+              (click)="deleteUser(user.id)" 
+              [disabled]="deletingUserId === user.id" 
+              data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User">
+              <span *ngIf="deletingUserId === user.id" class="spinner-border spinner-border-sm"></span>
+              ❌ Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- No Users Found Message -->
+    <div *ngIf="!loading && users.length === 0" class="alert alert-info text-center mt-3">
+      No users found.
+    </div>
+  </div>
 </div>
