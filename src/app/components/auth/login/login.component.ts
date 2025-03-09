@@ -16,7 +16,7 @@ import { LoginRequest } from '../../../models/login-request'; // Import the Logi
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  selectedRole: string = 'USER'; // Default selected role
+  selectedRole: string = ''; // Default selected role
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
@@ -48,7 +48,7 @@ export class LoginComponent {
 
           // Validate selected role with API role
           if (apiRole !== this.selectedRole) {
-            this.errorMessage = `❌ Selected role does not match!`;
+            this.errorMessage = ` Selected role does not match!`;
             return;
           }
 
