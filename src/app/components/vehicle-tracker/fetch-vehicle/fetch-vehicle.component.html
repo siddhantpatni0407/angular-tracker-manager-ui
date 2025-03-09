@@ -1,95 +1,104 @@
-<div class="container mt-5">
-    <div class="card shadow-lg rounded-4">
-      <div class="card-header bg-gradient bg-primary text-white text-center py-3">
-        <h2 class="fw-bold">🚗 My Registered Vehicles</h2>
+<div class="container mt-5 position-relative">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-truck"></i> My Registered Vehicles
+    </h2>
+
+    <!-- Back to Dashboard Button -->
+    <button
+      class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+      (click)="goToDashboard()"
+    >
+      <i class="bi bi-arrow-left-circle"></i> Dashboard
+    </button>
+  </div>
+
+  <!-- Card Section -->
+  <div class="card shadow-lg rounded-4 mt-4">
+    <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+      <h2 class="fw-bold">🚗 Vehicle List</h2>
+    </div>
+    <div class="card-body">
+      <!-- Loading Spinner -->
+      <div *ngIf="isLoading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-secondary">Fetching vehicle data...</p>
       </div>
-      <div class="card-body">
-        
-        <!-- Loading Spinner -->
-        <div *ngIf="isLoading" class="text-center my-4">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2 text-secondary">Fetching vehicle data...</p>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage && !isLoading" class="alert alert-danger text-center fade-in">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <!-- Search & Refresh Row -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control rounded-3 shadow-sm"
+            placeholder="🔍 Search vehicle..."
+            [(ngModel)]="searchTerm"
+            (input)="filterVehicles()"
+          />
         </div>
-  
-        <!-- Error Message -->
-        <div *ngIf="errorMessage && !isLoading" class="alert alert-danger text-center fade-in">
-          ⚠️ {{ errorMessage }}
+        <div class="col-md-6 text-end">
+          <button class="btn btn-outline-primary btn-sm rounded-pill" (click)="fetchVehicles()">
+            🔄 Refresh
+          </button>
         </div>
-  
-        <!-- Search & Refresh Row -->
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <input 
-              type="text" 
-              class="form-control rounded-3 shadow-sm"
-              placeholder="🔍 Search vehicle..."
-              [(ngModel)]="searchTerm"
-              (input)="filterVehicles()"
-            />
-          </div>
-          <div class="col-md-6 text-end">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" (click)="fetchVehicles()">
-              🔄 Refresh
-            </button>
-          </div>
-        </div>
-  
-        <!-- Vehicle Table -->
-        <div *ngIf="filteredVehicles.length > 0 && !isLoading" class="table-responsive mt-3">
-          <table class="table table-hover table-striped table-bordered shadow-sm text-center">
-            <thead class="table-dark">
-              <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Company</th>
-                <th>Model</th>
-                <th>Chassis</th>
-                <th>Engine</th>
-                <th>Reg. Number</th>
-                <th>Reg. Date</th>
-                <th>Validity</th>
-                <th>Owner</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let vehicle of filteredVehicles" @fadeInAnimation>
-                <td><span class="badge bg-secondary">#{{ vehicle.vehicleId }}</span></td>
-                <td><span class="badge bg-info">{{ vehicle.vehicleType }}</span></td>
-                <td>{{ vehicle.vehicleCompany }}</td>
-                <td>{{ vehicle.vehicleModel }}</td>
-                <td>{{ vehicle.chassisNumber }}</td>
-                <td>{{ vehicle.engineNumber }}</td>
-                <td><strong>{{ vehicle.registrationNumber }}</strong></td>
-                <td>{{ vehicle.registrationDate | date:'dd MMM yyyy' }}</td>
-                <td>
-                  <span class="badge bg-success" *ngIf="isValid(vehicle.registrationValidityDate)">✅ Valid</span>
-                  <span class="badge bg-danger" *ngIf="!isValid(vehicle.registrationValidityDate)">❌ Expired</span>
-                </td>
-                <td>{{ vehicle.ownerName }}</td>
-                <td>
-                  <button class="btn btn-warning btn-sm rounded-circle me-2" (click)="updateVehicle(vehicle)">
-                    ✏️
-                  </button>
-                  <button class="btn btn-danger btn-sm rounded-circle" (click)="deleteVehicle(vehicle.vehicleId)">
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- No Vehicles Message -->
-        <div *ngIf="filteredVehicles.length === 0 && !isLoading" class="text-center mt-3">
-          <p class="text-muted">No registered vehicles found.</p>
-        </div>
-  
-        <!-- Back to Dashboard Button -->
-        <div class="text-center mt-4">
-          <button class="btn btn-secondary btn-lg shadow-sm rounded-pill" (click)="goToDashboard()">⬅️ Back to Vehicle Tracker</button>
-        </div>
-  
+      </div>
+
+      <!-- Vehicle Table -->
+      <div *ngIf="filteredVehicles.length > 0 && !isLoading" class="table-responsive mt-3">
+        <table class="table table-hover table-striped table-bordered shadow-sm text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Company</th>
+              <th>Model</th>
+              <th>Chassis</th>
+              <th>Engine</th>
+              <th>Reg. Number</th>
+              <th>Reg. Date</th>
+              <th>Validity</th>
+              <th>Owner</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vehicle of filteredVehicles" @fadeInAnimation>
+              <td><span class="badge bg-secondary">#{{ vehicle.vehicleId }}</span></td>
+              <td><span class="badge bg-info">{{ vehicle.vehicleType }}</span></td>
+              <td>{{ vehicle.vehicleCompany }}</td>
+              <td>{{ vehicle.vehicleModel }}</td>
+              <td>{{ vehicle.chassisNumber }}</td>
+              <td>{{ vehicle.engineNumber }}</td>
+              <td><strong>{{ vehicle.registrationNumber }}</strong></td>
+              <td>{{ vehicle.registrationDate | date:'dd MMM yyyy' }}</td>
+              <td>
+                <span class="badge bg-success" *ngIf="isValid(vehicle.registrationValidityDate)">✅ Valid</span>
+                <span class="badge bg-danger" *ngIf="!isValid(vehicle.registrationValidityDate)">❌ Expired</span>
+              </td>
+              <td>{{ vehicle.ownerName }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm rounded-circle me-2" (click)="updateVehicle(vehicle)">
+                  ✏️
+                </button>
+                <button class="btn btn-danger btn-sm rounded-circle" (click)="deleteVehicle(vehicle.vehicleId)">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- No Vehicles Message -->
+      <div *ngIf="filteredVehicles.length === 0 && !isLoading" class="text-center mt-3">
+        <p class="text-muted">No registered vehicles found.</p>
       </div>
     </div>
   </div>
+</div>
