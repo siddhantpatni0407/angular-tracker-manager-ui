@@ -27,16 +27,19 @@
     <div class="card shadow-lg p-4">
       <h5 class="mb-3">👥 User Management</h5>
   
+      <!-- Loading Spinner -->
       <div *ngIf="loading" class="text-center">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
   
+      <!-- Error Message -->
       <div *ngIf="errorMessage" class="alert alert-danger">
         ❌ {{ errorMessage }}
       </div>
   
+      <!-- User Table -->
       <table class="table table-bordered table-hover mt-3" *ngIf="!loading && users.length">
         <thead class="table-dark">
           <tr>
@@ -48,7 +51,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of users; let i = index">
+          <tr *ngFor="let user of users; let i = index" class="hover-effect">
             <td>{{ i + 1 }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
@@ -57,9 +60,13 @@
                 {{ user.role }}
               </span>
             </td>
-            <td>
-              <!-- Removed Edit button -->
-              <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)" [disabled]="deletingUserId === user.id">
+            <td class="d-flex justify-content-center">
+              <!-- Delete Button with Tooltip -->
+              <button 
+                class="btn btn-sm btn-danger" 
+                (click)="deleteUser(user.id)" 
+                [disabled]="deletingUserId === user.id" 
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete User">
                 <span *ngIf="deletingUserId === user.id" class="spinner-border spinner-border-sm"></span>
                 ❌ Delete
               </button>
@@ -68,6 +75,7 @@
         </tbody>
       </table>
 
+      <!-- No Users Found Message -->
       <div *ngIf="!loading && users.length === 0" class="alert alert-info text-center mt-3">
         No users found.
       </div>
