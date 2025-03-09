@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; 
 import { HttpClient } from '@angular/common/http';
 import { API_URLS } from '../../../constants/api.constants';
 
 @Component({
   selector: 'app-fetch-vehicle',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule], 
   templateUrl: './fetch-vehicle.component.html',
   styleUrls: ['./fetch-vehicle.component.css'],
 })
@@ -19,7 +19,7 @@ export class FetchVehicleComponent implements OnInit {
   errorMessage: string = '';
   searchTerm: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchVehicles();
@@ -84,7 +84,7 @@ export class FetchVehicleComponent implements OnInit {
   }
 
   goToDashboard() {
-    window.history.back();
+    this.router.navigate(['/vehicle-tracker']);
   }
 
   isValid(validityDate: string): boolean {

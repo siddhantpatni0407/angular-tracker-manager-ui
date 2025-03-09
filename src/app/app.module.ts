@@ -14,6 +14,7 @@ import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicl
 import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CommonModule } from '@angular/common';
     VehicleTrackerComponent, // Added Vehicle Tracker component
     RegisterVehicleComponent,
     FetchVehicleComponent,
-    UpdateVehicleComponent
+    UpdateVehicleComponent,
+    ReactiveFormsModule
   ],
   imports: [
     BrowserModule,

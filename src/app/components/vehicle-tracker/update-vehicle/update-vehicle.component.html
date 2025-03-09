@@ -1,0 +1,82 @@
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4">
+      <div class="card-header bg-warning text-white text-center py-3">
+        <h2 class="fw-bold">✏️ Update Vehicle Details</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="vehicleForm" (ngSubmit)="updateVehicle()">
+          
+          <!-- Vehicle ID (Disabled) -->
+          <div class="mb-3">
+            <label for="vehicleId" class="form-label">Vehicle ID</label>
+            <input type="text" id="vehicleId" class="form-control" formControlName="vehicleId" [attr.disabled]="true" />
+          </div>
+
+          <!-- Vehicle Type -->
+          <div class="mb-3">
+            <label for="vehicleType" class="form-label">Vehicle Type</label>
+            <input type="text" id="vehicleType" class="form-control" formControlName="vehicleType" required />
+          </div>
+
+          <!-- Vehicle Company -->
+          <div class="mb-3">
+            <label for="vehicleCompany" class="form-label">Vehicle Company</label>
+            <input type="text" id="vehicleCompany" class="form-control" formControlName="vehicleCompany" required />
+          </div>
+
+          <!-- Vehicle Model -->
+          <div class="mb-3">
+            <label for="vehicleModel" class="form-label">Vehicle Model</label>
+            <input type="text" id="vehicleModel" class="form-control" formControlName="vehicleModel" required />
+          </div>
+
+          <!-- Chassis Number -->
+          <div class="mb-3">
+            <label for="chassisNumber" class="form-label">Chassis Number</label>
+            <input type="text" id="chassisNumber" class="form-control" formControlName="chassisNumber" required />
+          </div>
+
+          <!-- Engine Number -->
+          <div class="mb-3">
+            <label for="engineNumber" class="form-label">Engine Number</label>
+            <input type="text" id="engineNumber" class="form-control" formControlName="engineNumber" required />
+          </div>
+
+          <!-- Registration Number -->
+          <div class="mb-3">
+            <label for="registrationNumber" class="form-label">Registration Number</label>
+            <input type="text" id="registrationNumber" class="form-control" formControlName="registrationNumber" required />
+          </div>
+
+          <!-- Registration Date -->
+          <div class="mb-3">
+            <label for="registrationDate" class="form-label">Registration Date</label>
+            <input type="date" id="registrationDate" class="form-control" formControlName="registrationDate" required />
+          </div>
+
+          <!-- Registration Validity Date -->
+          <div class="mb-3">
+            <label for="registrationValidityDate" class="form-label">Registration Validity Date</label>
+            <input type="date" id="registrationValidityDate" class="form-control" formControlName="registrationValidityDate" required />
+          </div>
+
+          <!-- Owner Name -->
+          <div class="mb-3">
+            <label for="ownerName" class="form-label">Owner Name</label>
+            <input type="text" id="ownerName" class="form-control" formControlName="ownerName" required />
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg shadow-sm rounded-pill" [disabled]="vehicleForm.invalid">
+              ✔️ Update Vehicle
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg shadow-sm rounded-pill ms-3" (click)="cancelUpdate()">
+              ❌ Cancel
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+</div>
