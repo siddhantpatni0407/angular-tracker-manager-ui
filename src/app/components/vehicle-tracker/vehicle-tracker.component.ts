@@ -22,22 +22,27 @@ export class VehicleTrackerComponent {
   }
 
   viewCarExpenses() {
-    this.router.navigate(['/car-expenses']);
+    this.router.navigate(['/vehicle-tracker']);
+    //this.router.navigate(['/car-expenses']);
   }
 
   viewServicingDetails() {
-    this.router.navigate(['/servicing-details']);
+    this.router.navigate(['/vehicle-tracker']);
+    //this.router.navigate(['/servicing-details']);
   }
 
   viewTyreDetails() {
-    this.router.navigate(['/tyre-details']);
+    this.router.navigate(['/vehicle-tracker']);
+    //this.router.navigate(['/tyre-details']);
   }
 
   viewPetrolExpenses() {
-    this.router.navigate(['/petrol-expenses']);
+    this.router.navigate(['/vehicle-tracker']);
+    //this.router.navigate(['/petrol-expenses']);
   }
 
   viewInsuranceDetails() {
-    this.router.navigate(['/insurance-details']);
+    this.router.navigate(['/vehicle-tracker']);
+    //this.router.navigate(['/insurance-details']);
   }
 }
