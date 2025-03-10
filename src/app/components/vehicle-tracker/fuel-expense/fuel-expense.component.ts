@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -17,8 +17,10 @@ export class FuelExpenseComponent implements OnInit {
   newExpense = { date: '', quantity: 0, rate: 0, amount: 0, odometerReading: 0, location: '', paymentMode: '', vehicleId: 1 };
   vehicleId = 1;
   private baseUrl = 'http://localhost:8080/api/expenses'; // API URL for expenses
+  showAddExpense = false;
+  showExpenseList = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.loadExpenses();
@@ -40,7 +42,6 @@ export class FuelExpenseComponent implements OnInit {
     this.removeExpense(id).subscribe(() => this.loadExpenses());
   }
 
-  // API Calls handled within the component itself
   getExpenses(vehicleId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/vehicle/${vehicleId}`);
   }
@@ -51,5 +52,17 @@ export class FuelExpenseComponent implements OnInit {
 
   removeExpense(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
+  }
+
+  goToVehicleTracker() {
+    this.router.navigate(['/vehicle-tracker']);
+  }
+
+  toggleAddExpense() {
+    this.showAddExpense = !this.showAddExpense;
+  }
+
+  toggleExpenseList() {
+    this.showExpenseList = !this.showExpenseList;
   }
 }
