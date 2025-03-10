@@ -1,38 +1,9 @@
-/* Card Styles */
-.tracker-card {
-    padding: 20px;
-    text-align: center;
-    border-radius: 15px;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    color: white;
+.hover-effect {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* Add Fuel Expense Card */
-.gradient-blue {
-    background: linear-gradient(135deg, #4a90e2, #007bff);
-}
-
-/* View Expenses Card */
-.gradient-orange {
-    background: linear-gradient(135deg, #ff8c00, #ff5722);
-}
-
-/* Card Hover Effect */
-.tracker-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Button Styling */
-button {
-    font-weight: bold;
-    border-radius: 20px;
-    padding: 8px 15px;
-}
-
-/* Header Styling */
-h2 {
-    font-weight: 700;
-    color: #222;
+.hover-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }

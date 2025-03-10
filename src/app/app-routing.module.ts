@@ -12,6 +12,8 @@ import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicl
 import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/fuel-expense.component';
+import { AddFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/add-fuel-expense/add-fuel-expense.component';
+import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/view-fuel-expense/view-fuel-expense.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -25,7 +27,9 @@ const routes: Routes = [
   { path: 'fetch-vehicle', component: FetchVehicleComponent, canActivate: [AuthGuard] },
   { path: 'update-user', component: UpdateUserComponent, canActivate: [AuthGuard] },
   { path: 'update-vehicle', component: UpdateVehicleComponent, canActivate: [AuthGuard] },
-  { path: 'fuel-expense', component: FuelExpenseComponent },
+  { path: 'fuel-expense', component: FuelExpenseComponent, canActivate: [AuthGuard] },
+  { path: 'add-fuel-expense', component: AddFuelExpenseComponent, canActivate: [AuthGuard] },
+  { path: 'view-fuel-expense', component: ViewFuelExpenseComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 

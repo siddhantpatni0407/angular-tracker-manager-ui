@@ -1,112 +1,27 @@
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2 class="fw-bold text-primary">
-            ⛽ Fuel Expenses
-        </h2>
-        <button class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4" (click)="goToVehicleTracker()">
-            <i class="bi bi-arrow-left-circle"></i> Vehicle Tracker
-        </button>
-    </div>
+<div class="container mt-5">
+    <!-- Back to Vehicle Tracker Page -->
+    <button class="btn btn-outline-secondary mb-3" (click)="goBackToVehicleTracker()">⬅ Back to Vehicle Tracker</button>
 
-    <p class="text-muted text-center mt-2">
-        <i class="bi bi-fuel-pump"></i> Track fuel expenses per vehicle
-    </p>
+    <!-- Page Title -->
+    <h2 class="text-primary text-center">
+        <i class="bi bi-fuel-pump"></i> Fuel Expense Tracker
+    </h2>
 
-    <div class="row mt-4">
-        <!-- Add Fuel Expense -->
-        <div class="col-md-6 mb-4">
-            <div class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect">
-                <div class="card-body text-center text-white">
-                    <i class="bi bi-plus-circle fa-2x mb-3"></i>
-                    <h6 class="card-title fw-bold">Add Fuel Expense</h6>
-                    <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="toggleAddExpense()">
-                        Add Expense
-                    </button>
-                </div>
+    <div class="row mt-4 d-flex justify-content-center">
+        <!-- Add Fuel Expense Card -->
+        <div class="col-md-5 mb-3">
+            <div class="card shadow-lg p-4 rounded-4 text-center hover-effect" (click)="navigateToAddExpense()">
+                <i class="bi bi-plus-circle fs-1 text-success"></i>
+                <h4 class="mt-3">Add Fuel Expense</h4>
             </div>
         </div>
 
-        <!-- Show Fuel Expenses -->
-        <div class="col-md-6 mb-4">
-            <div class="card tracker-card gradient-orange shadow-lg rounded-4 border-0 hover-effect">
-                <div class="card-body text-center text-white">
-                    <i class="bi bi-list-check fa-2x mb-3"></i>
-                    <h6 class="card-title fw-bold">Show All Fuel Expenses</h6>
-                    <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="toggleExpenseList()">
-                        View Expenses
-                    </button>
-                </div>
+        <!-- View Fuel Expenses Card -->
+        <div class="col-md-5 mb-3">
+            <div class="card shadow-lg p-4 rounded-4 text-center hover-effect" (click)="navigateToViewExpenses()">
+                <i class="bi bi-list-ul fs-1 text-primary"></i>
+                <h4 class="mt-3">View Fuel Expenses</h4>
             </div>
         </div>
     </div>
-
-    <!-- Add Expense Form -->
-    <div class="card p-3 mb-4 shadow" *ngIf="showAddExpense">
-        <h5 class="mb-3">➕ Add Expense</h5>
-        <form (ngSubmit)="addExpense()">
-            <div class="row">
-                <div class="col-md-3">
-                    <label>Date</label>
-                    <input type="date" class="form-control" [(ngModel)]="newExpense.date" name="date" required>
-                </div>
-                <div class="col-md-2">
-                    <label>Quantity (L)</label>
-                    <input type="number" class="form-control" [(ngModel)]="newExpense.quantity" name="quantity" required>
-                </div>
-                <div class="col-md-2">
-                    <label>Rate (₹/L)</label>
-                    <input type="number" class="form-control" [(ngModel)]="newExpense.rate" name="rate" required>
-                </div>
-                <div class="col-md-2">
-                    <label>Odometer (km)</label>
-                    <input type="number" class="form-control" [(ngModel)]="newExpense.odometerReading" name="odometerReading" required>
-                </div>
-                <div class="col-md-3">
-                    <label>Location</label>
-                    <input type="text" class="form-control" [(ngModel)]="newExpense.location" name="location" required>
-                </div>
-                <div class="col-md-3 mt-2">
-                    <label>Payment Mode</label>
-                    <select class="form-control" [(ngModel)]="newExpense.paymentMode" name="paymentMode" required>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="UPI">UPI</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mt-4">
-                    <button type="submit" class="btn btn-success w-100">💾 Save</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- Expense Table -->
-    <table class="table table-bordered table-hover mt-3" *ngIf="showExpenseList && expenses.length">
-        <thead class="table-dark">
-            <tr>
-                <th>Date</th>
-                <th>Quantity (L)</th>
-                <th>Rate (₹/L)</th>
-                <th>Amount (₹)</th>
-                <th>Odometer (km)</th>
-                <th>Location</th>
-                <th>Payment Mode</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let expense of expenses">
-                <td>{{ expense.date }}</td>
-                <td>{{ expense.quantity }}</td>
-                <td>{{ expense.rate }}</td>
-                <td>{{ expense.amount }}</td>
-                <td>{{ expense.odometerReading }}</td>
-                <td>{{ expense.location }}</td>
-                <td>{{ expense.paymentMode }}</td>
-                <td>
-                    <button class="btn btn-sm btn-danger" (click)="deleteExpense(expense.id)">🗑 Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>
