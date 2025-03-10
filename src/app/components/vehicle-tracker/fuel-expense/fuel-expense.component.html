@@ -1,0 +1,73 @@
+<div class="container mt-4">
+    <h2 class="text-center text-primary">⛽ Fuel Expenses</h2>
+    
+    <!-- Add New Expense Form -->
+    <div class="card p-3 mb-4 shadow">
+        <h5 class="mb-3">➕ Add Expense</h5>
+        <form (ngSubmit)="addExpense()">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="newExpense.date" name="date" required>
+                </div>
+                <div class="col-md-2">
+                    <label>Quantity (L)</label>
+                    <input type="number" class="form-control" [(ngModel)]="newExpense.quantity" name="quantity" required>
+                </div>
+                <div class="col-md-2">
+                    <label>Rate (₹/L)</label>
+                    <input type="number" class="form-control" [(ngModel)]="newExpense.rate" name="rate" required>
+                </div>
+                <div class="col-md-2">
+                    <label>Odometer (km)</label>
+                    <input type="number" class="form-control" [(ngModel)]="newExpense.odometerReading" name="odometerReading" required>
+                </div>
+                <div class="col-md-3">
+                    <label>Location</label>
+                    <input type="text" class="form-control" [(ngModel)]="newExpense.location" name="location" required>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <label>Payment Mode</label>
+                    <select class="form-control" [(ngModel)]="newExpense.paymentMode" name="paymentMode" required>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="UPI">UPI</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mt-4">
+                    <button type="submit" class="btn btn-success w-100">💾 Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Expenses Table -->
+    <table class="table table-bordered table-hover mt-3" *ngIf="expenses.length">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Quantity (L)</th>
+                <th>Rate (₹/L)</th>
+                <th>Amount (₹)</th>
+                <th>Odometer (km)</th>
+                <th>Location</th>
+                <th>Payment Mode</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let expense of expenses">
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.quantity }}</td>
+                <td>{{ expense.rate }}</td>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.odometerReading }}</td>
+                <td>{{ expense.location }}</td>
+                <td>{{ expense.paymentMode }}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" (click)="deleteExpense(expense.id)">🗑 Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

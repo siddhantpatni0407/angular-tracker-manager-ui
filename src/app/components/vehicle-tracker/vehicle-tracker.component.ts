@@ -36,13 +36,13 @@ export class VehicleTrackerComponent {
     //this.router.navigate(['/tyre-details']);
   }
 
-  viewPetrolExpenses() {
-    this.router.navigate(['/vehicle-tracker']);
-    //this.router.navigate(['/petrol-expenses']);
+  viewFuelExpenses() {
+    this.router.navigate(['/fuel-expense']);
   }
 
   viewInsuranceDetails() {
     this.router.navigate(['/vehicle-tracker']);
     //this.router.navigate(['/insurance-details']);
   }
+
 }

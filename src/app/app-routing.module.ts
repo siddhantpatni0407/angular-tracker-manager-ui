@@ -11,6 +11,7 @@ import { RegisterVehicleComponent } from './components/vehicle-tracker/register-
 import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicle/fetch-vehicle.component';
 import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
+import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/fuel-expense.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'fetch-vehicle', component: FetchVehicleComponent, canActivate: [AuthGuard] },
   { path: 'update-user', component: UpdateUserComponent, canActivate: [AuthGuard] },
   { path: 'update-vehicle', component: UpdateVehicleComponent, canActivate: [AuthGuard] },
+  { path: 'fuel-expense', component: FuelExpenseComponent },
   { path: '**', redirectTo: '/login' }
 ];
 

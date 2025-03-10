@@ -9,6 +9,8 @@ import { RegisterVehicleComponent } from './components/vehicle-tracker/register-
 import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicle/fetch-vehicle.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
+import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/fuel-expense.component';
+
 import { AuthGuard } from './guards/auth.guard'; // Import AuthGuard for route protection
 
 export const appRoutes: Routes = [
@@ -20,8 +22,9 @@ export const appRoutes: Routes = [
   { path: 'vehicle-tracker', component: VehicleTrackerComponent, canActivate: [AuthGuard] },
   { path: 'register-vehicle', component: RegisterVehicleComponent, canActivate: [AuthGuard] },
   { path: 'fetch-vehicle', component: FetchVehicleComponent, canActivate: [AuthGuard] },
-  { path: 'update-user', component: UpdateUserComponent, canActivate: [AuthGuard] },
+  { path: 'update-user/:userId', component: UpdateUserComponent },
   { path: 'update-vehicle', component: UpdateVehicleComponent, canActivate: [AuthGuard] },
+  { path: 'fuel-expense', component: FuelExpenseComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];
