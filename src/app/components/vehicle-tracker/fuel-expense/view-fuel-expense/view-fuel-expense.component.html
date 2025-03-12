@@ -3,36 +3,48 @@
     <button class="btn btn-outline-primary mb-3" (click)="goBack()">⬅ Fuel Expense</button>
 
     <!-- Page Title -->
-    <h2 class="text-primary"><i class="bi bi-list-ul"></i> Fuel Expenses</h2>
+    <h2 class="text-primary text-center">
+        <i class="bi bi-list-ul"></i> Fuel Expenses
+    </h2>
 
-    <!-- Vehicle Selection Dropdown -->
-    <div class="mb-4">
-        <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
-        <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="onVehicleChange()">
-            <option value="" selected>-- Select a vehicle --</option>
-            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
-                {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
-            </option>
-        </select>
+    <!-- Vehicle Selection -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
+            <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="updateSelectedVehicle()">
+                <option value="" selected>-- Select a vehicle --</option>
+                <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+                    {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Export Buttons -->
+    <div class="text-end mb-3">
+        <button class="btn btn-success me-2" (click)="exportToExcel()">📊 Export to Excel</button>
+        <button class="btn btn-danger" (click)="exportToPDF()">📄 Export to PDF</button>
     </div>
 
     <!-- Fuel Expenses Table -->
-    <div *ngIf="filteredExpenses.length > 0; else noExpenses" class="table-responsive">
-        <table class="table table-striped mt-3">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center">
             <thead class="table-dark">
                 <tr>
+                    <th>Sr No.</th>
                     <th>Date</th>
                     <th>Vehicle</th>
-                    <th>Quantity</th>
-                    <th>Rate</th>
-                    <th>Amount</th>
+                    <th>Quantity (L)</th>
+                    <th>Rate (₹)</th>
+                    <th>Amount (₹)</th>
                     <th>Odometer</th>
                     <th>Location</th>
                     <th>Payment Mode</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let expense of filteredExpenses">
+                <tr *ngFor="let expense of filteredExpenses; let i = index">
+                    <td>{{ i + 1 }}</td>
                     <td>{{ expense.fuelFilledDate }}</td>
                     <td>{{ expense.vehicleRegistrationNumber }}</td>
                     <td>{{ expense.quantity }}</td>
@@ -42,12 +54,21 @@
                     <td>{{ expense.location }}</td>
                     <td>{{ expense.paymentMode }}</td>
                 </tr>
+
+                <!-- No Data Found Row -->
+                <tr *ngIf="filteredExpenses.length === 0">
+                    <td colspan="9" class="text-center text-muted">⚠️ No fuel expenses found.</td>
+                </tr>
+
+                <!-- Total Row -->
+                <tr class="table-warning" *ngIf="filteredExpenses.length > 0">
+                    <td colspan="3" class="fw-bold">Total</td>
+                    <td class="fw-bold">{{ getTotalQuantity() }}</td>
+                    <td></td>
+                    <td class="fw-bold">{{ getTotalAmount() }}</td>
+                    <td colspan="3"></td>
+                </tr>
             </tbody>
         </table>
     </div>
-
-    <!-- No Expenses Message -->
-    <ng-template #noExpenses>
-        <p class="text-muted mt-4">⚠️ No fuel expenses found for the selected vehicle.</p>
-    </ng-template>
 </div>

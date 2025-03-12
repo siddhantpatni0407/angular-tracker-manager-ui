@@ -94,3 +94,8 @@ This project is licensed under the MIT License.
 -	ng new angular-tracker-manager-ui --routing --style=css
 -	npm install bootstrap
 -	npm install bootstrap-icons
+-   npm install jspdf jspdf-autotable --save
+-   npm install @types/jspdf --save-dev
+-   npm install file-saver xlsx --save
+-   npm install @types/file-saver --save-dev
+-   npm install @types/xlsx --save-dev
