@@ -44,6 +44,8 @@ export class ViewFuelExpenseComponent implements OnInit {
     });
   }
 
+  searchText: string = '';
+
   // Update selected vehicle and fetch expenses
   updateSelectedVehicle(): void {
     const selectedVehicle = this.vehicles.find(
@@ -72,10 +74,11 @@ export class ViewFuelExpenseComponent implements OnInit {
 
     this.http.get<any>(url).subscribe({
       next: (response) => {
-        this.filteredExpenses =
-          response.status === 'SUCCESS' ? response.data : [];
+        this.fuelExpenses = response.status === 'SUCCESS' ? response.data : [];
+        this.filterExpenses(); // ✅ Apply filtering on initial data load
       },
       error: () => {
+        this.fuelExpenses = [];
         this.filteredExpenses = [];
       },
     });
@@ -99,6 +102,17 @@ export class ViewFuelExpenseComponent implements OnInit {
       0
     );
     return total.toFixed(2); // Ensures exactly two decimal places
+  }
+
+  filterExpenses(): void {
+    const searchLower = this.searchText.toLowerCase();
+
+    this.filteredExpenses = this.fuelExpenses.filter(
+      (expense) =>
+        expense.location?.toLowerCase().includes(searchLower) ||
+        expense.paymentMode?.toLowerCase().includes(searchLower) ||
+        expense.fuelFilledDate?.toLowerCase().includes(searchLower)
+    );
   }
 
   // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
