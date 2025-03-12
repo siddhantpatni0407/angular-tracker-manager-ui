@@ -13,6 +13,7 @@ import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/
 import { AddFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/add-fuel-expense/add-fuel-expense.component';
 import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/view-fuel-expense/view-fuel-expense.component';
 import { AuthGuard } from './guards/auth.guard'; // Import AuthGuard for route protection
+import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,6 +29,7 @@ export const appRoutes: Routes = [
   { path: 'fuel-expense', component: FuelExpenseComponent, canActivate: [AuthGuard] },
   { path: 'add-fuel-expense', component: AddFuelExpenseComponent, canActivate: [AuthGuard] },
   { path: 'view-fuel-expense', component: ViewFuelExpenseComponent, canActivate: [AuthGuard] },
+  { path: 'fuel-statistics', component: FuelStatisticsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];

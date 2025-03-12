@@ -1,0 +1,34 @@
+/* Card Styling */
+.tracker-card {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .gradient-blue {
+    background: linear-gradient(to right, #2193b0, #6dd5ed);
+  }
+  
+  .gradient-green {
+    background: linear-gradient(to right, #11998e, #38ef7d);
+  }
+  
+  .gradient-orange {
+    background: linear-gradient(to right, #fc4a1a, #f7b733);
+  }
+  
+  /* Chart Container */
+  canvas {
+    max-height: 250px;
+  }
+  
+  /* Buttons */
+  button {
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  

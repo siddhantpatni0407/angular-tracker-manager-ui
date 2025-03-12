@@ -20,6 +20,7 @@ import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expe
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FuelExpenseComponent,
     AddFuelExpenseComponent,
     ViewFuelExpenseComponent,
+    FuelStatisticsComponent,
     ReactiveFormsModule
   ],
   imports: [

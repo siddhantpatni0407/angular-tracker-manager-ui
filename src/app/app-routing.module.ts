@@ -14,6 +14,7 @@ import { UpdateUserComponent } from './components/update-user/update-user.compon
 import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/fuel-expense.component';
 import { AddFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/add-fuel-expense/add-fuel-expense.component';
 import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/view-fuel-expense/view-fuel-expense.component';
+import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'fuel-expense', component: FuelExpenseComponent, canActivate: [AuthGuard] },
   { path: 'add-fuel-expense', component: AddFuelExpenseComponent, canActivate: [AuthGuard] },
   { path: 'view-fuel-expense', component: ViewFuelExpenseComponent, canActivate: [AuthGuard] },
+  { path: 'fuel-statistics', component: FuelStatisticsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 
