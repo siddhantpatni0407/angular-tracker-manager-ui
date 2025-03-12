@@ -1,24 +1,17 @@
-.container {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  h2 {
-    font-weight: bold;
-    text-shadow: 1px 1px 2px gray;
-  }
-  
-  .table th, .table td {
-    vertical-align: middle;
-  }
-  
-  .table-warning {
-    font-size: 1.1rem;
-    font-weight: bold;
-  }
-  
-  button {
-    border-radius: 5px;
-  }
-  
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1; /* Light grey color on hover */
+    }
+
+    .btn:hover {
+        transform: scale(1.05); /* Slight zoom effect on hover */
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .dropdown-toggle:focus {
+        box-shadow: none; /* Remove focus outline */
+    }
+
+    .table td, .table th {
+        vertical-align: middle; /* Center align cell content */
+    }
