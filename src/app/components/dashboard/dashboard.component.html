@@ -8,66 +8,51 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <i class="fas fa-user-circle"></i> Profile
+      <i class="bi bi-person-circle"></i> Profile
     </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
-      <li><a class="dropdown-item" href="#">👤 {{ userRole }}</a></li>
-      <li><a class="dropdown-item" (click)="navigateToProfile()">🔧 Edit Profile</a></li>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item"><i class="bi bi-person-badge"></i> {{ userRole }}</a></li>
+      <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="bi bi-gear"></i> Edit Profile</a></li>
       <li><hr class="dropdown-divider" /></li>
-      <li><a class="dropdown-item text-danger" (click)="logout()">🚪 Logout</a></li>
+      <li><a class="dropdown-item text-danger" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
     </ul>
   </div>
 </div>
 
 <!-- Dashboard Content -->
 <div *ngIf="userRole; else notLoggedIn" class="container mt-4">
-  <h2 class="text-center fw-bold text-primary">Welcome to the Tracker Management System</h2>
+  <h2 class="text-center fw-bold text-primary">
+    <i class="bi bi-grid-fill"></i> Tracker Management Dashboard
+  </h2>
 
-  <!-- Displaying the user's role -->
   <p class="text-center text-muted">
     Your Role: <strong class="text-dark">{{ userRole }}</strong>
   </p>
 
-  <!-- New Sections for Medical Tracker & Vehicle Tracker -->
   <div class="row mt-4 justify-content-center">
-    
-    <!-- Medical Tracker Card -->
-    <div class="col-md-5 mb-3">
-      <div
-        class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect animate__animated animate__fadeInUp"
-      >
+    <!-- Medical Tracker -->
+    <div class="col-md-4 mb-3">
+      <div class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect">
         <div class="card-body text-center text-white">
-          <div class="mb-3">
-            <i class="fas fa-notes-medical fa-3x"></i>
-          </div>
+          <i class="bi bi-clipboard-heart fa-3x mb-3"></i>
           <h5 class="card-title fw-bold">Medical Tracker</h5>
-          <p class="card-text">Track and manage medical records efficiently.</p>
-          <button
-            class="btn btn-light btn-lg mt-2 shadow-sm px-4"
-            (click)="navigateToMedicalTracker()"
-          >
-            <i class="fas fa-arrow-right"></i> Go to Medical Tracker
+          <p>Manage medical records & health logs.</p>
+          <button class="btn btn-light btn-lg shadow-sm px-4" (click)="navigateToMedicalTracker()">
+            <i class="bi bi-arrow-right"></i> Open
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Vehicle Tracker Card -->
-    <div class="col-md-5 mb-3">
-      <div
-        class="card tracker-card gradient-green shadow-lg rounded-4 border-0 hover-effect animate__animated animate__fadeInUp animate__delay-1s"
-      >
+    <!-- Vehicle Tracker -->
+    <div class="col-md-4 mb-3">
+      <div class="card tracker-card gradient-green shadow-lg rounded-4 border-0 hover-effect">
         <div class="card-body text-center text-white">
-          <div class="mb-3">
-            <i class="fas fa-car fa-3x"></i>
-          </div>
+          <i class="bi bi-car-front-fill fa-3x mb-3"></i>
           <h5 class="card-title fw-bold">Vehicle Tracker</h5>
-          <p class="card-text">Monitor vehicle expenses and mileage logs.</p>
-          <button
-            class="btn btn-light btn-lg mt-2 shadow-sm px-4"
-            (click)="navigateToVehicleTracker()"
-          >
-            <i class="fas fa-arrow-right"></i> Go to Vehicle Tracker
+          <p>Track vehicle expenses & mileage.</p>
+          <button class="btn btn-light btn-lg shadow-sm px-4" (click)="navigateToVehicleTracker()">
+            <i class="bi bi-arrow-right"></i> Open
           </button>
         </div>
       </div>
@@ -75,13 +60,13 @@
   </div>
 </div>
 
-<!-- Access Denied for Unauthenticated Users -->
+<!-- Access Denied Section -->
 <ng-template #notLoggedIn>
   <div class="container mt-4 text-center">
     <h2 class="text-danger fw-bold">Access Denied</h2>
     <p class="text-muted">You must be logged in to access the dashboard.</p>
     <button class="btn btn-danger btn-lg shadow-sm" (click)="redirectToLogin()">
-      <i class="fas fa-sign-in-alt"></i> Go to Login
+      <i class="bi bi-box-arrow-in-right"></i> Login
     </button>
   </div>
 </ng-template>
