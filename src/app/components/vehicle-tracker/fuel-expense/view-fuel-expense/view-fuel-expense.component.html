@@ -75,14 +75,31 @@
       <thead class="table-dark">
         <tr>
           <th>Sr No.</th>
-          <th>Date</th>
-          <th>Vehicle</th>
-          <th>Quantity (L)</th>
-          <th>Rate (₹)</th>
-          <th>Amount (₹)</th>
-          <th>Odometer</th>
-          <th>Location</th>
-          <th>Payment Mode</th>
+          <th (click)="sortExpenses('fuelFilledDate')" class="sortable">
+            Date ⬍
+          </th>
+          <th
+            (click)="sortExpenses('vehicleRegistrationNumber')"
+            class="sortable"
+          >
+            Vehicle ⬍
+          </th>
+          <th (click)="sortExpenses('quantity')" class="sortable">
+            Quantity (L) ⬍
+          </th>
+          <th (click)="sortExpenses('rate')" class="sortable">Rate (₹) ⬍</th>
+          <th (click)="sortExpenses('amount')" class="sortable">
+            Amount (₹) ⬍
+          </th>
+          <th (click)="sortExpenses('odometerReading')" class="sortable">
+            Odometer ⬍
+          </th>
+          <th (click)="sortExpenses('location')" class="sortable">
+            Location ⬍
+          </th>
+          <th (click)="sortExpenses('paymentMode')" class="sortable">
+            Payment Mode ⬍
+          </th>
         </tr>
       </thead>
       <tbody>

@@ -29,6 +29,11 @@ export class ViewFuelExpenseComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  searchText: string = ''; // ✅ For filtering
+
+  sortColumn: string = ''; // ✅ Column being sorted
+  sortDirection: string = 'asc'; // ✅ Sorting order (asc or desc)
+
   ngOnInit(): void {
     this.loadVehicles();
   }
@@ -43,8 +48,6 @@ export class ViewFuelExpenseComponent implements OnInit {
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
   }
-
-  searchText: string = '';
 
   // Update selected vehicle and fetch expenses
   updateSelectedVehicle(): void {
@@ -102,6 +105,30 @@ export class ViewFuelExpenseComponent implements OnInit {
       0
     );
     return total.toFixed(2); // Ensures exactly two decimal places
+  }
+
+  sortExpenses(column: string): void {
+    if (this.sortColumn === column) {
+      // Toggle between ascending and descending order
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.filteredExpenses.sort((a, b) => {
+      let valueA = a[column];
+      let valueB = b[column];
+
+      if (typeof valueA === 'string') {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 
   filterExpenses(): void {
