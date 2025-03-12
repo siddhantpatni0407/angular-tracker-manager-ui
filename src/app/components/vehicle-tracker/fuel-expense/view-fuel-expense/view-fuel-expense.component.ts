@@ -98,7 +98,6 @@ export class ViewFuelExpenseComponent implements OnInit {
 
   // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
   exportToExcel(): void {
-    
     const currentDate = new Date();
     const formattedDate = currentDate
       .toISOString()
@@ -128,14 +127,14 @@ export class ViewFuelExpenseComponent implements OnInit {
     const colWidths: number[] = sheetData.reduce(
       (acc: number[], row: any[]) => {
         row.forEach((cell: any, idx: number) => {
-          acc[idx] = Math.max(acc[idx] || 10, cell?.toString().length + 5);
+          acc[idx] = Math.max(acc[idx] || 10, cell?.toString().length + 5); // Adjust width by 5 more than the cell length
         });
         return acc;
       },
       []
     );
 
-    updatedWs['!cols'] = colWidths.map((w: number) => ({ width: w })); // ✅ Explicitly typed `w` as `number`
+    updatedWs['!cols'] = colWidths.map((w: number) => ({ width: w })); // Column width adjustments
 
     // ✅ Add Borders to All Cells
     const range = XLSX.utils.decode_range(updatedWs['!ref'] || '');
@@ -150,10 +149,11 @@ export class ViewFuelExpenseComponent implements OnInit {
           left: { style: 'thin' },
           right: { style: 'thin' },
         };
-        updatedWs[cellAddress].s.alignment = { horizontal: 'center' };
+        updatedWs[cellAddress].s.alignment = { horizontal: 'center' }; // Center alignment for all cells
       }
     }
 
+    // Create and append the workbook
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, updatedWs, 'Fuel Expenses');
     XLSX.writeFile(wb, fileName);
@@ -161,18 +161,26 @@ export class ViewFuelExpenseComponent implements OnInit {
 
   // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
-
     const currentDate = new Date();
-  const formattedDate = currentDate
-    .toISOString()
-    .replace(/[-T:]/g, '')
-    .split('.')[0]; // YYYYMMDD_HHMMSS format
-  const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
+    const formattedDate = currentDate
+      .toISOString()
+      .replace(/[-T:]/g, '')
+      .split('.')[0]; // YYYYMMDD_HHMMSS format
+    const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
+
+    const registrationNumber = this.selectedRegistrationNumber; // Use selected registration number
+    const headerText = `Fuel Expense - ${registrationNumber}`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
         const doc = new jsPDF.default();
-        doc.text('Fuel Expenses Report', 15, 10);
+
+        // Center the header text with registration number
+        const pageWidth = doc.internal.pageSize.width;
+        const textWidth =
+          doc.getStringUnitWidth(headerText) * doc.internal.scaleFactor;
+        const xPos = (pageWidth - textWidth) / 2;
+        doc.text(headerText, xPos, 10); // Header is centered
 
         const tableData = this.filteredExpenses.map((expense, index) => [
           index + 1,
