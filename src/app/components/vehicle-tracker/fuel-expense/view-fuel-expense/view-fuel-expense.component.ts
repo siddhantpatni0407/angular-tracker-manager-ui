@@ -82,18 +82,23 @@ export class ViewFuelExpenseComponent implements OnInit {
   }
 
   // Calculate total quantity and amount
-  getTotalQuantity(): number {
-    return this.filteredExpenses.reduce(
-      (sum, expense) => sum + expense.quantity,
+  getTotalQuantity(): string {
+    const total = this.filteredExpenses.reduce(
+      (sum, expense) => sum + Number(expense.quantity),
       0
     );
+
+    const roundedTotal = Math.round(total * 100) / 100;
+
+    return roundedTotal.toFixed(2);
   }
 
-  getTotalAmount(): number {
-    return this.filteredExpenses.reduce(
+  getTotalAmount(): string {
+    const total = this.filteredExpenses.reduce(
       (sum, expense) => sum + expense.amount,
       0
     );
+    return total.toFixed(2); // Ensures exactly two decimal places
   }
 
   // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
