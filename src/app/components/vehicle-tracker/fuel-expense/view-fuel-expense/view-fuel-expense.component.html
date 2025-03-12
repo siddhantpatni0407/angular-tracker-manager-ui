@@ -20,10 +20,23 @@
         </div>
     </div>
 
-    <!-- Export Buttons -->
-    <div class="text-end mb-3">
-        <button class="btn btn-success me-2" (click)="exportToExcel()">📊 Export to Excel</button>
-        <button class="btn btn-danger" (click)="exportToPDF()">📄 Export to PDF</button>
+    <!-- Export Dropdown -->
+    <div class="dropdown text-end mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            📤 Export
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+            <li>
+                <a class="dropdown-item" (click)="exportToExcel()">
+                    <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" (click)="exportToPDF()">
+                    <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+                </a>
+            </li>
+        </ul>
     </div>
 
     <!-- Fuel Expenses Table -->
