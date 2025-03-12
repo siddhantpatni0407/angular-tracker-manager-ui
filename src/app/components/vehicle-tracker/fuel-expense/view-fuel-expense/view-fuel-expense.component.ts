@@ -5,7 +5,6 @@ import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { VehicleService } from '../../../../services/vehicle.service';
-import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { API_URLS } from '../../../../constants/api.constants';
 
@@ -45,13 +44,20 @@ export class ViewFuelExpenseComponent implements OnInit {
     });
   }
 
-   // Update selected vehicle and fetch expenses
-   updateSelectedVehicle(): void {
-    const selectedVehicle = this.vehicles.find(v => v.vehicleId == this.selectedVehicleId);
-    this.selectedRegistrationNumber = selectedVehicle ? selectedVehicle.registrationNumber : '';
+  // Update selected vehicle and fetch expenses
+  updateSelectedVehicle(): void {
+    const selectedVehicle = this.vehicles.find(
+      (v) => v.vehicleId == this.selectedVehicleId
+    );
+    this.selectedRegistrationNumber = selectedVehicle
+      ? selectedVehicle.registrationNumber
+      : '';
 
     console.log('✅ Selected Vehicle ID:', this.selectedVehicleId);
-    console.log('✅ Selected Registration Number:', this.selectedRegistrationNumber);
+    console.log(
+      '✅ Selected Registration Number:',
+      this.selectedRegistrationNumber
+    );
 
     this.fetchFuelExpenses();
   }
@@ -90,24 +96,77 @@ export class ViewFuelExpenseComponent implements OnInit {
     );
   }
 
-  // ✅ Export Table Data to Excel with Timestamp in File Name
+  // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
   exportToExcel(): void {
     const currentDate = new Date();
     const formattedDate = currentDate
       .toISOString()
       .replace(/[-T:]/g, '')
       .split('.')[0]; // Format: YYYYMMDD_HHMMSS
-
     const fileName = `Fuel_Expenses_${formattedDate}.xlsx`;
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredExpenses);
+
+    // ✅ Add Total Row
+    const totalRow = {
+      fuelFilledDate: 'Total',
+      vehicleRegistrationNumber: '',
+      quantity: this.getTotalQuantity(),
+      rate: '',
+      amount: this.getTotalAmount(),
+      odometerReading: '',
+      location: '',
+      paymentMode: '',
+    };
+
+    const sheetData = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[];
+    sheetData.push(Object.values(totalRow)); // Append Total Row
+    const updatedWs = XLSX.utils.aoa_to_sheet(sheetData);
+
+    // ✅ Auto Adjust Column Widths (Fix: Explicitly type `idx` as `number`)
+    const colWidths: number[] = sheetData.reduce(
+      (acc: number[], row: any[]) => {
+        row.forEach((cell: any, idx: number) => {
+          acc[idx] = Math.max(acc[idx] || 10, cell?.toString().length + 5);
+        });
+        return acc;
+      },
+      []
+    );
+
+    updatedWs['!cols'] = colWidths.map((w: number) => ({ width: w })); // ✅ Explicitly typed `w` as `number`
+
+    // ✅ Add Borders to All Cells
+    const range = XLSX.utils.decode_range(updatedWs['!ref'] || '');
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!updatedWs[cellAddress]) continue;
+        if (!updatedWs[cellAddress].s) updatedWs[cellAddress].s = {};
+        updatedWs[cellAddress].s.border = {
+          top: { style: 'thin' },
+          bottom: { style: 'thin' },
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        updatedWs[cellAddress].s.alignment = { horizontal: 'center' };
+      }
+    }
+
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Fuel Expenses');
+    XLSX.utils.book_append_sheet(wb, updatedWs, 'Fuel Expenses');
     XLSX.writeFile(wb, fileName);
   }
 
-  // ✅ Export Table Data to PDF with Proper Table Formatting
+  // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
+    const currentDate = new Date();
+    const formattedDate = currentDate
+      .toISOString()
+      .replace(/[-T:]/g, '')
+      .split('.')[0]; // Format: YYYYMMDD_HHMMSS
+    const fileName = `Fuel_Expenses_${formattedDate}.pdf`;
+
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
         const doc = new jsPDF.default();
@@ -123,6 +182,19 @@ export class ViewFuelExpenseComponent implements OnInit {
           expense.odometerReading,
           expense.location,
           expense.paymentMode,
+        ]);
+
+        // ✅ Append Total Row to PDF Table
+        tableData.push([
+          '',
+          'Total',
+          '',
+          this.getTotalQuantity(),
+          '',
+          this.getTotalAmount(),
+          '',
+          '',
+          '',
         ]);
 
         (autoTable as any).default(doc, {
@@ -141,11 +213,22 @@ export class ViewFuelExpenseComponent implements OnInit {
           ],
           body: tableData,
           startY: 20,
-          theme: 'striped',
+          theme: 'grid', // ✅ Improved Table Styling
           styles: { fontSize: 10 },
+          tableLineColor: [0, 0, 0], // ✅ Black Borders
+          tableLineWidth: 0.1,
         });
 
-        doc.save('Fuel_Expenses.pdf');
+        // ✅ Draw Full Page Border
+        doc.setLineWidth(0.5);
+        doc.rect(
+          5,
+          5,
+          doc.internal.pageSize.width - 10,
+          doc.internal.pageSize.height - 10
+        );
+
+        doc.save(fileName);
       });
     });
   }
