@@ -1,0 +1,89 @@
+<div class="container mt-5">
+    <button class="btn btn-outline-primary mb-3" (click)="goBack()">⬅ Back</button>
+    
+    <h2 class="text-primary"><i class="bi bi-fuel-pump"></i> Add Fuel Expense</h2>
+
+    <form [formGroup]="fuelExpenseForm" (ngSubmit)="submitExpense()" class="card shadow-lg p-4 mt-4 rounded-4">
+        <!-- Vehicle Selection -->
+        <div class="mb-3">
+            <label for="vehicleId" class="form-label fw-bold">🚗 Select Vehicle</label>
+            <select formControlName="vehicleId" id="vehicleId" class="form-select">
+                <option value="" disabled selected>-- Select a vehicle --</option>
+                <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+                    {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+                </option>
+            </select>
+            <div *ngIf="fuelExpenseForm.controls['vehicleId'].touched && fuelExpenseForm.controls['vehicleId'].invalid" class="text-danger">
+                🚨 Vehicle selection is required.
+            </div>
+        </div>
+
+        <!-- Date Field -->
+        <div class="mb-3">
+            <label for="date" class="form-label fw-bold">📅 Date</label>
+            <input type="date" id="date" class="form-control" formControlName="date" />
+            <div *ngIf="fuelExpenseForm.controls['date'].touched && fuelExpenseForm.controls['date'].invalid" class="text-danger">
+                🚨 Date is required.
+            </div>
+        </div>
+
+        <!-- Quantity & Rate -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="quantity" class="form-label fw-bold">⛽ Quantity (liters)</label>
+                <input type="number" id="quantity" class="form-control" formControlName="quantity" (input)="updateAmount()" />
+                <div *ngIf="fuelExpenseForm.controls['quantity'].touched && fuelExpenseForm.controls['quantity'].invalid" class="text-danger">
+                    🚨 Quantity must be at least 0.1L.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="rate" class="form-label fw-bold">💰 Rate (per liter)</label>
+                <input type="number" id="rate" class="form-control" formControlName="rate" (input)="updateAmount()" />
+                <div *ngIf="fuelExpenseForm.controls['rate'].touched && fuelExpenseForm.controls['rate'].invalid" class="text-danger">
+                    🚨 Rate must be at least 1 per liter.
+                </div>
+            </div>
+        </div>
+
+        <!-- Amount (Auto-Calculated) -->
+        <div class="mb-3">
+            <label for="amount" class="form-label fw-bold">💵 Total Amount</label>
+            <input type="text" id="amount" class="form-control" formControlName="amount" [disabled]="true" />
+        </div>
+
+        <!-- Odometer Reading -->
+        <div class="mb-3">
+            <label for="odometerReading" class="form-label fw-bold">📏 Odometer Reading</label>
+            <input type="number" id="odometerReading" class="form-control" formControlName="odometerReading" />
+            <div *ngIf="fuelExpenseForm.controls['odometerReading'].touched && fuelExpenseForm.controls['odometerReading'].invalid" class="text-danger">
+                🚨 Odometer reading is required.
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+            <label for="location" class="form-label fw-bold">📍 Location</label>
+            <input type="text" id="location" class="form-control" formControlName="location" (input)="trimLocation()" />
+            <div *ngIf="fuelExpenseForm.controls['location'].touched && fuelExpenseForm.controls['location'].invalid" class="text-danger">
+                🚨 Location is required.
+            </div>
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="mb-3">
+            <label for="paymentMode" class="form-label fw-bold">💳 Payment Mode</label>
+            <select formControlName="paymentMode" id="paymentMode" class="form-select">
+                <option value="" disabled selected>-- Select Payment Mode --</option>
+                <option value="Cash">💵 Cash</option>
+                <option value="Card">💳 Card</option>
+                <option value="UPI">📱 UPI</option>
+            </select>
+            <div *ngIf="fuelExpenseForm.controls['paymentMode'].touched && fuelExpenseForm.controls['paymentMode'].invalid" class="text-danger">
+                🚨 Payment mode is required.
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="fuelExpenseForm.invalid">✅ Save Fuel Expense</button>
+    </form>
+</div>

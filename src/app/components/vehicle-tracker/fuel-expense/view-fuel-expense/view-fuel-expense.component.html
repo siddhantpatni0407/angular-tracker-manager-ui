@@ -1,0 +1,48 @@
+<div class="container mt-5">
+    <!-- Back Button -->
+    <button class="btn btn-outline-primary mb-3" (click)="goBack()">⬅ Fuel Expense</button>
+
+    <!-- Page Title -->
+    <h2 class="text-primary"><i class="bi bi-list-ul"></i> Fuel Expenses</h2>
+
+    <!-- Vehicle Selection Dropdown -->
+    <div class="mb-4">
+        <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
+        <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="filterExpenses()">
+            <option value="" selected>-- Select a vehicle --</option>
+            <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+                {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+            </option>
+        </select>
+    </div>
+
+    <!-- Fuel Expenses Table -->
+    <div class="table-responsive">
+        <table class="table table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Odometer</th>
+                    <th>Location</th>
+                    <th>Payment Mode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let expense of filteredExpenses">
+                    <td>{{ expense.date }}</td>
+                    <td>{{ getVehicleDetails(expense.vehicleId) }}</td>
+                    <td>{{ expense.quantity }}</td>
+                    <td>{{ expense.rate }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.odometerReading }}</td>
+                    <td>{{ expense.location }}</td>
+                    <td>{{ expense.paymentMode }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

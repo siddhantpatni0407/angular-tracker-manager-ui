@@ -15,6 +15,8 @@ import { FetchVehicleComponent } from './components/vehicle-tracker/fetch-vehicl
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { UpdateVehicleComponent } from './components/vehicle-tracker/update-vehicle/update-vehicle.component';
 import { FuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/fuel-expense.component';
+import { AddFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/add-fuel-expense/add-fuel-expense.component';
+import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expense/view-fuel-expense/view-fuel-expense.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -34,6 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     UpdateUserComponent,
     UpdateVehicleComponent,
     FuelExpenseComponent,
+    AddFuelExpenseComponent,
+    ViewFuelExpenseComponent,
     ReactiveFormsModule
   ],
   imports: [
