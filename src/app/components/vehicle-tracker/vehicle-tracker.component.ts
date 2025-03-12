@@ -21,7 +21,7 @@ export class VehicleTrackerComponent {
     this.router.navigate(['/fetch-vehicle']);
   }
 
-  viewCarExpenses() {
+  viewVehicleExpenses() {
     this.router.navigate(['/vehicle-tracker']);
     //this.router.navigate(['/car-expenses']);
   }
