@@ -1,17 +1,17 @@
 <div class="container mt-5">
     <!-- Back Button -->
-    <button class="btn btn-outline-primary mb-3" (click)="goBack()">⬅ Fuel Expense</button>
+    <button class="btn btn-outline-primary mb-3 animate-fade-in" (click)="goBack()">⬅ Fuel Expense</button>
 
     <!-- Page Title -->
-    <h2 class="text-primary text-center">
+    <h2 class="text-primary text-center animate-fade-in">
         <i class="bi bi-bar-chart-line"></i> Fuel Statistics
     </h2>
 
     <!-- Vehicle Selection -->
-    <div class="row mb-4">
+    <div class="row mb-4 animate-slide-in">
         <div class="col-md-6">
             <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
-            <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="updateSelectedVehicle()">
+            <select class="form-select shadow-sm" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="updateSelectedVehicle()">
                 <option value="" selected>-- Select a vehicle --</option>
                 <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
                     {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
@@ -22,20 +22,20 @@
 
     <!-- Statistics Cards -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="tracker-card gradient-blue">
+        <div class="col-md-4 animate-fade-in">
+            <div class="tracker-card gradient-blue shadow-sm hover-scale">
                 <h4>Total Fuel</h4>
                 <p class="fs-3 fw-bold">{{ totalQuantity | number:'1.2-2' }} L</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="tracker-card gradient-green">
+        <div class="col-md-4 animate-fade-in">
+            <div class="tracker-card gradient-green shadow-sm hover-scale">
                 <h4>Total Amount</h4>
                 <p class="fs-3 fw-bold">₹{{ totalAmount | number:'1.2-2' }}</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="tracker-card gradient-orange">
+        <div class="col-md-4 animate-fade-in">
+            <div class="tracker-card gradient-orange shadow-sm hover-scale">
                 <h4>Average Rate</h4>
                 <p class="fs-3 fw-bold">₹{{ averageRate | number:'1.2-2' }}/L</p>
             </div>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- No Data Message -->
-    <div *ngIf="fuelExpenses.length === 0" class="text-center text-muted mt-3">
+    <div *ngIf="fuelExpenses.length === 0" class="text-center text-muted mt-3 animate-fade-in">
         ⚠️ No fuel expenses found for the selected vehicle.
     </div>
 </div>

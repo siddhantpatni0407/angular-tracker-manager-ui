@@ -1,34 +1,61 @@
-/* Card Styling */
+/* Animation Effects */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.8s ease-in-out;
+}
+
+/* Card Hover Effects */
 .tracker-card {
-    text-align: center;
-    padding: 20px;
-    color: white;
-    border-radius: 10px;
-  }
-  
-  .gradient-blue {
-    background: linear-gradient(to right, #2193b0, #6dd5ed);
-  }
-  
-  .gradient-green {
-    background: linear-gradient(to right, #11998e, #38ef7d);
-  }
-  
-  .gradient-orange {
-    background: linear-gradient(to right, #fc4a1a, #f7b733);
-  }
-  
-  /* Chart Container */
-  canvas {
-    max-height: 250px;
-  }
-  
-  /* Buttons */
-  button {
-    transition: 0.3s;
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-  }
-  
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.tracker-card h4 {
+  font-weight: bold;
+}
+
+.tracker-card p {
+  margin: 0;
+}
+
+.tracker-card.hover-scale:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient Backgrounds */
+.gradient-blue {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: white;
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: white;
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, #fa709a, #fee140);
+  color: white;
+}
+
+/* Shadow Effects */
+.shadow-sm {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
