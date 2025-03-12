@@ -1,71 +1,106 @@
 <div class="container mt-4">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <button class="btn btn-outline-primary" (click)="goBack()">
-        ⬅ Back to Fuel Expense
-      </button>
-      <h2 class="text-primary fw-bold">
-        <i class="bi bi-list-ul"></i> Fuel Expenses
-      </h2>
-      <div></div>
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary" (click)="goBack()">
+      ⬅ Back to Fuel Expense
+    </button>
+    <h2 class="text-primary fw-bold">
+      <i class="bi bi-list-ul"></i> Fuel Expenses
+    </h2>
+    <div></div>
+  </div>
+
+  <!-- Vehicle Selection & Filter Input -->
+  <div class="row g-3 align-items-center">
+    <div class="col-md-4">
+      <label for="vehicleSelect" class="form-label fw-bold"
+        >🚗 Select Vehicle</label
+      >
+      <select
+        class="form-select shadow-sm"
+        id="vehicleSelect"
+        [(ngModel)]="selectedVehicleId"
+        (change)="updateSelectedVehicle()"
+      >
+        <option value="" selected>-- Select a vehicle --</option>
+        <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+          {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+        </option>
+      </select>
     </div>
-  
-    <!-- Vehicle Selection & Filter Input -->
-    <div class="row g-3 align-items-center">
-      <div class="col-md-4">
-        <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
-        <select class="form-select shadow-sm" id="vehicleSelect" [(ngModel)]="selectedVehicleId"
-          (change)="updateSelectedVehicle()">
-          <option value="" selected>-- Select a vehicle --</option>
-          <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
-            {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
-          </option>
-        </select>
-      </div>
-  
-      <div class="col-md-4">
-        <label class="form-label fw-bold">🔍 Search Expenses</label>
-        <input type="text" class="form-control shadow-sm" placeholder="Filter by location, payment mode, or date..."
-          [(ngModel)]="searchText" (input)="filterExpenses()" />
-      </div>
-  
-      <div class="col-md-4 text-end">
-        <label class="form-label fw-bold d-block">📤 Export</label>
-        <div class="btn-group">
-          <button class="btn btn-primary dropdown-toggle shadow-sm" type="button" id="exportDropdown"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Export Data
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" (click)="exportToExcel()">
-                <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" (click)="exportToPDF()">
-                <i class="bi bi-file-earmark-pdf"></i> Export to PDF
-              </a>
-            </li>
-          </ul>
-        </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">🔍 Search Expenses</label>
+      <input
+        type="text"
+        class="form-control shadow-sm"
+        placeholder="Filter by location, payment mode, or date..."
+        [(ngModel)]="searchText"
+        (input)="filterExpenses()"
+      />
+    </div>
+
+    <!-- Export Dropdown -->
+    <div class="col-md-4 text-end" style="position: relative; z-index: 1050">
+      <label class="form-label fw-bold d-block">📤 Export</label>
+      <div class="btn-group">
+        <button
+          class="btn btn-primary dropdown-toggle shadow-sm"
+          type="button"
+          id="exportDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Export Data
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1051">
+          <li>
+            <a class="dropdown-item" (click)="exportToExcel()">
+              <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="exportToPDF()">
+              <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-  
+
     <!-- Fuel Expenses Table -->
     <div class="table-responsive mt-4">
       <table class="table table-hover table-bordered text-center shadow-sm">
         <thead class="table-dark sticky-top">
           <tr>
             <th>#</th>
-            <th (click)="sortExpenses('fuelFilledDate')" class="sortable">📅 Date ⬍</th>
-            <th (click)="sortExpenses('vehicleRegistrationNumber')" class="sortable">🚗 Vehicle ⬍</th>
-            <th (click)="sortExpenses('quantity')" class="sortable">⛽ Quantity (L) ⬍</th>
-            <th (click)="sortExpenses('rate')" class="sortable">💲 Rate (₹) ⬍</th>
-            <th (click)="sortExpenses('amount')" class="sortable">💰 Amount (₹) ⬍</th>
-            <th (click)="sortExpenses('odometerReading')" class="sortable">📏 Odometer ⬍</th>
-            <th (click)="sortExpenses('location')" class="sortable">📍 Location ⬍</th>
-            <th (click)="sortExpenses('paymentMode')" class="sortable">💳 Payment Mode ⬍</th>
+            <th (click)="sortExpenses('fuelFilledDate')" class="sortable">
+              📅 Date ⬍
+            </th>
+            <th
+              (click)="sortExpenses('vehicleRegistrationNumber')"
+              class="sortable"
+            >
+              🚗 Vehicle ⬍
+            </th>
+            <th (click)="sortExpenses('quantity')" class="sortable">
+              ⛽ Quantity (L) ⬍
+            </th>
+            <th (click)="sortExpenses('rate')" class="sortable">
+              💲 Rate (₹) ⬍
+            </th>
+            <th (click)="sortExpenses('amount')" class="sortable">
+              💰 Amount (₹) ⬍
+            </th>
+            <th (click)="sortExpenses('odometerReading')" class="sortable">
+              📏 Odometer ⬍
+            </th>
+            <th (click)="sortExpenses('location')" class="sortable">
+              📍 Location ⬍
+            </th>
+            <th (click)="sortExpenses('paymentMode')" class="sortable">
+              💳 Payment Mode ⬍
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -80,14 +115,14 @@
             <td>{{ expense.location }}</td>
             <td>{{ expense.paymentMode }}</td>
           </tr>
-  
+
           <!-- No Data Found Row -->
           <tr *ngIf="filteredExpenses.length === 0">
             <td colspan="9" class="text-center text-muted">
               ⚠️ No fuel expenses found.
             </td>
           </tr>
-  
+
           <!-- Total Row -->
           <tr class="table-warning fw-bold" *ngIf="filteredExpenses.length > 0">
             <td colspan="3">Total</td>
@@ -100,4 +135,4 @@
       </table>
     </div>
   </div>
-  
+</div>
