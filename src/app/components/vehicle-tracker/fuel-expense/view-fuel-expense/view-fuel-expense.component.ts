@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { VehicleService } from '../../../../services/vehicle.service';
 import { HttpClient } from '@angular/common/http';
+import { VehicleService } from '../../../../services/vehicle.service';
+import { API_URLS } from '../../../../constants/api.constants';
 
 @Component({
   selector: 'app-view-fuel-expenses',
@@ -17,53 +18,56 @@ export class ViewFuelExpenseComponent implements OnInit {
   fuelExpenses: any[] = [];
   filteredExpenses: any[] = [];
   selectedVehicleId: string = '';
+  selectedRegistrationNumber: string = '';
 
   constructor(
-    private vehicleService: VehicleService, // Injecting VehicleService
+    private vehicleService: VehicleService,
     private http: HttpClient,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadVehicles();
-    this.loadFuelExpenses();
   }
 
-  // Load vehicle list (same as Add Fuel Expense)
+  // Load vehicles from the backend
   private loadVehicles() {
     this.vehicleService.getVehicles().subscribe({
       next: (vehicles) => {
         this.vehicles = vehicles;
-        console.log('✅ Vehicles loaded:', vehicles); // Debugging log
+        console.log('✅ Vehicles loaded:', vehicles);
       },
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
   }
 
-  // Fetch fuel expenses
-  private loadFuelExpenses() {
-    this.http.get<any[]>('/api/fuel-expenses').subscribe({
-      next: (expenses) => {
-        this.fuelExpenses = expenses;
-        this.filteredExpenses = expenses;
-        console.log('✅ Fuel Expenses loaded:', expenses); // Debugging log
+  // Fetch fuel expenses for the selected vehicle
+  fetchFuelExpenses(): void {
+    if (!this.selectedVehicleId || !this.selectedRegistrationNumber) {
+      this.filteredExpenses = []; // Ensure table is empty if no vehicle selected
+      return;
+    }
+  
+    const url = `${API_URLS.VEHICLE_FUEL_EXPENSE_ENDPOINT}?vehicleId=${this.selectedVehicleId}&registrationNumber=${this.selectedRegistrationNumber}`;
+  
+    console.log('🚀 Fetching Fuel Expenses from:', url);
+  
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        this.filteredExpenses = response.status === 'SUCCESS' ? response.data : [];
+        console.log('✅ Fuel Expenses:', this.filteredExpenses);
       },
-      error: (err) => console.error('❌ Error loading fuel expenses:', err),
+      error: () => {
+        this.filteredExpenses = []; // ✅ Keep table empty if request fails
+      },
     });
-  }
+  }    
 
-  // Filter fuel expenses based on selected vehicle
-  filterExpenses(): void {
-    console.log('🚗 Selected Vehicle:', this.selectedVehicleId); // Debugging log
-    this.filteredExpenses = this.selectedVehicleId
-      ? this.fuelExpenses.filter((expense) => expense.vehicleId === this.selectedVehicleId)
-      : this.fuelExpenses;
-  }
-
-  // Get vehicle details from vehicleId
-  getVehicleDetails(vehicleId: string): string {
-    const vehicle = this.vehicles.find((v) => v.vehicleId === vehicleId);
-    return vehicle ? `${vehicle.registrationNumber} - ${vehicle.vehicleModel}` : 'Unknown Vehicle';
+  // Update selected vehicle details and fetch expenses
+  onVehicleChange(): void {
+    const selectedVehicle = this.vehicles.find(v => v.vehicleId == this.selectedVehicleId);
+    this.selectedRegistrationNumber = selectedVehicle?.registrationNumber || '';
+    this.fetchFuelExpenses();
   }
 
   // Navigate back to Fuel Expense Dashboard

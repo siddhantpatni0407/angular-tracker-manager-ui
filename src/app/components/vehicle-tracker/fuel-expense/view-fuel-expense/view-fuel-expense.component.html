@@ -8,7 +8,7 @@
     <!-- Vehicle Selection Dropdown -->
     <div class="mb-4">
         <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
-        <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="filterExpenses()">
+        <select class="form-select" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="onVehicleChange()">
             <option value="" selected>-- Select a vehicle --</option>
             <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
                 {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Fuel Expenses Table -->
-    <div class="table-responsive">
+    <div *ngIf="filteredExpenses.length > 0; else noExpenses" class="table-responsive">
         <table class="table table-striped mt-3">
             <thead class="table-dark">
                 <tr>
@@ -33,8 +33,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let expense of filteredExpenses">
-                    <td>{{ expense.date }}</td>
-                    <td>{{ getVehicleDetails(expense.vehicleId) }}</td>
+                    <td>{{ expense.fuelFilledDate }}</td>
+                    <td>{{ expense.vehicleRegistrationNumber }}</td>
                     <td>{{ expense.quantity }}</td>
                     <td>{{ expense.rate }}</td>
                     <td>{{ expense.amount }}</td>
@@ -45,4 +45,9 @@
             </tbody>
         </table>
     </div>
+
+    <!-- No Expenses Message -->
+    <ng-template #noExpenses>
+        <p class="text-muted mt-4">⚠️ No fuel expenses found for the selected vehicle.</p>
+    </ng-template>
 </div>
