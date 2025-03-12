@@ -1,139 +1,103 @@
-<div class="container mt-5">
-  <!-- Back Button -->
-  <button class="btn btn-outline-primary mb-3" (click)="goBack()">
-    ⬅ Fuel Expense
-  </button>
-
-  <!-- Page Title -->
-  <h2 class="text-primary text-center">
-    <i class="bi bi-list-ul"></i> Fuel Expenses
-  </h2>
-
-  <!-- Vehicle Selection -->
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <label for="vehicleSelect" class="form-label fw-bold"
-        >🚗 Select Vehicle</label
-      >
-      <select
-        class="form-select"
-        id="vehicleSelect"
-        [(ngModel)]="selectedVehicleId"
-        (change)="updateSelectedVehicle()"
-      >
-        <option value="" selected>-- Select a vehicle --</option>
-        <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
-          {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
-        </option>
-      </select>
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-primary" (click)="goBack()">
+        ⬅ Back to Fuel Expense
+      </button>
+      <h2 class="text-primary fw-bold">
+        <i class="bi bi-list-ul"></i> Fuel Expenses
+      </h2>
+      <div></div>
+    </div>
+  
+    <!-- Vehicle Selection & Filter Input -->
+    <div class="row g-3 align-items-center">
+      <div class="col-md-4">
+        <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
+        <select class="form-select shadow-sm" id="vehicleSelect" [(ngModel)]="selectedVehicleId"
+          (change)="updateSelectedVehicle()">
+          <option value="" selected>-- Select a vehicle --</option>
+          <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+            {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="col-md-4">
+        <label class="form-label fw-bold">🔍 Search Expenses</label>
+        <input type="text" class="form-control shadow-sm" placeholder="Filter by location, payment mode, or date..."
+          [(ngModel)]="searchText" (input)="filterExpenses()" />
+      </div>
+  
+      <div class="col-md-4 text-end">
+        <label class="form-label fw-bold d-block">📤 Export</label>
+        <div class="btn-group">
+          <button class="btn btn-primary dropdown-toggle shadow-sm" type="button" id="exportDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Export Data
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" (click)="exportToExcel()">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="exportToPDF()">
+                <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Fuel Expenses Table -->
+    <div class="table-responsive mt-4">
+      <table class="table table-hover table-bordered text-center shadow-sm">
+        <thead class="table-dark sticky-top">
+          <tr>
+            <th>#</th>
+            <th (click)="sortExpenses('fuelFilledDate')" class="sortable">📅 Date ⬍</th>
+            <th (click)="sortExpenses('vehicleRegistrationNumber')" class="sortable">🚗 Vehicle ⬍</th>
+            <th (click)="sortExpenses('quantity')" class="sortable">⛽ Quantity (L) ⬍</th>
+            <th (click)="sortExpenses('rate')" class="sortable">💲 Rate (₹) ⬍</th>
+            <th (click)="sortExpenses('amount')" class="sortable">💰 Amount (₹) ⬍</th>
+            <th (click)="sortExpenses('odometerReading')" class="sortable">📏 Odometer ⬍</th>
+            <th (click)="sortExpenses('location')" class="sortable">📍 Location ⬍</th>
+            <th (click)="sortExpenses('paymentMode')" class="sortable">💳 Payment Mode ⬍</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let expense of filteredExpenses; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ expense.fuelFilledDate }}</td>
+            <td>{{ expense.vehicleRegistrationNumber }}</td>
+            <td>{{ expense.quantity }}</td>
+            <td>{{ expense.rate }}</td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.odometerReading }}</td>
+            <td>{{ expense.location }}</td>
+            <td>{{ expense.paymentMode }}</td>
+          </tr>
+  
+          <!-- No Data Found Row -->
+          <tr *ngIf="filteredExpenses.length === 0">
+            <td colspan="9" class="text-center text-muted">
+              ⚠️ No fuel expenses found.
+            </td>
+          </tr>
+  
+          <!-- Total Row -->
+          <tr class="table-warning fw-bold" *ngIf="filteredExpenses.length > 0">
+            <td colspan="3">Total</td>
+            <td>{{ getTotalQuantity() }}</td>
+            <td></td>
+            <td>{{ getTotalAmount() }}</td>
+            <td colspan="3"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <!-- Filter Input -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="🔍 Filter by location, payment mode, or date..."
-        [(ngModel)]="searchText"
-        (input)="filterExpenses()"
-      />
-    </div>
-  </div>
-
-  <!-- Export Dropdown -->
-  <div class="dropdown text-end mb-3">
-    <button
-      class="btn btn-primary dropdown-toggle"
-      type="button"
-      id="exportDropdown"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      📤 Export
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-      <li>
-        <a class="dropdown-item" (click)="exportToExcel()">
-          <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
-        </a>
-      </li>
-      <li>
-        <a class="dropdown-item" (click)="exportToPDF()">
-          <i class="bi bi-file-earmark-pdf"></i> Export to PDF
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Fuel Expenses Table -->
-  <div class="table-responsive">
-    <table
-      class="table table-striped table-bordered table-hover text-center shadow-sm"
-    >
-      <thead class="table-dark">
-        <tr>
-          <th>Sr No.</th>
-          <th (click)="sortExpenses('fuelFilledDate')" class="sortable">
-            Date ⬍
-          </th>
-          <th
-            (click)="sortExpenses('vehicleRegistrationNumber')"
-            class="sortable"
-          >
-            Vehicle ⬍
-          </th>
-          <th (click)="sortExpenses('quantity')" class="sortable">
-            Quantity (L) ⬍
-          </th>
-          <th (click)="sortExpenses('rate')" class="sortable">Rate (₹) ⬍</th>
-          <th (click)="sortExpenses('amount')" class="sortable">
-            Amount (₹) ⬍
-          </th>
-          <th (click)="sortExpenses('odometerReading')" class="sortable">
-            Odometer ⬍
-          </th>
-          <th (click)="sortExpenses('location')" class="sortable">
-            Location ⬍
-          </th>
-          <th (click)="sortExpenses('paymentMode')" class="sortable">
-            Payment Mode ⬍
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let expense of filteredExpenses; let i = index"
-          class="table-light"
-        >
-          <td>{{ i + 1 }}</td>
-          <td>{{ expense.fuelFilledDate }}</td>
-          <td>{{ expense.vehicleRegistrationNumber }}</td>
-          <td>{{ expense.quantity }}</td>
-          <td>{{ expense.rate }}</td>
-          <td>{{ expense.amount }}</td>
-          <td>{{ expense.odometerReading }}</td>
-          <td>{{ expense.location }}</td>
-          <td>{{ expense.paymentMode }}</td>
-        </tr>
-
-        <!-- No Data Found Row -->
-        <tr *ngIf="filteredExpenses.length === 0">
-          <td colspan="9" class="text-center text-muted">
-            ⚠️ No fuel expenses found.
-          </td>
-        </tr>
-
-        <!-- Total Row -->
-        <tr class="table-warning" *ngIf="filteredExpenses.length > 0">
-          <td colspan="3" class="fw-bold">Total</td>
-          <td class="fw-bold">{{ getTotalQuantity() }}</td>
-          <td></td>
-          <td class="fw-bold">{{ getTotalAmount() }}</td>
-          <td colspan="3"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  
