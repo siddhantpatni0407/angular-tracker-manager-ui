@@ -98,12 +98,13 @@ export class ViewFuelExpenseComponent implements OnInit {
 
   // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
   exportToExcel(): void {
+    
     const currentDate = new Date();
     const formattedDate = currentDate
       .toISOString()
       .replace(/[-T:]/g, '')
-      .split('.')[0]; // Format: YYYYMMDD_HHMMSS
-    const fileName = `Fuel_Expenses_${formattedDate}.xlsx`;
+      .split('.')[0]; // YYYYMMDD_HHMMSS format
+    const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.xlsx`;
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredExpenses);
 
@@ -160,12 +161,13 @@ export class ViewFuelExpenseComponent implements OnInit {
 
   // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
+
     const currentDate = new Date();
-    const formattedDate = currentDate
-      .toISOString()
-      .replace(/[-T:]/g, '')
-      .split('.')[0]; // Format: YYYYMMDD_HHMMSS
-    const fileName = `Fuel_Expenses_${formattedDate}.pdf`;
+  const formattedDate = currentDate
+    .toISOString()
+    .replace(/[-T:]/g, '')
+    .split('.')[0]; // YYYYMMDD_HHMMSS format
+  const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
