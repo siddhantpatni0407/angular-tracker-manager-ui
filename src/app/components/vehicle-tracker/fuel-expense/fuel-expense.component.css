@@ -1,9 +1,19 @@
+/* Gradient Backgrounds */
+.gradient-blue { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+.gradient-green { background: linear-gradient(135deg, #22c55e, #065f46); }
+.gradient-orange { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.gradient-purple { background: linear-gradient(135deg, #8b5cf6, #4c1d95); }
+
+/* Hover Effects */
 .hover-effect {
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.hover-effect:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+/* Icon Styling */
+.card-body i {
+  font-size: 2.5rem;
 }

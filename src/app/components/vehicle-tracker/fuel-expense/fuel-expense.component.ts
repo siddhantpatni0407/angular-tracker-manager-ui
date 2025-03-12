@@ -17,8 +17,15 @@ export class FuelExpenseComponent {
     this.router.navigate(['/view-fuel-expense']);
   }
 
+  navigateToFuelStatistics() {
+    this.router.navigate(['/fuel-statistics']);
+  }
+
+  navigateToFuelReports() {
+    this.router.navigate(['/fuel-reports']);
+  }
+
   goBackToVehicleTracker(): void {
     this.router.navigate(['/vehicle-tracker']);
   }
-
 }
