@@ -1,0 +1,102 @@
+<div class="container mt-5 position-relative">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="fw-bold text-primary">
+        <i class="bi bi-file-bar-graph"></i> Fuel Reports
+      </h2>
+  
+      <!-- Back Button -->
+      <button class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4" (click)="goBack()">
+        <i class="bi bi-arrow-left-circle"></i> Back
+      </button>
+    </div>
+  
+    <p class="text-muted text-center mt-2">
+      <i class="bi bi-speedometer2"></i> Generate detailed reports for fuel expenses.
+    </p>
+  
+    <!-- Filters -->
+    <div class="row mt-4">
+      <div class="col-md-3">
+        <label class="form-label">Vehicle</label>
+        <select class="form-select" [(ngModel)]="selectedVehicleId">
+          <option value="">All</option>
+          <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+            {{ vehicle.registrationNumber }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="col-md-3">
+        <label class="form-label">Start Date</label>
+        <input type="date" class="form-control" [(ngModel)]="startDate" />
+      </div>
+  
+      <div class="col-md-3">
+        <label class="form-label">End Date</label>
+        <input type="date" class="form-control" [(ngModel)]="endDate" />
+      </div>
+  
+      <div class="col-md-3">
+        <label class="form-label">Payment Mode</label>
+        <select class="form-select" [(ngModel)]="paymentMode">
+          <option value="">All</option>
+          <option value="Cash">Cash</option>
+          <option value="Card">Card</option>
+          <option value="UPI">UPI</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="row mt-3">
+      <div class="col-md-3">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-control" [(ngModel)]="location" placeholder="Enter location" />
+      </div>
+  
+      <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary w-100" (click)="filterFuelReports()">
+          <i class="bi bi-search"></i> Apply Filters
+        </button>
+      </div>
+    </div>
+  
+    <!-- Reports Table -->
+    <div class="table-responsive mt-4">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Payment Mode</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let expense of filteredExpenses">
+            <td>{{ expense.date }}</td>
+            <td>{{ expense.vehicleNumber }}</td>
+            <td>{{ expense.quantity }} L</td>
+            <td>₹{{ expense.rate }}</td>
+            <td>₹{{ expense.amount }}</td>
+            <td>{{ expense.paymentMode }}</td>
+            <td>{{ expense.location }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Export Buttons -->
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-danger me-2" (click)="exportAsPDF()">
+        <i class="bi bi-file-earmark-pdf"></i> Export PDF
+      </button>
+      <button class="btn btn-success" (click)="exportAsExcel()">
+        <i class="bi bi-file-earmark-excel"></i> Export Excel
+      </button>
+    </div>
+  </div>
+  
