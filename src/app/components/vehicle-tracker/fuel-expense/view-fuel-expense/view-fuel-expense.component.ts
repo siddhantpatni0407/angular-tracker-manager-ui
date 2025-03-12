@@ -34,20 +34,19 @@ export class ViewFuelExpenseComponent implements OnInit {
     this.loadVehicles();
   }
 
-  // Load Vehicles on Page Load
   loadVehicles(): void {
     this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
       next: (response) => {
         console.log('🚗 Vehicles API Response:', response);
         this.vehicles = response.data || response;
-        this.cdr.detectChanges();
+        this.cdr.detectChanges(); // ✅ Force UI update
       },
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
   }
 
-  // Update selected vehicle and fetch expenses
-  updateSelectedVehicle(): void {
+   // Update selected vehicle and fetch expenses
+   updateSelectedVehicle(): void {
     const selectedVehicle = this.vehicles.find(v => v.vehicleId == this.selectedVehicleId);
     this.selectedRegistrationNumber = selectedVehicle ? selectedVehicle.registrationNumber : '';
 
@@ -57,7 +56,6 @@ export class ViewFuelExpenseComponent implements OnInit {
     this.fetchFuelExpenses();
   }
 
-  // Fetch Fuel Expenses from API
   fetchFuelExpenses(): void {
     if (!this.selectedVehicleId || !this.selectedRegistrationNumber) {
       this.filteredExpenses = [];
@@ -65,40 +63,50 @@ export class ViewFuelExpenseComponent implements OnInit {
     }
 
     const url = `${API_URLS.VEHICLE_FUEL_EXPENSE_ENDPOINT}?vehicleId=${this.selectedVehicleId}&registrationNumber=${this.selectedRegistrationNumber}`;
-    console.log('🌍 Fetching Fuel Expenses:', url);
 
     this.http.get<any>(url).subscribe({
       next: (response) => {
-        console.log('📊 Fuel Expenses API Response:', response);
-        this.filteredExpenses = response.status === 'SUCCESS' ? response.data : [];
-        this.cdr.detectChanges();
+        this.filteredExpenses =
+          response.status === 'SUCCESS' ? response.data : [];
       },
-      error: (err) => {
-        console.error('❌ Error fetching fuel expenses:', err);
+      error: () => {
         this.filteredExpenses = [];
       },
     });
   }
 
-  // Calculate Total Quantity
+  // Calculate total quantity and amount
   getTotalQuantity(): number {
-    return this.filteredExpenses.reduce((sum, expense) => sum + (expense.quantity || 0), 0);
+    return this.filteredExpenses.reduce(
+      (sum, expense) => sum + expense.quantity,
+      0
+    );
   }
 
-  // Calculate Total Amount
   getTotalAmount(): number {
-    return this.filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+    return this.filteredExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
   }
 
-  // Export to Excel
+  // ✅ Export Table Data to Excel with Timestamp in File Name
   exportToExcel(): void {
+    const currentDate = new Date();
+    const formattedDate = currentDate
+      .toISOString()
+      .replace(/[-T:]/g, '')
+      .split('.')[0]; // Format: YYYYMMDD_HHMMSS
+
+    const fileName = `Fuel_Expenses_${formattedDate}.xlsx`;
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredExpenses);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Fuel Expenses');
-    XLSX.writeFile(wb, 'Fuel_Expenses.xlsx');
+    XLSX.writeFile(wb, fileName);
   }
 
-  // Export to PDF
+  // ✅ Export Table Data to PDF with Proper Table Formatting
   exportToPDF(): void {
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
@@ -117,10 +125,24 @@ export class ViewFuelExpenseComponent implements OnInit {
           expense.paymentMode,
         ]);
 
-        (doc as any).autoTable({
-          head: [['Sr No.', 'Date', 'Vehicle', 'Quantity', 'Rate', 'Amount', 'Odometer', 'Location', 'Payment Mode']],
+        (autoTable as any).default(doc, {
+          head: [
+            [
+              'Sr No.',
+              'Date',
+              'Vehicle',
+              'Quantity (L)',
+              'Rate (₹)',
+              'Amount (₹)',
+              'Odometer',
+              'Location',
+              'Payment Mode',
+            ],
+          ],
           body: tableData,
           startY: 20,
+          theme: 'striped',
+          styles: { fontSize: 10 },
         });
 
         doc.save('Fuel_Expenses.pdf');
