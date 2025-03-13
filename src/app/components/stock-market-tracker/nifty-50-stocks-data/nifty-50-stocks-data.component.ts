@@ -36,7 +36,6 @@ export class Nifty50StocksDataComponent implements OnInit {
         if (response?.data?.data?.length) {
           this.stocks = response.data.data.map((stock: any) => ({
             priority: stock.priority || 0,
-            identifier: stock.identifier,
             symbol: stock.symbol,
             series: stock.series ?? 'N/A',
             open: stock.open,

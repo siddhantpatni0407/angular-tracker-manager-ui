@@ -24,7 +24,6 @@
     <thead class="table-dark">
       <tr>
         <th (click)="sortTable('priority')"># ⬍</th>
-        <th (click)="sortTable('identifier')">Identifier ⬍</th>
         <th (click)="sortTable('symbol')">Symbol ⬍</th>
         <th (click)="sortTable('open')">Open ⬍</th>
         <th (click)="sortTable('previousClose')">Previous Close ⬍</th>
@@ -40,7 +39,6 @@
     <tbody>
       <tr *ngFor="let stock of filteredStocks; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>{{ stock.identifier }}</td>
         <td>{{ stock.symbol }}</td>
         <td [ngClass]="{ 'text-success': stock.open > stock.previousClose, 'text-danger': stock.open < stock.previousClose }">
           {{ stock.open | number:'1.2-2' }}
