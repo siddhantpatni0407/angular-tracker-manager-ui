@@ -1,71 +1,84 @@
-<div class="container mt-3">
+<div class="container my-4">
   <!-- Back Button -->
-  <button class="btn btn-secondary mb-3" (click)="goToStockMarketTracker()">⬅️ Back</button>
-
-  <h3 class="mb-3 text-primary">NIFTY 50 Stock Data</h3>
-
-  <!-- Refresh Button -->
-  <button class="btn btn-success mb-3" (click)="fetchStockData()" [disabled]="isLoading">
-    🔄 Refresh Data
+  <button class="btn btn-outline-secondary mb-3" (click)="goToStockMarketTracker()">
+    ⬅️ Back
   </button>
 
-  <!-- Filter Input -->
-  <div class="mb-3">
-    <input type="text" class="form-control" placeholder="🔍 Filter by Symbol..." [(ngModel)]="filterText" (input)="applyFilter()">
+  <!-- Title -->
+  <h2 class="text-center text-primary mb-4">📈 NIFTY 50 Stock Data</h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <!-- Filter Input -->
+    <input
+      type="text"
+      class="form-control w-50 shadow-sm"
+      placeholder="🔍 Filter by Symbol..."
+      [(ngModel)]="filterText"
+      (input)="applyFilter()"
+    />
+
+    <!-- Refresh Button -->
+    <button class="btn btn-success shadow-sm" (click)="fetchStockData()" [disabled]="isLoading">
+      🔄 Refresh Data
+    </button>
   </div>
 
   <!-- Loading Indicator -->
-  <div *ngIf="isLoading" class="text-center">
+  <div *ngIf="isLoading" class="text-center my-4">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <p>Fetching latest stock data...</p>
+    <p class="mt-2 text-secondary">Fetching latest stock data...</p>
   </div>
 
   <!-- Stock Data Table -->
-  <table class="table table-bordered table-striped" *ngIf="filteredStocks.length && !isLoading">
-    <thead class="table-dark">
-      <tr>
-        <th (click)="sortTable('priority')"># ⬍</th>
-        <th (click)="sortTable('symbol')">Symbol ⬍</th>
-        <th (click)="sortTable('open')">Open ⬍</th>
-        <th (click)="sortTable('previousClose')">Previous Close ⬍</th>
-        <th (click)="sortTable('yearHigh')">Year High ⬍</th>
-        <th (click)="sortTable('yearLow')">Year Low ⬍</th>
-        <th (click)="sortTable('dayHigh')">High ⬍</th>
-        <th (click)="sortTable('dayLow')">Low ⬍</th>
-        <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
-        <th (click)="sortTable('lastUpdateTime')">Last Update Time ⬍</th>
-        <th (click)="sortTable('pChange')">Change (%) ⬍</th>
-        <th>Chart</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let stock of filteredStocks; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ stock.symbol }}</td>
-        <td [ngClass]="{ 'text-success': stock.open > stock.previousClose, 'text-danger': stock.open < stock.previousClose }">
-          {{ stock.open | number:'1.2-2' }}
-        </td>
-        <td>{{ stock.previousClose | number:'1.2-2' }}</td>
-        <td>{{ stock.yearHigh | number:'1.2-2' }}</td>
-        <td>{{ stock.yearLow | number:'1.2-2' }}</td>
-        <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
-        <td>{{ stock.dayLow | number:'1.2-2' }}</td>
-        <td [ngClass]="{ 'text-success': stock.lastPrice >= stock.previousClose, 'text-danger': stock.lastPrice < stock.previousClose }">
-          {{ stock.lastPrice | number:'1.2-2' }}
-        </td>
-        <td>{{ stock.lastUpdateTime }}</td>
-        <td [ngClass]="{ 'text-success': stock.pChange > 0, 'text-danger': stock.pChange < 0 }">
-          {{ stock.pChange | number:'1.2-2' }}%
-        </td>
-        <td>
-          <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80">
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive" *ngIf="filteredStocks.length && !isLoading">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="table-dark text-center">
+        <tr>
+          <th (click)="sortTable('priority')"># ⬍</th>
+          <th (click)="sortTable('symbol')">Symbol ⬍</th>
+          <th (click)="sortTable('open')">Open ⬍</th>
+          <th (click)="sortTable('previousClose')">Prev Close ⬍</th>
+          <th (click)="sortTable('yearHigh')">Year High ⬍</th>
+          <th (click)="sortTable('yearLow')">Year Low ⬍</th>
+          <th (click)="sortTable('dayHigh')">High ⬍</th>
+          <th (click)="sortTable('dayLow')">Low ⬍</th>
+          <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
+          <th (click)="sortTable('lastUpdateTime')">Updated ⬍</th>
+          <th (click)="sortTable('pChange')">Change (%) ⬍</th>
+          <th>Chart</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stock of filteredStocks; let i = index">
+          <td class="text-center">{{ i + 1 }}</td>
+          <td class="fw-bold text-primary">{{ stock.symbol }}</td>
+          <td [ngClass]="{ 'text-success': stock.open > stock.previousClose, 'text-danger': stock.open < stock.previousClose }">
+            {{ stock.open | number:'1.2-2' }}
+          </td>
+          <td>{{ stock.previousClose | number:'1.2-2' }}</td>
+          <td>{{ stock.yearHigh | number:'1.2-2' }}</td>
+          <td>{{ stock.yearLow | number:'1.2-2' }}</td>
+          <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
+          <td>{{ stock.dayLow | number:'1.2-2' }}</td>
+          <td [ngClass]="{ 'text-success': stock.lastPrice >= stock.previousClose, 'text-danger': stock.lastPrice < stock.previousClose }">
+            {{ stock.lastPrice | number:'1.2-2' }}
+          </td>
+          <td>{{ stock.lastUpdateTime }}</td>
+          <td [ngClass]="{ 'text-success': stock.pChange > 0, 'text-danger': stock.pChange < 0 }">
+            {{ stock.pChange | number:'1.2-2' }}%
+          </td>
+          <td>
+            <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80" class="rounded shadow-sm">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- No Data Message -->
-  <p *ngIf="!filteredStocks.length && !isLoading" class="text-muted">No data available.</p>
+  <div *ngIf="!filteredStocks.length && !isLoading" class="text-center mt-4">
+    <p class="text-muted">No data available.</p>
+  </div>
 </div>
