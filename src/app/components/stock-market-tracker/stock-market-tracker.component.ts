@@ -16,20 +16,4 @@ export class StockMarketTrackerComponent {
   viewNifty50Data() {
     this.router.navigate(['/nifty-50-data']);
   }
-
-  addStock() {
-    this.router.navigate(['/add-stock']);
-  }
-
-  viewPortfolio() {
-    this.router.navigate(['/view-portfolio']);
-  }
-
-  viewMarketTrends() {
-    this.router.navigate(['/market-trends']);
-  }
-
-  viewWatchlist() {
-    this.router.navigate(['/watchlist']);
-  }
 }

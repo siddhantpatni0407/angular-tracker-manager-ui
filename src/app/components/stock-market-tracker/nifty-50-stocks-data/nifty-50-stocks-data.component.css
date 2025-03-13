@@ -1,3 +1,32 @@
+/* Stock Symbol - Blue, Bold & Interactive */
+.stock-symbol {
+    font-weight: bold;
+    color: #007bff; /* Attractive Blue */
+    text-transform: uppercase;
+    transition: text-shadow 0.3s ease-in-out;
+  }
+  
+  /* Hover Effects - Glow */
+  .stock-symbol:hover {
+    text-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+  }
+  
+  /* Underline Hover Animation */
+  .stock-symbol::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #007bff;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Show Underline on Hover */
+  .stock-symbol:hover::after {
+    transform: scaleX(1);
+  }
+  
 /* Table Container with Scroll */
 .table-wrapper {
     position: relative;

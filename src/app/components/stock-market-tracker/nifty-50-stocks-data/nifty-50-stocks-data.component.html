@@ -47,7 +47,7 @@
         <tbody>
           <tr *ngFor="let stock of filteredStocks; let i = index" class="table-row">
             <td>{{ i + 1 }}</td>
-            <td class="fw-bold">{{ stock.symbol }}</td>
+            <td class="stock-symbol">{{ stock.symbol }}</td>
             <td [ngClass]="{ 'text-success fw-bold': stock.open > stock.previousClose, 'text-danger fw-bold': stock.open < stock.previousClose }">
               {{ stock.open | number:'1.2-2' }}
             </td>
