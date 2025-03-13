@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { API_URLS } from '../../../constants/api.constants';  // Import API_URLS
+import { API_URLS } from '../../../constants/api.constants';
 
 @Component({
   selector: 'app-nifty-50-stocks-data',
@@ -19,10 +19,16 @@ export class Nifty50StocksDataComponent implements OnInit {
   isLoading = false;
   sortColumn: string = '';
   sortDirection: boolean = true;
+  private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;
 
-  private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;  // Use API_URLS constant
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    // Detects navigation back to this component and refreshes data
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && event.url.includes('/nifty-50-data')) {
+        this.fetchStockData();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.fetchStockData();
@@ -30,7 +36,11 @@ export class Nifty50StocksDataComponent implements OnInit {
 
   fetchStockData(): void {
     this.isLoading = true;
-    const params = new HttpParams().set('index', 'NIFTY 50');
+    
+    // Append a timestamp to the API URL to prevent caching
+    const params = new HttpParams()
+      .set('index', 'NIFTY 50')
+      .set('timestamp', Date.now().toString()); // Prevent browser caching
 
     this.http.get<any>(this.apiUrl, { params }).subscribe(
       (response) => {
@@ -47,7 +57,7 @@ export class Nifty50StocksDataComponent implements OnInit {
             dayHigh: stock.dayHigh,
             dayLow: stock.dayLow,
             lastPrice: stock.lastPrice,
-            lastUpdateTime: stock.lastUpdateTime, // Added lastUpdateTime
+            lastUpdateTime: stock.lastUpdateTime,
             chartTodayPath: stock.chartTodayPath || 'assets/default-chart.png',
           }));
           this.applyFilter();
