@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/fuel-reports/fuel-reports.component';
+import { StockMarketTrackerComponent } from './components/stock-market-tracker/stock-market-tracker.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/
     DashboardComponent,
     MedicalTrackerComponent, // Added Medical Tracker component
     VehicleTrackerComponent, // Added Vehicle Tracker component
+    StockMarketTrackerComponent,
     RegisterVehicleComponent,
     FetchVehicleComponent,
     UpdateUserComponent,

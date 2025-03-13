@@ -7,6 +7,10 @@
   background: linear-gradient(135deg, #00b09b, #96c93d);
 }
 
+.gradient-red {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* Red Gradient */
+}
+
 /* Hover Effect */
 .hover-effect {
   transition: transform 0.3s ease, box-shadow 0.3s ease;

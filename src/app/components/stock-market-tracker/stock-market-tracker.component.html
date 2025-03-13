@@ -1,0 +1,67 @@
+<div class="container mt-5 position-relative">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="fw-bold text-primary">
+        <i class="bi bi-bar-chart-line"></i> Stock Market Tracker
+      </h2>
+  
+      <!-- Back to Dashboard Button -->
+      <button
+        class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+        (click)="navigateToDashboard()"
+      >
+        <i class="bi bi-arrow-left-circle"></i> Dashboard
+      </button>
+    </div>
+  
+    <p class="text-muted text-center mt-2">
+      <i class="bi bi-graph-up"></i> Track stock prices, portfolio performance, and market trends.
+    </p>
+  
+    <!-- Stock Market Tracker Sections -->
+    <div class="row mt-4 justify-content-center">
+      <!-- Add Stock -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect">
+          <div class="card-body text-center text-white">
+            <i class="bi bi-plus-circle fa-2x mb-3"></i>
+            <h6 class="card-title fw-bold">Add Stock</h6>
+            <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="addStock()">Add</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- View Portfolio -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card gradient-green shadow-lg rounded-4 border-0 hover-effect">
+          <div class="card-body text-center text-white">
+            <i class="bi bi-briefcase fa-2x mb-3"></i>
+            <h6 class="card-title fw-bold">View Portfolio</h6>
+            <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewPortfolio()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Stock Market Trends -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card gradient-orange shadow-lg rounded-4 border-0 hover-effect">
+          <div class="card-body text-center text-white">
+            <i class="bi bi-bar-chart fa-2x mb-3"></i>
+            <h6 class="card-title fw-bold">Market Trends</h6>
+            <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewMarketTrends()">View</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Stock Watchlist -->
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card tracker-card gradient-purple shadow-lg rounded-4 border-0 hover-effect">
+          <div class="card-body text-center text-white">
+            <i class="bi bi-eye fa-2x mb-3"></i>
+            <h6 class="card-title fw-bold">Watchlist</h6>
+            <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewWatchlist()">View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

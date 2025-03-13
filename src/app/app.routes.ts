@@ -15,6 +15,7 @@ import { ViewFuelExpenseComponent } from './components/vehicle-tracker/fuel-expe
 import { AuthGuard } from './guards/auth.guard'; // Import AuthGuard for route protection
 import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/fuel-reports/fuel-reports.component';
+import { StockMarketTrackerComponent } from './components/stock-market-tracker/stock-market-tracker.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,6 +24,7 @@ export const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'medical-tracker', component: MedicalTrackerComponent, canActivate: [AuthGuard] },
   { path: 'vehicle-tracker', component: VehicleTrackerComponent, canActivate: [AuthGuard] },
+  { path: 'stock-market-tracker', component: StockMarketTrackerComponent, canActivate: [AuthGuard] },
   { path: 'register-vehicle', component: RegisterVehicleComponent, canActivate: [AuthGuard] },
   { path: 'fetch-vehicle', component: FetchVehicleComponent, canActivate: [AuthGuard] },
   { path: 'update-user/:userId', component: UpdateUserComponent },

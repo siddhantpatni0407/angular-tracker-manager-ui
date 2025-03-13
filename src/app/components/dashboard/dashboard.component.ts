@@ -48,6 +48,14 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
+   * Navigates to Stock Market Tracker page.
+   */
+  navigateToStockMarketTracker(): void {
+    this.router.navigate(['/stock-market-tracker']);
+  }
+
+
+  /**
    * Navigates to User Profile page.
    */
   navigateToProfile(): void {
