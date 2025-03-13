@@ -151,82 +151,128 @@ export class ViewFuelExpenseComponent implements OnInit {
       .split('.')[0]; // YYYYMMDD_HHMMSS format
     const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.xlsx`;
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredExpenses);
+    const sheetData: any[] = [
+      [
+        {
+          v: `Fuel Expense - ${this.selectedRegistrationNumber}`,
+          t: 's',
+          s: {
+            font: { bold: true, sz: 14, color: { rgb: '500050' } },
+            alignment: { horizontal: 'center' },
+          },
+        },
+      ],
+      [
+        {
+          v: `Exported Date: ${formattedDate}`,
+          t: 's',
+          s: { font: { sz: 10 }, alignment: { horizontal: 'right' } },
+        },
+      ],
+      [
+        'Date',
+        'Vehicle',
+        'Quantity (L)',
+        'Rate (₹)',
+        'Amount (₹)',
+        'Odometer',
+        'Location',
+        'Payment Mode',
+      ],
+    ];
 
-    // ✅ Add Total Row
-    const totalRow = {
-      fuelFilledDate: 'Total',
-      vehicleRegistrationNumber: '',
-      quantity: this.getTotalQuantity(),
-      rate: '',
-      amount: this.getTotalAmount(),
-      odometerReading: '',
-      location: '',
-      paymentMode: '',
-    };
+    this.filteredExpenses.forEach((expense) => {
+      sheetData.push([
+        expense.fuelFilledDate,
+        expense.vehicleRegistrationNumber,
+        expense.quantity,
+        expense.rate,
+        expense.amount,
+        expense.odometerReading,
+        expense.location,
+        expense.paymentMode,
+      ]);
+    });
 
-    const sheetData = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[];
-    sheetData.push(Object.values(totalRow)); // Append Total Row
-    const updatedWs = XLSX.utils.aoa_to_sheet(sheetData);
+    // ✅ Append Total Row (Bold but No Background Highlight)
+    sheetData.push([
+      'Total',
+      '',
+      this.getTotalQuantity(),
+      '',
+      this.getTotalAmount(),
+      '',
+      '',
+      '',
+    ]);
 
-    // ✅ Auto Adjust Column Widths (Fix: Explicitly type `idx` as `number`)
-    const colWidths: number[] = sheetData.reduce(
-      (acc: number[], row: any[]) => {
-        row.forEach((cell: any, idx: number) => {
-          acc[idx] = Math.max(acc[idx] || 10, cell?.toString().length + 5); // Adjust width by 5 more than the cell length
-        });
-        return acc;
-      },
-      []
-    );
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(sheetData);
 
-    updatedWs['!cols'] = colWidths.map((w: number) => ({ width: w })); // Column width adjustments
-
-    // ✅ Add Borders to All Cells
-    const range = XLSX.utils.decode_range(updatedWs['!ref'] || '');
+    // ✅ Styling Headers & Total Row
+    const range = XLSX.utils.decode_range(ws['!ref'] || '');
     for (let R = range.s.r; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
         const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-        if (!updatedWs[cellAddress]) continue;
-        if (!updatedWs[cellAddress].s) updatedWs[cellAddress].s = {};
-        updatedWs[cellAddress].s.border = {
+        if (!ws[cellAddress]) continue;
+        if (!ws[cellAddress].s) ws[cellAddress].s = {};
+
+        ws[cellAddress].s.alignment = { horizontal: 'center' }; // Center align all text
+        ws[cellAddress].s.border = {
           top: { style: 'thin' },
           bottom: { style: 'thin' },
           left: { style: 'thin' },
           right: { style: 'thin' },
         };
-        updatedWs[cellAddress].s.alignment = { horizontal: 'center' }; // Center alignment for all cells
+
+        if (R === 2) {
+          ws[cellAddress].s.fill = { fgColor: { rgb: 'BA92D5' } }; // Light Purple Header
+          ws[cellAddress].s.font = { bold: true, color: { rgb: 'FFFFFF' } };
+        }
+
+        if (R === sheetData.length - 1) {
+          ws[cellAddress].s.font = { bold: true };
+        }
       }
     }
 
+    // ✅ Auto Adjust Column Widths
+    ws['!cols'] = sheetData[2].map((cell: any) => ({
+      width: (cell?.toString().length || 10) + 5,
+    }));
+
     // Create and append the workbook
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, updatedWs, 'Fuel Expenses');
+    XLSX.utils.book_append_sheet(wb, ws, 'Fuel Expenses');
     XLSX.writeFile(wb, fileName);
   }
 
   // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
     const currentDate = new Date();
-    const formattedDate = currentDate
-      .toISOString()
-      .replace(/[-T:]/g, '')
-      .split('.')[0]; // YYYYMMDD_HHMMSS format
+    const formattedDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
-
-    const registrationNumber = this.selectedRegistrationNumber; // Use selected registration number
-    const headerText = `Fuel Expense - ${registrationNumber}`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
         const doc = new jsPDF.default();
-
-        // Center the header text with registration number
         const pageWidth = doc.internal.pageSize.width;
-        const textWidth =
-          doc.getStringUnitWidth(headerText) * doc.internal.scaleFactor;
-        const xPos = (pageWidth - textWidth) / 2;
-        doc.text(headerText, xPos, 10); // Header is centered
+
+        // ✅ Header Text (Centered)
+        const headerText = `Fuel Expense - ${this.selectedRegistrationNumber}`;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(18);
+        doc.setTextColor(80, 0, 80); // Dark Purple
+        doc.text(headerText, pageWidth / 2, 14, { align: 'center' });
+
+        // ✅ Exported Date (Right-Aligned, But Within Border)
+        const exportDateText = `Exported Date : ${formattedDate}`;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.text(exportDateText, pageWidth - 55, 14); // Adjusted to stay inside border
+
+        // ✅ Header Background Color (Light Purple)
+        doc.setFillColor(186, 146, 213); // Light Purple
+        doc.rect(10, 18, pageWidth - 20, 10, 'F'); // Header Background
 
         const tableData = this.filteredExpenses.map((expense, index) => [
           index + 1,
@@ -240,8 +286,8 @@ export class ViewFuelExpenseComponent implements OnInit {
           expense.paymentMode,
         ]);
 
-        // ✅ Append Total Row to PDF Table
-        tableData.push([
+        // ✅ Append Total Row (Only Bold, No Background Highlight)
+        const totalRow = [
           '',
           'Total',
           '',
@@ -251,12 +297,13 @@ export class ViewFuelExpenseComponent implements OnInit {
           '',
           '',
           '',
-        ]);
+        ];
+        tableData.push(totalRow);
 
         (autoTable as any).default(doc, {
           head: [
             [
-              'Sr No.',
+              '#',
               'Date',
               'Vehicle',
               'Quantity (L)',
@@ -268,15 +315,55 @@ export class ViewFuelExpenseComponent implements OnInit {
             ],
           ],
           body: tableData,
-          startY: 20,
-          theme: 'grid', // ✅ Improved Table Styling
-          styles: { fontSize: 10 },
-          tableLineColor: [0, 0, 0], // ✅ Black Borders
-          tableLineWidth: 0.1,
+          startY: 30,
+          theme: 'grid',
+          styles: { fontSize: 10, textColor: 0 },
+          headStyles: {
+            fillColor: [146, 116, 173], // ✅ Dark Purple Header
+            textColor: [255, 255, 255], // ✅ White Text in Header
+            fontStyle: 'bold',
+            halign: 'center',
+            lineWidth: 1,
+            lineColor: [80, 0, 80], // ✅ Dark Purple Border
+          },
+          alternateRowStyles: {
+            fillColor: [240, 230, 250], // ✅ Light Purple for Alternate Rows
+          },
+          tableLineColor: [0, 0, 0],
+          tableLineWidth: 0.5,
+          didDrawCell: function (data: any) {
+            if (data.row.index === tableData.length - 1) {
+              // ✅ Only Bold for "Total" Row, No Background Highlight
+              doc.setFont('helvetica', 'bold');
+              doc.setTextColor(0, 0, 0);
+            }
+          },
+          didDrawPage: function (data: any) {
+            const totalPages = doc.internal.pages.length - 1;
+
+            // ✅ Footer with Page Numbering (Bottom Right)
+            doc.setFontSize(10);
+            doc.setTextColor(0);
+            doc.text(
+              `Page ${data.pageNumber} of ${totalPages}`,
+              pageWidth - 30,
+              doc.internal.pageSize.height - 10
+            );
+
+            // ✅ Footer Branding (Bottom Left)
+            doc.setFontSize(8);
+            doc.setTextColor(80, 0, 80);
+            doc.text(
+              'Generated by Tracker Manager System',
+              10,
+              doc.internal.pageSize.height - 10
+            );
+          },
         });
 
-        // ✅ Draw Full Page Border
-        doc.setLineWidth(0.5);
+        // ✅ Square Page Border (Ensuring Export Date Stays Inside)
+        doc.setLineWidth(1);
+        doc.setDrawColor(100, 100, 100);
         doc.rect(
           5,
           5,

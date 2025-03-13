@@ -1,0 +1,26 @@
+<div class="container mt-5 position-relative">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-bar-chart-line"></i> Stock Market Tracker
+    </h2>
+
+    <!-- Back to Dashboard Button -->
+    <button class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4" (click)="navigateToDashboard()">
+      <i class="bi bi-arrow-left-circle"></i> Dashboard
+    </button>
+  </div>
+
+  <!-- NIFTY 50 Data Card -->
+  <div class="row mt-5 justify-content-center">
+    <div class="col-md-3 col-sm-6">
+      <div class="card tracker-card gradient-teal shadow-lg rounded-4 border-0 hover-effect">
+        <div class="card-body text-center text-white">
+          <i class="bi bi-currency-exchange fa-2x mb-3"></i>
+          <h6 class="card-title fw-bold">NIFTY 50 Data</h6>
+          <button class="btn btn-light btn-sm mt-2 shadow-sm px-3" (click)="viewNifty50Data()">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

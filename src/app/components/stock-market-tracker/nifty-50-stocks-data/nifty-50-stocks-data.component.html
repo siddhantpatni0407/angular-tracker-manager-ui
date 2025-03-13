@@ -1,0 +1,75 @@
+<div class="container mt-4">
+  <!-- Header & Controls -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-secondary btn-lg" (click)="goToStockMarketTracker()">
+      ⬅️ Back
+    </button>
+    <h3 class="text-primary text-center fw-bold flex-grow-1">
+      📈 NIFTY 50 Stock Data
+    </h3>
+    <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="fetchStockData()" [disabled]="isLoading">
+      🔄 Refresh
+    </button>
+  </div>
+
+  <!-- Filter Input -->
+  <div class="input-group mb-3">
+    <span class="input-group-text bg-primary text-white">🔍</span>
+    <input type="text" class="form-control shadow-sm" placeholder="Filter by Symbol..." [(ngModel)]="filterText" (input)="applyFilter()">
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="text-center mt-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 fw-semibold">Fetching latest stock data...</p>
+  </div>
+
+  <!-- Scrollable Table Container with Slider -->
+  <div class="table-wrapper">
+    <div class="table-scroll">
+      <table class="table table-hover table-bordered text-center align-middle">
+        <thead class="table-gradient text-white">
+          <tr>
+            <th (click)="sortTable('priority')"># ⬍</th>
+            <th (click)="sortTable('symbol')">Symbol ⬍</th>
+            <th (click)="sortTable('open')">Open ⬍</th>
+            <th (click)="sortTable('previousClose')">Previous Close ⬍</th>
+            <th (click)="sortTable('yearHigh')">Year High ⬍</th>
+            <th (click)="sortTable('yearLow')">Year Low ⬍</th>
+            <th (click)="sortTable('dayHigh')">High ⬍</th>
+            <th (click)="sortTable('dayLow')">Low ⬍</th>
+            <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
+            <th (click)="sortTable('lastUpdateTime')">Last Update ⬍</th>
+            <th>Chart</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stock of filteredStocks; let i = index" class="table-row">
+            <td>{{ i + 1 }}</td>
+            <td class="stock-symbol">{{ stock.symbol }}</td>
+            <td [ngClass]="{ 'text-success fw-bold': stock.open > stock.previousClose, 'text-danger fw-bold': stock.open < stock.previousClose }">
+              {{ stock.open | number:'1.2-2' }}
+            </td>
+            <td>{{ stock.previousClose | number:'1.2-2' }}</td>
+            <td class="text-info fw-semibold">{{ stock.yearHigh | number:'1.2-2' }}</td>
+            <td class="text-warning fw-semibold">{{ stock.yearLow | number:'1.2-2' }}</td>
+            <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
+            <td>{{ stock.dayLow | number:'1.2-2' }}</td>
+            <td [ngClass]="{ 'text-success fw-bold': stock.lastPrice >= stock.previousClose, 'text-danger fw-bold': stock.lastPrice < stock.previousClose }">
+              {{ stock.lastPrice | number:'1.2-2' }}
+            </td>
+            <td>{{ stock.lastUpdateTime }}</td>
+            <td>
+              <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80" class="rounded shadow-sm">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <p *ngIf="!filteredStocks.length && !isLoading" class="text-muted text-center mt-3">
+    ⚠️ No data available.
+  </p>
+</div>
