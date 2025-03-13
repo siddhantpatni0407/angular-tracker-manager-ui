@@ -220,14 +220,11 @@ export class ViewFuelExpenseComponent implements OnInit {
         // ✅ Header Section
         const headerText = `Fuel Expense - ${this.selectedRegistrationNumber}`;
         const exportDateText = `Exported: ${formattedDate}`;
-        const textWidth = doc.getTextWidth(headerText);
-        const xPos = (pageWidth - textWidth) / 2;
 
-        // Styling Header
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
-        doc.setTextColor(0, 0, 255); // Blue color for header text
-        doc.text(headerText, xPos, 10);
+        doc.setTextColor(80, 0, 80); // ✅ Dark purple text for header
+        doc.text(headerText, pageWidth / 2, 10, { align: 'center' }); // ✅ Proper center alignment
 
         // Export Date on Right Side
         doc.setFontSize(10);
@@ -278,9 +275,10 @@ export class ViewFuelExpenseComponent implements OnInit {
           theme: 'grid', // ✅ Ensures all borders for table data
           styles: { fontSize: 10, textColor: 0 },
           headStyles: {
-            fillColor: [0, 0, 255], // ✅ Blue background for header
-            textColor: [255, 255, 255], // ✅ White text in header
+            fillColor: [186, 146, 213], // ✅ Light purple background for header
+            textColor: [0, 0, 0], // ✅ Black text in header
             fontStyle: 'bold',
+            halign: 'center', // ✅ Center text in headers
             lineWidth: 0.5, // ✅ Border thickness for header
             lineColor: [0, 0, 0], // ✅ Black border color
           },
