@@ -7,9 +7,32 @@
     <h3 class="text-primary text-center fw-bold flex-grow-1">
       📈 NIFTY 50 Stock Data
     </h3>
-    <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="fetchStockData()" [disabled]="isLoading">
-      🔄 Refresh
-    </button>
+    <div class="btn-group">
+      <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="fetchStockData()" [disabled]="isLoading">
+        🔄 Refresh
+      </button>
+      <button
+        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+        type="button"
+        id="exportDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1051">
+        <li>
+          <a class="dropdown-item" (click)="exportToExcel()">
+            <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" (click)="exportToPDF()">
+            <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- Filter Input -->
