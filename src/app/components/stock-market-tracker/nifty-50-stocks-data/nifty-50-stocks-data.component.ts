@@ -48,7 +48,6 @@ export class Nifty50StocksDataComponent implements OnInit {
             dayLow: stock.dayLow,
             lastPrice: stock.lastPrice,
             lastUpdateTime: stock.lastUpdateTime, // Added lastUpdateTime
-            pChange: stock.pchange ?? 0,
             chartTodayPath: stock.chartTodayPath || 'assets/default-chart.png',
           }));
           this.applyFilter();

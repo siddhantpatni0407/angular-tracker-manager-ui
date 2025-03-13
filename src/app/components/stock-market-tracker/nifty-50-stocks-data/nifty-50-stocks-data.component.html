@@ -45,8 +45,7 @@
           <th (click)="sortTable('dayHigh')">High ⬍</th>
           <th (click)="sortTable('dayLow')">Low ⬍</th>
           <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
-          <th (click)="sortTable('lastUpdateTime')">Updated ⬍</th>
-          <th (click)="sortTable('pChange')">Change (%) ⬍</th>
+          <th (click)="sortTable('lastUpdateTime')">Updated Date⬍</th>
           <th>Chart</th>
         </tr>
       </thead>
@@ -66,9 +65,6 @@
             {{ stock.lastPrice | number:'1.2-2' }}
           </td>
           <td>{{ stock.lastUpdateTime }}</td>
-          <td [ngClass]="{ 'text-success': stock.pChange > 0, 'text-danger': stock.pChange < 0 }">
-            {{ stock.pChange | number:'1.2-2' }}%
-          </td>
           <td>
             <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80" class="rounded shadow-sm">
           </td>
