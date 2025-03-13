@@ -1,0 +1,43 @@
+/* Table Container with Scroll */
+.table-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  
+  /* Smooth Scroll */
+  .table-scroll {
+    max-height: 500px;
+    overflow-x: auto;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #007bff #f1f1f1;
+  }
+  
+  /* Scrollbar for Webkit Browsers */
+  .table-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .table-scroll::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+  }
+  
+  /* Sticky Table Headers */
+  thead {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(to right, #007bff, #6610f2);
+    color: white;
+    z-index: 2;
+  }
+  
+  /* Table Row Hover Effect */
+  .table-row:hover {
+    background-color: #f8f9fa;
+    transition: 0.3s ease-in-out;
+  }
+  
