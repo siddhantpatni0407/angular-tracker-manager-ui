@@ -29,7 +29,7 @@ export class Nifty50StocksDataComponent implements OnInit {
   fetchStockData(): void {
     this.isLoading = true;
     const params = new HttpParams().set('index', 'NIFTY 50');
-
+  
     this.http.get<any>(this.apiUrl, { params }).subscribe(
       (response) => {
         console.log('Backend Response:', response);
@@ -45,6 +45,7 @@ export class Nifty50StocksDataComponent implements OnInit {
             dayHigh: stock.dayHigh,
             dayLow: stock.dayLow,
             lastPrice: stock.lastPrice,
+            lastUpdateTime: stock.lastUpdateTime, // Added lastUpdateTime
             pChange: stock.pchange ?? 0,
             chartTodayPath: stock.chartTodayPath || 'assets/default-chart.png',
           }));
