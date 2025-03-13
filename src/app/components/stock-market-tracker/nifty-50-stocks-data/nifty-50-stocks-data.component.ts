@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { API_URLS } from '../../../constants/api.constants';  // Import API_URLS
 
 @Component({
   selector: 'app-nifty-50-stocks-data',
@@ -19,10 +20,9 @@ export class Nifty50StocksDataComponent implements OnInit {
   sortColumn: string = '';
   sortDirection: boolean = true;
 
-  private apiUrl =
-    'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-50-data';
+  private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;  // Use API_URLS constant
 
-    constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchStockData();
