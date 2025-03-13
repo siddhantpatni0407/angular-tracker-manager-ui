@@ -151,57 +151,98 @@ export class ViewFuelExpenseComponent implements OnInit {
       .split('.')[0]; // YYYYMMDD_HHMMSS format
     const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.xlsx`;
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredExpenses);
+    const sheetData: any[] = [
+      [
+        {
+          v: `Fuel Expense - ${this.selectedRegistrationNumber}`,
+          t: 's',
+          s: {
+            font: { bold: true, sz: 14, color: { rgb: '500050' } },
+            alignment: { horizontal: 'center' },
+          },
+        },
+      ],
+      [
+        {
+          v: `Exported Date: ${formattedDate}`,
+          t: 's',
+          s: { font: { sz: 10 }, alignment: { horizontal: 'right' } },
+        },
+      ],
+      [
+        'Date',
+        'Vehicle',
+        'Quantity (L)',
+        'Rate (₹)',
+        'Amount (₹)',
+        'Odometer',
+        'Location',
+        'Payment Mode',
+      ],
+    ];
 
-    // ✅ Add Total Row
-    const totalRow = {
-      fuelFilledDate: 'Total',
-      vehicleRegistrationNumber: '',
-      quantity: this.getTotalQuantity(),
-      rate: '',
-      amount: this.getTotalAmount(),
-      odometerReading: '',
-      location: '',
-      paymentMode: '',
-    };
+    this.filteredExpenses.forEach((expense) => {
+      sheetData.push([
+        expense.fuelFilledDate,
+        expense.vehicleRegistrationNumber,
+        expense.quantity,
+        expense.rate,
+        expense.amount,
+        expense.odometerReading,
+        expense.location,
+        expense.paymentMode,
+      ]);
+    });
 
-    const sheetData = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[];
-    sheetData.push(Object.values(totalRow)); // Append Total Row
-    const updatedWs = XLSX.utils.aoa_to_sheet(sheetData);
+    // ✅ Append Total Row (Bold but No Background Highlight)
+    sheetData.push([
+      'Total',
+      '',
+      this.getTotalQuantity(),
+      '',
+      this.getTotalAmount(),
+      '',
+      '',
+      '',
+    ]);
 
-    // ✅ Auto Adjust Column Widths (Fix: Explicitly type `idx` as `number`)
-    const colWidths: number[] = sheetData.reduce(
-      (acc: number[], row: any[]) => {
-        row.forEach((cell: any, idx: number) => {
-          acc[idx] = Math.max(acc[idx] || 10, cell?.toString().length + 5); // Adjust width by 5 more than the cell length
-        });
-        return acc;
-      },
-      []
-    );
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(sheetData);
 
-    updatedWs['!cols'] = colWidths.map((w: number) => ({ width: w })); // Column width adjustments
-
-    // ✅ Add Borders to All Cells
-    const range = XLSX.utils.decode_range(updatedWs['!ref'] || '');
+    // ✅ Styling Headers & Total Row
+    const range = XLSX.utils.decode_range(ws['!ref'] || '');
     for (let R = range.s.r; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
         const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-        if (!updatedWs[cellAddress]) continue;
-        if (!updatedWs[cellAddress].s) updatedWs[cellAddress].s = {};
-        updatedWs[cellAddress].s.border = {
+        if (!ws[cellAddress]) continue;
+        if (!ws[cellAddress].s) ws[cellAddress].s = {};
+
+        ws[cellAddress].s.alignment = { horizontal: 'center' }; // Center align all text
+        ws[cellAddress].s.border = {
           top: { style: 'thin' },
           bottom: { style: 'thin' },
           left: { style: 'thin' },
           right: { style: 'thin' },
         };
-        updatedWs[cellAddress].s.alignment = { horizontal: 'center' }; // Center alignment for all cells
+
+        if (R === 2) {
+          ws[cellAddress].s.fill = { fgColor: { rgb: 'BA92D5' } }; // Light Purple Header
+          ws[cellAddress].s.font = { bold: true, color: { rgb: 'FFFFFF' } };
+        }
+
+        if (R === sheetData.length - 1) {
+          ws[cellAddress].s.font = { bold: true };
+        }
       }
     }
 
+    // ✅ Auto Adjust Column Widths
+    ws['!cols'] = sheetData[2].map((cell: any) => ({
+      width: (cell?.toString().length || 10) + 5,
+    }));
+
     // Create and append the workbook
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, updatedWs, 'Fuel Expenses');
+    XLSX.utils.book_append_sheet(wb, ws, 'Fuel Expenses');
     XLSX.writeFile(wb, fileName);
   }
 
