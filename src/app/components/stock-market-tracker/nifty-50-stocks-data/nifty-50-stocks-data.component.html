@@ -1,36 +1,57 @@
 <div class="container mt-4">
   <!-- Header & Controls -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-outline-secondary btn-lg" (click)="goToStockMarketTracker()">
+    <button
+      class="btn btn-outline-secondary btn-lg"
+      (click)="goToStockMarketTracker()"
+    >
       ⬅️ Back
     </button>
     <div class="d-flex justify-content-center align-items-center mb-3">
-      <img src="https://www.nseindia.com/assets/images/NSE_Logo.svg" 
-           alt="NSE Logo" width="100" class="me-3 shadow-sm">
-      <h3 class="text-primary fw-bold m-0">
-        NIFTY 50 - Stock Market Overview
-      </h3>
+      <img
+        src="https://www.nseindia.com/assets/images/NSE_Logo.svg"
+        alt="NSE Logo"
+        width="100"
+        class="me-3 shadow-sm"
+      />
+      <h3 class="text-primary fw-bold m-0">NIFTY 50 - Stock Market Overview</h3>
     </div>
-    
+
     <div class="d-flex gap-3">
       <!-- Refresh Button -->
-      <button class="btn btn-success btn-lg d-flex align-items-center gap-2" (click)="fetchStockData()" [disabled]="isLoading">
+      <button
+        class="btn btn-success btn-lg d-flex align-items-center gap-2"
+        (click)="fetchStockData()"
+        [disabled]="isLoading"
+      >
         🔄 Refresh
       </button>
 
       <!-- Export Dropdown -->
       <div class="btn-group">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          class="btn btn-primary dropdown-toggle"
+          type="button"
+          id="exportDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           ⬇️ Export
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item d-flex align-items-center gap-2" (click)="exportToExcel()">
+            <a
+              class="dropdown-item d-flex align-items-center gap-2"
+              (click)="exportToExcel()"
+            >
               <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
             </a>
           </li>
           <li>
-            <a class="dropdown-item d-flex align-items-center gap-2" (click)="exportToPDF()">
+            <a
+              class="dropdown-item d-flex align-items-center gap-2"
+              (click)="exportToPDF()"
+            >
               <i class="bi bi-file-earmark-pdf"></i> Export to PDF
             </a>
           </li>
@@ -44,16 +65,31 @@
     <div class="col-md-6">
       <div class="input-group">
         <span class="input-group-text bg-primary text-white">🔍</span>
-        <input type="text" class="form-control shadow-sm" placeholder="Filter by Symbol..." [(ngModel)]="filterText" (input)="applyFilter()">
+        <input
+          type="text"
+          class="form-control shadow-sm"
+          placeholder="Filter by Symbol..."
+          [(ngModel)]="filterText"
+          (input)="applyFilter()"
+        />
       </div>
     </div>
     <div class="col-md-6">
       <!-- Column Configuration Dropdown -->
       <div class="btn-group">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="columnDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          class="btn btn-primary dropdown-toggle"
+          type="button"
+          id="columnDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           ⚙️ Configure Columns
         </button>
-        <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="columnDropdown">
+        <ul
+          class="dropdown-menu dropdown-menu-end p-3"
+          aria-labelledby="columnDropdown"
+        >
           <!-- Select All Option -->
           <li class="form-check">
             <input
@@ -75,9 +111,8 @@
               type="checkbox"
               [id]="column.value"
               [value]="column.value"
-              [(ngModel)]="selectedColumns"
               [checked]="isColumnSelected(column.value)"
-              (change)="updateVisibleColumns()"
+              (change)="toggleColumnSelection(column.value, $event)"
               [disabled]="isMandatoryColumn(column.value)"
             />
             <label class="form-check-label" [for]="column.value">
@@ -98,40 +133,123 @@
   <!-- Scrollable Table Container with Slider -->
   <div class="table-wrapper">
     <div class="table-scroll">
-      <table class="table table-hover table-bordered text-center align-middle shadow-sm">
+      <table
+        class="table table-hover table-bordered text-center align-middle shadow-sm"
+      >
         <thead class="table-gradient text-white bg-dark">
           <tr>
-            <th *ngIf="isColumnVisible('priority')" (click)="sortTable('priority')"># ⬍</th>
-            <th *ngIf="isColumnVisible('symbol')" (click)="sortTable('symbol')">Symbol ⬍</th>
-            <th *ngIf="isColumnVisible('open')" (click)="sortTable('open')">Open ⬍</th>
-            <th *ngIf="isColumnVisible('previousClose')" (click)="sortTable('previousClose')">Previous Close ⬍</th>
-            <th *ngIf="isColumnVisible('yearHigh')" (click)="sortTable('yearHigh')">Year High ⬍</th>
-            <th *ngIf="isColumnVisible('yearLow')" (click)="sortTable('yearLow')">Year Low ⬍</th>
-            <th *ngIf="isColumnVisible('dayHigh')" (click)="sortTable('dayHigh')">High ⬍</th>
-            <th *ngIf="isColumnVisible('dayLow')" (click)="sortTable('dayLow')">Low ⬍</th>
-            <th *ngIf="isColumnVisible('lastPrice')" (click)="sortTable('lastPrice')">Last Price ⬍</th>
-            <th *ngIf="isColumnVisible('lastUpdateTime')" (click)="sortTable('lastUpdateTime')">Last Update ⬍</th>
+            <th
+              *ngIf="isColumnVisible('priority')"
+              (click)="sortTable('priority')"
+            >
+              # ⬍
+            </th>
+            <th *ngIf="isColumnVisible('symbol')" (click)="sortTable('symbol')">
+              Symbol ⬍
+            </th>
+            <th *ngIf="isColumnVisible('open')" (click)="sortTable('open')">
+              Open ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('previousClose')"
+              (click)="sortTable('previousClose')"
+            >
+              Previous Close ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('yearHigh')"
+              (click)="sortTable('yearHigh')"
+            >
+              Year High ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('yearLow')"
+              (click)="sortTable('yearLow')"
+            >
+              Year Low ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('dayHigh')"
+              (click)="sortTable('dayHigh')"
+            >
+              High ⬍
+            </th>
+            <th *ngIf="isColumnVisible('dayLow')" (click)="sortTable('dayLow')">
+              Low ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('lastPrice')"
+              (click)="sortTable('lastPrice')"
+            >
+              Last Price ⬍
+            </th>
+            <th
+              *ngIf="isColumnVisible('lastUpdateTime')"
+              (click)="sortTable('lastUpdateTime')"
+            >
+              Last Update ⬍
+            </th>
             <th *ngIf="isColumnVisible('chartTodayPath')">Chart</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let stock of filteredStocks; let i = index" class="table-row">
+          <tr
+            *ngFor="let stock of filteredStocks; let i = index"
+            class="table-row"
+          >
             <td *ngIf="isColumnVisible('priority')">{{ i + 1 }}</td>
-            <td *ngIf="isColumnVisible('symbol')" class="stock-symbol">{{ stock.symbol }}</td>
-            <td *ngIf="isColumnVisible('open')" [ngClass]="{ 'text-success fw-bold': stock.open > stock.previousClose, 'text-danger fw-bold': stock.open < stock.previousClose }">
-              {{ stock.open | number:'1.2-2' }}
+            <td *ngIf="isColumnVisible('symbol')" class="stock-symbol">
+              {{ stock.symbol }}
             </td>
-            <td *ngIf="isColumnVisible('previousClose')">{{ stock.previousClose | number:'1.2-2' }}</td>
-            <td *ngIf="isColumnVisible('yearHigh')" class="text-info fw-semibold">{{ stock.yearHigh | number:'1.2-2' }}</td>
-            <td *ngIf="isColumnVisible('yearLow')" class="text-warning fw-semibold">{{ stock.yearLow | number:'1.2-2' }}</td>
-            <td *ngIf="isColumnVisible('dayHigh')">{{ stock.dayHigh | number:'1.2-2' }}</td>
-            <td *ngIf="isColumnVisible('dayLow')">{{ stock.dayLow | number:'1.2-2' }}</td>
-            <td *ngIf="isColumnVisible('lastPrice')" [ngClass]="{ 'text-success fw-bold': stock.lastPrice >= stock.previousClose, 'text-danger fw-bold': stock.lastPrice < stock.previousClose }">
-              {{ stock.lastPrice | number:'1.2-2' }}
+            <td
+              *ngIf="isColumnVisible('open')"
+              [ngClass]="{
+                'text-success fw-bold': stock.open > stock.previousClose,
+                'text-danger fw-bold': stock.open < stock.previousClose
+              }"
+            >
+              {{ stock.open | number : "1.2-2" }}
             </td>
-            <td *ngIf="isColumnVisible('lastUpdateTime')">{{ stock.lastUpdateTime }}</td>
+            <td *ngIf="isColumnVisible('previousClose')">
+              {{ stock.previousClose | number : "1.2-2" }}
+            </td>
+            <td
+              *ngIf="isColumnVisible('yearHigh')"
+              class="text-info fw-semibold"
+            >
+              {{ stock.yearHigh | number : "1.2-2" }}
+            </td>
+            <td
+              *ngIf="isColumnVisible('yearLow')"
+              class="text-warning fw-semibold"
+            >
+              {{ stock.yearLow | number : "1.2-2" }}
+            </td>
+            <td *ngIf="isColumnVisible('dayHigh')">
+              {{ stock.dayHigh | number : "1.2-2" }}
+            </td>
+            <td *ngIf="isColumnVisible('dayLow')">
+              {{ stock.dayLow | number : "1.2-2" }}
+            </td>
+            <td
+              *ngIf="isColumnVisible('lastPrice')"
+              [ngClass]="{
+                'text-success fw-bold': stock.lastPrice >= stock.previousClose,
+                'text-danger fw-bold': stock.lastPrice < stock.previousClose
+              }"
+            >
+              {{ stock.lastPrice | number : "1.2-2" }}
+            </td>
+            <td *ngIf="isColumnVisible('lastUpdateTime')">
+              {{ stock.lastUpdateTime }}
+            </td>
             <td *ngIf="isColumnVisible('chartTodayPath')">
-              <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80" class="rounded shadow-sm">
+              <img
+                [src]="stock.chartTodayPath"
+                alt="Stock Chart"
+                width="80"
+                class="rounded shadow-sm"
+              />
             </td>
           </tr>
         </tbody>
@@ -140,13 +258,20 @@
   </div>
 
   <!-- No Data Message -->
-  <p *ngIf="!filteredStocks.length && !isLoading" class="text-muted text-center mt-3">
+  <p
+    *ngIf="!filteredStocks.length && !isLoading"
+    class="text-muted text-center mt-3"
+  >
     ⚠️ No data available.
   </p>
 
   <!-- NSE Footer Logo -->
   <div class="text-center mt-4">
-    <img src="https://www.nseindia.com/assets/images/NSE_Logo.svg" alt="NSE Logo" width="120">
+    <img
+      src="https://www.nseindia.com/assets/images/NSE_Logo.svg"
+      alt="NSE Logo"
+      width="120"
+    />
     <p class="text-muted mt-2">Powered by NSE India</p>
   </div>
 </div>

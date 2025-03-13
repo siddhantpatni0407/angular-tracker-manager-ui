@@ -140,14 +140,17 @@ export class Nifty50StocksDataComponent implements OnInit {
   toggleSelectAll(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
-      // Select all columns by creating a new array
+      // Select all columns
       this.selectedColumns = [...this.allColumns.map((column) => column.value)];
     } else {
-      // Deselect all columns by creating a new empty array
-      this.selectedColumns = [];
+      // Deselect all except mandatory columns
+      this.selectedColumns = this.allColumns
+        .map((column) => column.value)
+        .filter((col) => this.isMandatoryColumn(col));
     }
     this.updateVisibleColumns();
   }
+  
 
   areAllColumnsSelected(): boolean {
     return this.selectedColumns.length === this.allColumns.length;
@@ -158,10 +161,24 @@ export class Nifty50StocksDataComponent implements OnInit {
     this.selectedColumns = [...this.selectedColumns];
   }
 
+  toggleColumnSelection(column: string, event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedColumns.push(column);
+    } else {
+      this.selectedColumns = this.selectedColumns.filter(
+        (col) => col !== column
+      );
+    }
+    this.updateVisibleColumns();
+  }
+
   isMandatoryColumn(columnValue: string): boolean {
-    const mandatoryColumns = ['priority', 'symbol']; // Add mandatory columns here
+    const mandatoryColumns: string[] = ['priority', 'symbol']; // Explicitly define as string[]
     return mandatoryColumns.includes(columnValue);
   }
+  
+  
 
   exportToExcel(): void {
     const currentDate = new Date();
