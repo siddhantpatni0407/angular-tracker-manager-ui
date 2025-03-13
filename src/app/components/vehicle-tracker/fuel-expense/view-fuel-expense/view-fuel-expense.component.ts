@@ -208,25 +208,31 @@ export class ViewFuelExpenseComponent implements OnInit {
   // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
     const currentDate = new Date();
-    const formattedDate = currentDate
-      .toISOString()
-      .replace(/[-T:]/g, '')
-      .split('.')[0]; // YYYYMMDD_HHMMSS format
+    const formattedDate = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
     const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
-
-    const registrationNumber = this.selectedRegistrationNumber; // Use selected registration number
-    const headerText = `Fuel Expense - ${registrationNumber}`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
         const doc = new jsPDF.default();
 
-        // Center the header text with registration number
         const pageWidth = doc.internal.pageSize.width;
-        const textWidth =
-          doc.getStringUnitWidth(headerText) * doc.internal.scaleFactor;
+
+        // ✅ Header Section
+        const headerText = `Fuel Expense - ${this.selectedRegistrationNumber}`;
+        const exportDateText = `Exported: ${formattedDate}`;
+        const textWidth = doc.getTextWidth(headerText);
         const xPos = (pageWidth - textWidth) / 2;
-        doc.text(headerText, xPos, 10); // Header is centered
+
+        // Styling Header
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 255); // Blue color for header text
+        doc.text(headerText, xPos, 10);
+
+        // Export Date on Right Side
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.text(exportDateText, pageWidth - 40, 10);
 
         const tableData = this.filteredExpenses.map((expense, index) => [
           index + 1,
@@ -240,7 +246,7 @@ export class ViewFuelExpenseComponent implements OnInit {
           expense.paymentMode,
         ]);
 
-        // ✅ Append Total Row to PDF Table
+        // ✅ Append Total Row
         tableData.push([
           '',
           'Total',
@@ -256,7 +262,7 @@ export class ViewFuelExpenseComponent implements OnInit {
         (autoTable as any).default(doc, {
           head: [
             [
-              'Sr No.',
+              '#',
               'Date',
               'Vehicle',
               'Quantity (L)',
@@ -269,10 +275,28 @@ export class ViewFuelExpenseComponent implements OnInit {
           ],
           body: tableData,
           startY: 20,
-          theme: 'grid', // ✅ Improved Table Styling
-          styles: { fontSize: 10 },
-          tableLineColor: [0, 0, 0], // ✅ Black Borders
-          tableLineWidth: 0.1,
+          theme: 'grid', // ✅ Ensures all borders for table data
+          styles: { fontSize: 10, textColor: 0 },
+          headStyles: {
+            fillColor: [0, 0, 255], // ✅ Blue background for header
+            textColor: [255, 255, 255], // ✅ White text in header
+            fontStyle: 'bold',
+            lineWidth: 0.5, // ✅ Border thickness for header
+            lineColor: [0, 0, 0], // ✅ Black border color
+          },
+          tableLineColor: [0, 0, 0], // ✅ Ensures all table borders
+          tableLineWidth: 0.5,
+          didDrawPage: function (data: any) {
+            const totalPages = doc.internal.pages.length - 1;
+            const pageStr = `Page ${data.pageNumber} of ${totalPages}`;
+            doc.setFontSize(10);
+            doc.setTextColor(0);
+            doc.text(
+              pageStr,
+              data.settings.margin.left,
+              doc.internal.pageSize.height - 10
+            );
+          },
         });
 
         // ✅ Draw Full Page Border
