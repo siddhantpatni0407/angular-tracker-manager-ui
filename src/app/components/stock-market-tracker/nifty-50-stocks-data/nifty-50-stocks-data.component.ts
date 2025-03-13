@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
@@ -8,7 +9,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './nifty-50-stocks-data.component.html',
-  styleUrls: ['./nifty-50-stocks-data.component.css']
+  styleUrls: ['./nifty-50-stocks-data.component.css'],
 })
 export class Nifty50StocksDataComponent implements OnInit {
   stocks: any[] = [];
@@ -18,9 +19,10 @@ export class Nifty50StocksDataComponent implements OnInit {
   sortColumn: string = '';
   sortDirection: boolean = true;
 
-  private apiUrl = 'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-50-data';
+  private apiUrl =
+    'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-50-data';
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchStockData();
@@ -29,7 +31,7 @@ export class Nifty50StocksDataComponent implements OnInit {
   fetchStockData(): void {
     this.isLoading = true;
     const params = new HttpParams().set('index', 'NIFTY 50');
-  
+
     this.http.get<any>(this.apiUrl, { params }).subscribe(
       (response) => {
         console.log('Backend Response:', response);
@@ -64,7 +66,7 @@ export class Nifty50StocksDataComponent implements OnInit {
   }
 
   applyFilter(): void {
-    this.filteredStocks = this.stocks.filter(stock =>
+    this.filteredStocks = this.stocks.filter((stock) =>
       stock.symbol.toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
@@ -81,5 +83,9 @@ export class Nifty50StocksDataComponent implements OnInit {
       const valB = b[column];
       return (valA > valB ? 1 : -1) * (this.sortDirection ? 1 : -1);
     });
+  }
+
+  goToStockMarketTracker() {
+    this.router.navigate(['/stock-market-tracker']);
   }
 }
