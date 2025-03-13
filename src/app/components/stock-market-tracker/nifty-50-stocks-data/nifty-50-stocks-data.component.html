@@ -1,5 +1,4 @@
 <div class="container mt-4">
-
   <!-- Header & Controls -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <button class="btn btn-outline-secondary btn-lg" (click)="goToStockMarketTracker()">
@@ -12,7 +11,6 @@
         NIFTY 50 - Stock Market Overview
       </h3>
     </div>
-    
     
     <div class="d-flex gap-3">
       <!-- Refresh Button -->
@@ -41,10 +39,54 @@
     </div>
   </div>
 
-  <!-- Filter Input -->
-  <div class="input-group mb-3">
-    <span class="input-group-text bg-primary text-white">🔍</span>
-    <input type="text" class="form-control shadow-sm" placeholder="Filter by Symbol..." [(ngModel)]="filterText" (input)="applyFilter()">
+  <!-- Filter Input & Column Configuration -->
+  <div class="row g-3 align-items-center mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text bg-primary text-white">🔍</span>
+        <input type="text" class="form-control shadow-sm" placeholder="Filter by Symbol..." [(ngModel)]="filterText" (input)="applyFilter()">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- Column Configuration Dropdown -->
+      <div class="btn-group">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="columnDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          ⚙️ Configure Columns
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="columnDropdown">
+          <!-- Select All Option -->
+          <li class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="selectAll"
+              [checked]="areAllColumnsSelected()"
+              (change)="toggleSelectAll($event)"
+            />
+            <label class="form-check-label fw-bold" for="selectAll">
+              Select All
+            </label>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <!-- Individual Column Options -->
+          <li *ngFor="let column of allColumns" class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [id]="column.value"
+              [value]="column.value"
+              [(ngModel)]="selectedColumns"
+              [checked]="isColumnSelected(column.value)"
+              (change)="updateVisibleColumns()"
+              [disabled]="isMandatoryColumn(column.value)"
+            />
+            <label class="form-check-label" [for]="column.value">
+              {{ column.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <!-- Loading Indicator -->
@@ -59,36 +101,36 @@
       <table class="table table-hover table-bordered text-center align-middle shadow-sm">
         <thead class="table-gradient text-white bg-dark">
           <tr>
-            <th (click)="sortTable('priority')"># ⬍</th>
-            <th (click)="sortTable('symbol')">Symbol ⬍</th>
-            <th (click)="sortTable('open')">Open ⬍</th>
-            <th (click)="sortTable('previousClose')">Previous Close ⬍</th>
-            <th (click)="sortTable('yearHigh')">Year High ⬍</th>
-            <th (click)="sortTable('yearLow')">Year Low ⬍</th>
-            <th (click)="sortTable('dayHigh')">High ⬍</th>
-            <th (click)="sortTable('dayLow')">Low ⬍</th>
-            <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
-            <th (click)="sortTable('lastUpdateTime')">Last Update ⬍</th>
-            <th>Chart</th>
+            <th *ngIf="isColumnVisible('priority')" (click)="sortTable('priority')"># ⬍</th>
+            <th *ngIf="isColumnVisible('symbol')" (click)="sortTable('symbol')">Symbol ⬍</th>
+            <th *ngIf="isColumnVisible('open')" (click)="sortTable('open')">Open ⬍</th>
+            <th *ngIf="isColumnVisible('previousClose')" (click)="sortTable('previousClose')">Previous Close ⬍</th>
+            <th *ngIf="isColumnVisible('yearHigh')" (click)="sortTable('yearHigh')">Year High ⬍</th>
+            <th *ngIf="isColumnVisible('yearLow')" (click)="sortTable('yearLow')">Year Low ⬍</th>
+            <th *ngIf="isColumnVisible('dayHigh')" (click)="sortTable('dayHigh')">High ⬍</th>
+            <th *ngIf="isColumnVisible('dayLow')" (click)="sortTable('dayLow')">Low ⬍</th>
+            <th *ngIf="isColumnVisible('lastPrice')" (click)="sortTable('lastPrice')">Last Price ⬍</th>
+            <th *ngIf="isColumnVisible('lastUpdateTime')" (click)="sortTable('lastUpdateTime')">Last Update ⬍</th>
+            <th *ngIf="isColumnVisible('chartTodayPath')">Chart</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let stock of filteredStocks; let i = index" class="table-row">
-            <td>{{ i + 1 }}</td>
-            <td class="stock-symbol">{{ stock.symbol }}</td>
-            <td [ngClass]="{ 'text-success fw-bold': stock.open > stock.previousClose, 'text-danger fw-bold': stock.open < stock.previousClose }">
+            <td *ngIf="isColumnVisible('priority')">{{ i + 1 }}</td>
+            <td *ngIf="isColumnVisible('symbol')" class="stock-symbol">{{ stock.symbol }}</td>
+            <td *ngIf="isColumnVisible('open')" [ngClass]="{ 'text-success fw-bold': stock.open > stock.previousClose, 'text-danger fw-bold': stock.open < stock.previousClose }">
               {{ stock.open | number:'1.2-2' }}
             </td>
-            <td>{{ stock.previousClose | number:'1.2-2' }}</td>
-            <td class="text-info fw-semibold">{{ stock.yearHigh | number:'1.2-2' }}</td>
-            <td class="text-warning fw-semibold">{{ stock.yearLow | number:'1.2-2' }}</td>
-            <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
-            <td>{{ stock.dayLow | number:'1.2-2' }}</td>
-            <td [ngClass]="{ 'text-success fw-bold': stock.lastPrice >= stock.previousClose, 'text-danger fw-bold': stock.lastPrice < stock.previousClose }">
+            <td *ngIf="isColumnVisible('previousClose')">{{ stock.previousClose | number:'1.2-2' }}</td>
+            <td *ngIf="isColumnVisible('yearHigh')" class="text-info fw-semibold">{{ stock.yearHigh | number:'1.2-2' }}</td>
+            <td *ngIf="isColumnVisible('yearLow')" class="text-warning fw-semibold">{{ stock.yearLow | number:'1.2-2' }}</td>
+            <td *ngIf="isColumnVisible('dayHigh')">{{ stock.dayHigh | number:'1.2-2' }}</td>
+            <td *ngIf="isColumnVisible('dayLow')">{{ stock.dayLow | number:'1.2-2' }}</td>
+            <td *ngIf="isColumnVisible('lastPrice')" [ngClass]="{ 'text-success fw-bold': stock.lastPrice >= stock.previousClose, 'text-danger fw-bold': stock.lastPrice < stock.previousClose }">
               {{ stock.lastPrice | number:'1.2-2' }}
             </td>
-            <td>{{ stock.lastUpdateTime }}</td>
-            <td>
+            <td *ngIf="isColumnVisible('lastUpdateTime')">{{ stock.lastUpdateTime }}</td>
+            <td *ngIf="isColumnVisible('chartTodayPath')">
               <img [src]="stock.chartTodayPath" alt="Stock Chart" width="80" class="rounded shadow-sm">
             </td>
           </tr>

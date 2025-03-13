@@ -22,6 +22,34 @@ export class Nifty50StocksDataComponent implements OnInit {
   isLoading = false;
   sortColumn: string = '';
   sortDirection: boolean = true;
+  selectedColumns: string[] = [
+    'priority',
+    'symbol',
+    'open',
+    'previousClose',
+    'yearHigh',
+    'yearLow',
+    'dayHigh',
+    'dayLow',
+    'lastPrice',
+    'lastUpdateTime',
+    'chartTodayPath',
+  ]; // Default selected columns
+
+  allColumns: { value: string; label: string }[] = [
+    { value: 'priority', label: '#' },
+    { value: 'symbol', label: 'Symbol' },
+    { value: 'open', label: 'Open' },
+    { value: 'previousClose', label: 'Previous Close' },
+    { value: 'yearHigh', label: 'Year High' },
+    { value: 'yearLow', label: 'Year Low' },
+    { value: 'dayHigh', label: 'High' },
+    { value: 'dayLow', label: 'Low' },
+    { value: 'lastPrice', label: 'Last Price' },
+    { value: 'lastUpdateTime', label: 'Last Update' },
+    { value: 'chartTodayPath', label: 'Chart' },
+  ];
+
   private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -98,6 +126,41 @@ export class Nifty50StocksDataComponent implements OnInit {
       const valB = b[column];
       return (valA > valB ? 1 : -1) * (this.sortDirection ? 1 : -1);
     });
+  }
+
+  isColumnVisible(column: string): boolean {
+    return this.selectedColumns.includes(column);
+  }
+
+  isColumnSelected(column: string): boolean {
+    return this.selectedColumns.includes(column);
+  }
+
+  // Toggle Select All
+  toggleSelectAll(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      // Select all columns by creating a new array
+      this.selectedColumns = [...this.allColumns.map((column) => column.value)];
+    } else {
+      // Deselect all columns by creating a new empty array
+      this.selectedColumns = [];
+    }
+    this.updateVisibleColumns();
+  }
+
+  areAllColumnsSelected(): boolean {
+    return this.selectedColumns.length === this.allColumns.length;
+  }
+
+  updateVisibleColumns(): void {
+    // Force Angular to detect changes by creating a new array reference
+    this.selectedColumns = [...this.selectedColumns];
+  }
+
+  isMandatoryColumn(columnValue: string): boolean {
+    const mandatoryColumns = ['priority', 'symbol']; // Add mandatory columns here
+    return mandatoryColumns.includes(columnValue);
   }
 
   exportToExcel(): void {
