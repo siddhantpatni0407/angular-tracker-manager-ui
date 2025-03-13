@@ -24,10 +24,13 @@
     <thead class="table-dark">
       <tr>
         <th (click)="sortTable('priority')"># ⬍</th>
+        <th (click)="sortTable('identifier')">Identifier ⬍</th>
         <th (click)="sortTable('symbol')">Symbol ⬍</th>
-        <th (click)="sortTable('series')">Series ⬍</th>
         <th (click)="sortTable('open')">Open ⬍</th>
-        <th (click)="sortTable('dayHigh')">High �</th>
+        <th (click)="sortTable('previousClose')">Previous Close ⬍</th>
+        <th (click)="sortTable('yearHigh')">Year High ⬍</th>
+        <th (click)="sortTable('yearLow')">Year Low ⬍</th>
+        <th (click)="sortTable('dayHigh')">High ⬍</th>
         <th (click)="sortTable('dayLow')">Low ⬍</th>
         <th (click)="sortTable('lastPrice')">Last Price ⬍</th>
         <th (click)="sortTable('pChange')">Change (%) ⬍</th>
@@ -37,9 +40,14 @@
     <tbody>
       <tr *ngFor="let stock of filteredStocks; let i = index">
         <td>{{ i + 1 }}</td>
+        <td>{{ stock.identifier }}</td>
         <td>{{ stock.symbol }}</td>
-        <td>{{ stock.series }}</td>
-        <td>{{ stock.open | number:'1.2-2' }}</td>
+        <td [ngClass]="{ 'text-success': stock.open > stock.previousClose, 'text-danger': stock.open < stock.previousClose }">
+          {{ stock.open | number:'1.2-2' }}
+        </td>
+        <td>{{ stock.previousClose | number:'1.2-2' }}</td>
+        <td>{{ stock.yearHigh | number:'1.2-2' }}</td>
+        <td>{{ stock.yearLow | number:'1.2-2' }}</td>
         <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
         <td>{{ stock.dayLow | number:'1.2-2' }}</td>
         <td>{{ stock.lastPrice | number:'1.2-2' }}</td>

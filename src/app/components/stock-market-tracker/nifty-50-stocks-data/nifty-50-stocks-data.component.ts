@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-nifty-50-stocks-data',
@@ -36,9 +36,13 @@ export class Nifty50StocksDataComponent implements OnInit {
         if (response?.data?.data?.length) {
           this.stocks = response.data.data.map((stock: any) => ({
             priority: stock.priority || 0,
+            identifier: stock.identifier,
             symbol: stock.symbol,
             series: stock.series ?? 'N/A',
             open: stock.open,
+            previousClose: stock.previousClose,
+            yearHigh: stock.yearHigh,
+            yearLow: stock.yearLow,
             dayHigh: stock.dayHigh,
             dayLow: stock.dayLow,
             lastPrice: stock.lastPrice,
