@@ -49,7 +49,9 @@
         <td>{{ stock.yearLow | number:'1.2-2' }}</td>
         <td>{{ stock.dayHigh | number:'1.2-2' }}</td>
         <td>{{ stock.dayLow | number:'1.2-2' }}</td>
-        <td>{{ stock.lastPrice | number:'1.2-2' }}</td>
+        <td [ngClass]="{ 'text-success': stock.lastPrice >= stock.previousClose, 'text-danger': stock.lastPrice < stock.previousClose }">
+          {{ stock.lastPrice | number:'1.2-2' }}
+        </td>
         <td>{{ stock.lastUpdateTime }}</td>
         <td [ngClass]="{ 'text-success': stock.pChange > 0, 'text-danger': stock.pChange < 0 }">
           {{ stock.pChange | number:'1.2-2' }}%
