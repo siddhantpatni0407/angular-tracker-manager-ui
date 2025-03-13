@@ -1,11 +1,12 @@
 <div class="container mt-4">
+
   <!-- Header & Controls -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <button class="btn btn-outline-secondary btn-lg" (click)="goToStockMarketTracker()">
       ⬅️ Back
     </button>
     <h3 class="text-primary text-center fw-bold flex-grow-1">
-      📈 NIFTY 50 Stock Data
+      <img src="https://www.nseindia.com/assets/images/NSE_Logo.svg" alt="NSE Logo" width="90" class="me-2"> 📈 NIFTY 50 Stock Data
     </h3>
     <div class="d-flex gap-3">
       <!-- Refresh Button -->
@@ -49,8 +50,8 @@
   <!-- Scrollable Table Container with Slider -->
   <div class="table-wrapper">
     <div class="table-scroll">
-      <table class="table table-hover table-bordered text-center align-middle">
-        <thead class="table-gradient text-white">
+      <table class="table table-hover table-bordered text-center align-middle shadow-sm">
+        <thead class="table-gradient text-white bg-dark">
           <tr>
             <th (click)="sortTable('priority')"># ⬍</th>
             <th (click)="sortTable('symbol')">Symbol ⬍</th>
@@ -94,4 +95,10 @@
   <p *ngIf="!filteredStocks.length && !isLoading" class="text-muted text-center mt-3">
     ⚠️ No data available.
   </p>
+
+  <!-- NSE Footer Logo -->
+  <div class="text-center mt-4">
+    <img src="https://www.nseindia.com/assets/images/NSE_Logo.svg" alt="NSE Logo" width="120">
+    <p class="text-muted mt-2">Powered by NSE India</p>
+  </div>
 </div>
