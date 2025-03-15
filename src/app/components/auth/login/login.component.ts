@@ -42,21 +42,22 @@ export class LoginComponent {
       this.errorMessage = 'Please enter email and password';
       return;
     }
-
+  
     const loginPayload = { email: this.email, password: this.password };
-
+  
     this.authService.login(loginPayload).subscribe({
       next: (response) => {
         console.log('Login response:', response); // Debugging
-
+  
         if (response.status === 'SUCCESS' && response.token) {
-          // Store the token and role in sessionStorage or localStorage
+          // Store the token, role, and user name in sessionStorage
           sessionStorage.setItem('authToken', response.token);
           sessionStorage.setItem('userRole', response.role);
-
+          sessionStorage.setItem('userName', response.name);  // ✅ Store user name
+  
           // Show success message
-          this.successMessage = '✅ Login successful! Redirecting...';
-
+          this.successMessage = ` Welcome, ${response.name}! Redirecting...`;
+  
           // Redirect based on role
           setTimeout(() => this.redirectUser(response.role), 2000);
         } else {
@@ -69,7 +70,7 @@ export class LoginComponent {
         this.errorMessage = '❌ Error logging in. Please try again!';
       },
     });
-  }
+  }  
 
   redirectUser(role: string) {
     const normalizedRole = role.toUpperCase();

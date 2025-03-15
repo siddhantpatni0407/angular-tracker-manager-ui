@@ -8,10 +8,11 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <i class="bi bi-person-circle"></i> Profile
+      <i class="bi bi-person-circle"></i> {{ userName }} ({{ userRole }})
     </button>
     <ul class="dropdown-menu dropdown-menu-end">
       <li><a class="dropdown-item"><i class="bi bi-person-badge"></i> {{ userRole }}</a></li>
+      <li><a class="dropdown-item"><i class="bi bi-person"></i> {{ userName }}</a></li>
       <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="bi bi-gear"></i> Edit Profile</a></li>
       <li><hr class="dropdown-divider" /></li>
       <li><a class="dropdown-item text-danger" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
@@ -26,7 +27,7 @@
   </h2>
 
   <p class="text-center text-muted">
-    Your Role: <strong class="text-dark">{{ userRole }}</strong>
+    Welcome, <strong class="text-dark">{{ userName }}</strong>
   </p>
 
   <div class="row mt-4 justify-content-center">

@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   userRole: string = 'Guest'; // Default role
+  userName: string = 'User'; // Default name
 
   constructor(private router: Router) {}
 
@@ -20,7 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Checks if the user is authenticated and sets the role accordingly.
+   * Checks if the user is authenticated and sets the name and role accordingly.
    * Redirects to login page if not authenticated.
    */
   private checkAuthentication(): void {
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
       this.redirectToLogin();
     } else {
       this.userRole = sessionStorage.getItem('userRole') || 'Guest';
+      this.userName = sessionStorage.getItem('userName') || 'User';
     }
   }
 
@@ -53,7 +55,6 @@ export class DashboardComponent implements OnInit {
   navigateToStockMarketTracker(): void {
     this.router.navigate(['/stock-market-tracker']);
   }
-
 
   /**
    * Navigates to User Profile page.
