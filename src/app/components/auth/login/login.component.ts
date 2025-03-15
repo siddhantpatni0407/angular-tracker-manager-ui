@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { API_URLS } from '../../../constants/api.constants';
-import { LoginRequest } from '../../../models/login-request'; // Import the LoginRequest model
 
 @Component({
   selector: 'app-login',
@@ -16,73 +15,88 @@ import { LoginRequest } from '../../../models/login-request'; // Import the Logi
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  selectedRole: string = ''; // Default empty role
+  selectedRole: string = '';
   showPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
-  submitted: boolean = false; // Track form submission for validation
-  private apiUrl = API_URLS.USER_LOGIN_ENDPOINT;
+  submitted: boolean = false;
+  isForgotPassword: boolean = false;
+  otpRequested: boolean = false;
+  forgotEmail: string = '';
+  otp: string = '';
+  newPassword: string = '';
 
-  // Use `inject()` for standalone components
   private http = inject(HttpClient);
   private router = inject(Router);
 
+  // 🚀 Login API Call
   login(): void {
-    this.submitted = true; // Mark form as submitted
-
+    this.submitted = true;
     if (!this.email.trim() || !this.password.trim() || !this.selectedRole) {
       this.errorMessage = '❌ Please fill all fields and select a role.';
       return;
     }
 
-    const loginPayload: LoginRequest = { email: this.email, password: this.password };
+    const loginPayload = { email: this.email, password: this.password };
 
     this.isLoading = true;
-    this.errorMessage = ''; 
-    this.successMessage = ''; 
-
-    this.http.post<any>(this.apiUrl, loginPayload).subscribe({
+    this.http.post<any>(API_URLS.USER_LOGIN_ENDPOINT, loginPayload).subscribe({
       next: (response) => {
         this.isLoading = false;
-
         if (response.status === 'SUCCESS') {
-          const apiRole = response.role;
-
-          if (apiRole !== this.selectedRole) {
-            this.errorMessage = ` Invalid role`;
-            return;
-          }
-
-          this.successMessage = response.message || '✅ Login successful! Redirecting...';
-
-          // Store token and role in sessionStorage
           sessionStorage.setItem('authToken', response.token);
-          sessionStorage.setItem('userRole', apiRole);
-
-          // Determine redirection URL
-          const redirectUrl = apiRole === 'USER' ? '/dashboard' : '/admin-panel';
-
-          console.log(`🔄 Redirecting to ${redirectUrl} in 2 seconds...`);
-
-          setTimeout(() => {
-            this.router.navigate([redirectUrl])
-              .then((navigated) => {
-                if (!navigated) {
-                  this.errorMessage = '❌ Unable to redirect. Please try again.';
-                }
-              });
-          }, 2000);
-          
+          sessionStorage.setItem('userRole', response.role);
+          this.successMessage = '✅ Login successful! Redirecting...';
+          setTimeout(() => this.router.navigate([response.role === 'USER' ? '/dashboard' : '/admin-panel']), 2000);
         } else {
-          this.errorMessage = response.message || '❌ Invalid credentials.';
+          this.errorMessage = '❌ Invalid credentials.';
         }
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || '❌ Login failed. Please try again.';
+        this.errorMessage = '❌ Login failed. Please try again.';
       }
     });
+  }
+
+  // 🔄 Toggle Login/Forgot Password View
+  toggleForgotPassword(): void {
+    this.isForgotPassword = !this.isForgotPassword;
+    this.otpRequested = false;
+    this.forgotEmail = '';
+    this.otp = '';
+    this.newPassword = '';
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  // 🔑 Request OTP / Reset Password
+  requestOtpOrResetPassword(): void {
+    if (!this.otpRequested) {
+      // Request OTP
+      this.http.post<any>(API_URLS.FORGOT_PASSWORD_REQUEST_OTP_ENDPOINT, { email: this.forgotEmail }).subscribe({
+        next: () => {
+          this.otpRequested = true;
+          this.successMessage = '✅ OTP sent to your email!';
+        },
+        error: () => {
+          this.errorMessage = '❌ Failed to send OTP. Please try again.';
+        }
+      });
+    } else {
+      // Reset Password
+      const resetPayload = { email: this.forgotEmail, otp: this.otp, newPassword: this.newPassword };
+      this.http.post<any>(API_URLS.FORGOT_PASSWORD_RESET_ENDPOINT, resetPayload).subscribe({
+        next: () => {
+          this.successMessage = '✅ Password reset successful! Redirecting...';
+          setTimeout(() => this.toggleForgotPassword(), 2000);
+        },
+        error: () => {
+          this.errorMessage = '❌ Invalid OTP or error resetting password.';
+        }
+      });
+    }
   }
 
   togglePassword(): void {
