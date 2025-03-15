@@ -61,21 +61,10 @@
   </div>
 
   <!-- Filter Input & Column Configuration -->
+  <!-- Filter Input & Column Configuration -->
   <div class="row g-3 align-items-center mb-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <span class="input-group-text bg-primary text-white">🔍</span>
-        <input
-          type="text"
-          class="form-control shadow-sm"
-          placeholder="Filter by Symbol..."
-          [(ngModel)]="filterText"
-          (input)="applyFilter()"
-        />
-      </div>
-    </div>
-    <div class="col-md-6">
-      <!-- Column Configuration Dropdown -->
+    <!-- Column Configuration on the left -->
+    <div class="col-md-4">
       <div class="btn-group">
         <button
           class="btn btn-primary dropdown-toggle"
@@ -86,10 +75,7 @@
         >
           ⚙️ Configure Columns
         </button>
-        <ul
-          class="dropdown-menu dropdown-menu-end p-3"
-          aria-labelledby="columnDropdown"
-        >
+        <ul class="dropdown-menu p-3" aria-labelledby="columnDropdown">
           <!-- Select All Option -->
           <li class="form-check">
             <input
@@ -120,6 +106,20 @@
             </label>
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!-- Filter Input slightly shifted left -->
+    <div class="col-md-5">
+      <div class="input-group">
+        <span class="input-group-text bg-primary text-white">🔍</span>
+        <input
+          type="text"
+          class="form-control shadow-sm"
+          placeholder="Filter by Symbol..."
+          [(ngModel)]="filterText"
+          (input)="applyFilter()"
+        />
       </div>
     </div>
   </div>
