@@ -3,7 +3,7 @@
     <div class="col-md-6 col-lg-5">
       <div class="card shadow-lg rounded-lg custom-card">
         <div class="card-header bg-gradient bg-primary text-white text-center py-4">
-          <h5 class="mb-0">🔐 {{ isForgotPassword ? 'Forgot Password' : 'Login' }}</h5>
+          <h5 class="mb-0">🔐 {{ isForgotPassword ? 'Forgot Password' : (isOtpLogin ? 'Login with OTP' : 'Login') }}</h5>
         </div>
         <div class="card-body">
           
@@ -17,16 +17,13 @@
             ❌ {{ errorMessage }}
           </div>
 
-          <!-- 🚀 Login Form -->
-          <form *ngIf="!isForgotPassword" #loginForm="ngForm" (ngSubmit)="login()">
-            
-            <!-- Email Field -->
+          <!-- 🚀 Login Form with OTP Option -->
+          <form *ngIf="!isForgotPassword && !isOtpLogin" #loginForm="ngForm" (ngSubmit)="login()">
             <div class="mb-3">
               <label class="form-label fw-bold">Email</label>
               <input type="email" [(ngModel)]="email" class="form-control custom-input" name="email" required />
             </div>
 
-            <!-- Password Field -->
             <div class="mb-3">
               <label class="form-label fw-bold">Password</label>
               <div class="input-group">
@@ -37,7 +34,6 @@
               </div>
             </div>
 
-            <!-- Role Selection Dropdown -->
             <div class="mb-3">
               <label class="form-label fw-bold">Select Role</label>
               <select [(ngModel)]="selectedRole" name="role" class="form-control custom-input" required>
@@ -47,31 +43,49 @@
               </select>
             </div>
 
-            <!-- Login Button -->
             <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn" [disabled]="loginForm.invalid">
               <i class="bi bi-box-arrow-in-right"></i> Login
             </button>
 
-            <!-- Forgot Password Link -->
             <div class="text-center mt-3">
-              <a href="javascript:void(0)" class="text-primary fw-bold" (click)="toggleForgotPassword()">Forgot Password?</a>
+              <a href="javascript:void(0)" class="text-primary fw-bold d-block" (click)="toggleForgotPassword()">Forgot Password?</a>
+              <a href="javascript:void(0)" class="text-success fw-bold d-block" (click)="toggleOtpLogin()">Login with OTP</a>
+              <a href="javascript:void(0)" class="text-info fw-bold d-block" (click)="navigateToRegister()">Don't have an account? Register</a>
+            </div>
+          </form>
+
+          <!-- 🔢 OTP Login Form -->
+          <form *ngIf="isOtpLogin" #otpLoginForm="ngForm" (ngSubmit)="loginWithOtp()">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Enter Your Email</label>
+              <input type="email" [(ngModel)]="emailForOtp" class="form-control custom-input" name="emailForOtp" required />
+            </div>
+
+            <div class="mb-3" *ngIf="otpRequestedForLogin">
+              <label class="form-label fw-bold">Enter OTP</label>
+              <input type="text" [(ngModel)]="otpForLogin" class="form-control custom-input" name="otpForLogin" required />
+            </div>
+
+            <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn">
+              {{ otpRequestedForLogin ? 'Verify OTP & Login' : 'Request OTP' }}
+            </button>
+
+            <div class="text-center mt-3">
+              <a href="javascript:void(0)" class="text-secondary fw-bold d-block" (click)="toggleOtpLogin()">Back to Login</a>
             </div>
           </form>
 
           <!-- 🔑 Forgot Password Form -->
-          <form *ngIf="isForgotPassword" #forgotPasswordForm="ngForm" (ngSubmit)="requestOtpOrResetPassword()">
-            
-            <!-- Email Field for OTP Request -->
-            <div class="mb-3" *ngIf="!otpRequested">
+          <form *ngIf="isForgotPassword" #forgotPasswordForm="ngForm" (ngSubmit)="onForgotPasswordSubmit(forgotPasswordForm)">
+            <div class="mb-3" *ngIf="!otpRequestedForForgotPassword">
               <label class="form-label fw-bold">Enter Your Email</label>
               <input type="email" [(ngModel)]="forgotEmail" class="form-control custom-input" name="forgotEmail" required />
             </div>
 
-            <!-- OTP & New Password Fields -->
-            <div *ngIf="otpRequested">
+            <div *ngIf="otpRequestedForForgotPassword">
               <div class="mb-3">
                 <label class="form-label fw-bold">Enter OTP</label>
-                <input type="text" [(ngModel)]="otp" class="form-control custom-input" name="otp" required />
+                <input type="text" [(ngModel)]="otpForForgotPassword" class="form-control custom-input" name="otpForForgotPassword" required />
               </div>
 
               <div class="mb-3">
@@ -80,17 +94,14 @@
               </div>
             </div>
 
-            <!-- Submit Button -->
-            <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn">
-              {{ otpRequested ? 'Reset Password' : 'Request OTP' }}
+            <button class="btn btn-primary w-100 rounded-pill py-2 animated-btn" [disabled]="forgotPasswordForm.invalid">
+              {{ otpRequestedForForgotPassword ? 'Reset Password' : 'Request OTP' }}
             </button>
 
-            <!-- Back to Login -->
             <div class="text-center mt-3">
-              <a href="javascript:void(0)" class="text-secondary fw-bold" (click)="toggleForgotPassword()">Back to Login</a>
+              <a href="javascript:void(0)" class="text-secondary fw-bold d-block" (click)="toggleForgotPassword()">Back to Login</a>
             </div>
           </form>
-
         </div>
       </div>
     </div>
