@@ -1,72 +1,117 @@
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 600px; /* Reduced height */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 1px solid #d8b5ff; /* Light purple border */
+}
+
+/* Scrollable Table Container */
+.table-scroll {
+  overflow-y: auto;
+  max-height: 500px; /* Reduced height */
+  display: block;
+}
+
+/* Fix the Table Header */
+.table-scroll thead {
+  position: sticky;
+  top: 0;
+  background: #c084f5; /* Light Purple */
+  z-index: 10;
+}
+
+/* Styled Table Header */
+.table-gradient th {
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  background: #b276f3; /* Light Purple */
+  border-bottom: 3px solid #a455d9;
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Ensure Table Cells Align */
+.table-scroll table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+}
+
+/* Table Row Hover Effects */
+.table-hover tbody tr {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(192, 132, 245, 0.2);
+  transform: scale(1.02);
+}
+
+/* Sorting Arrow Icons */
+th {
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease-in-out;
+}
+
+th::after {
+  content: ' ⬍';
+  font-size: 14px;
+  color: #fff;
+  margin-left: 5px;
+}
+
+th:hover::after {
+  color: yellow;
+}
+
 /* Stock Symbol - Blue, Bold & Interactive */
 .stock-symbol {
-    font-weight: bold;
-    color: #007bff; /* Attractive Blue */
-    text-transform: uppercase;
-    transition: text-shadow 0.3s ease-in-out;
+  font-weight: bold;
+  color: #007bff; /* Attractive Blue */
+  text-transform: uppercase;
+  transition: text-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effects - Glow */
+.stock-symbol:hover {
+  text-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+}
+
+/* Underline Hover Animation */
+.stock-symbol::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #007bff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Show Underline on Hover */
+.stock-symbol:hover::after {
+  transform: scaleX(1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .table-wrapper {
+    border-radius: 8px;
   }
-  
-  /* Hover Effects - Glow */
-  .stock-symbol:hover {
-    text-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+
+  .table-gradient th {
+    font-size: 14px;
+    padding: 10px;
   }
-  
-  /* Underline Hover Animation */
-  .stock-symbol::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: #007bff;
-    transform: scaleX(0);
-    transition: transform 0.3s ease-in-out;
+
+  .table-hover tbody tr {
+    font-size: 14px;
   }
-  
-  /* Show Underline on Hover */
-  .stock-symbol:hover::after {
-    transform: scaleX(1);
-  }
-  
-/* Table Container with Scroll */
-.table-wrapper {
-    position: relative;
-    width: 100%;
-    overflow-x: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-  }
-  
-  /* Smooth Scroll */
-  .table-scroll {
-    max-height: 500px;
-    overflow-x: auto;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #007bff #f1f1f1;
-  }
-  
-  /* Scrollbar for Webkit Browsers */
-  .table-scroll::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  .table-scroll::-webkit-scrollbar-thumb {
-    background-color: #007bff;
-    border-radius: 10px;
-  }
-  
-  /* Sticky Table Headers */
-  thead {
-    position: sticky;
-    top: 0;
-    background: linear-gradient(to right, #007bff, #6610f2);
-    color: white;
-    z-index: 2;
-  }
-  
-  /* Table Row Hover Effect */
-  .table-row:hover {
-    background-color: #f8f9fa;
-    transition: 0.3s ease-in-out;
-  }
-  
+}

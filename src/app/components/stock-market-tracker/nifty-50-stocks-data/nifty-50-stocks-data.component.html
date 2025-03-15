@@ -136,58 +136,58 @@
       <table
         class="table table-hover table-bordered text-center align-middle shadow-sm"
       >
-        <thead class="table-gradient text-white bg-dark">
+        <thead class="table-gradient text-white">
           <tr>
             <th
               *ngIf="isColumnVisible('priority')"
               (click)="sortTable('priority')"
             >
-              # ⬍
+              #
             </th>
             <th *ngIf="isColumnVisible('symbol')" (click)="sortTable('symbol')">
-              Symbol ⬍
+              Symbol
             </th>
             <th *ngIf="isColumnVisible('open')" (click)="sortTable('open')">
-              Open ⬍
+              Open
             </th>
             <th
               *ngIf="isColumnVisible('previousClose')"
               (click)="sortTable('previousClose')"
             >
-              Previous Close ⬍
+              Previous Close
             </th>
             <th
               *ngIf="isColumnVisible('yearHigh')"
               (click)="sortTable('yearHigh')"
             >
-              Year High ⬍
+              Year High
             </th>
             <th
               *ngIf="isColumnVisible('yearLow')"
               (click)="sortTable('yearLow')"
             >
-              Year Low ⬍
+              Year Low
             </th>
             <th
               *ngIf="isColumnVisible('dayHigh')"
               (click)="sortTable('dayHigh')"
             >
-              High ⬍
+              High
             </th>
             <th *ngIf="isColumnVisible('dayLow')" (click)="sortTable('dayLow')">
-              Low ⬍
+              Low
             </th>
             <th
               *ngIf="isColumnVisible('lastPrice')"
               (click)="sortTable('lastPrice')"
             >
-              Last Price ⬍
+              Last Price
             </th>
             <th
               *ngIf="isColumnVisible('lastUpdateTime')"
               (click)="sortTable('lastUpdateTime')"
             >
-              Last Update ⬍
+              Last Update
             </th>
             <th *ngIf="isColumnVisible('chartTodayPath')">Chart</th>
           </tr>
