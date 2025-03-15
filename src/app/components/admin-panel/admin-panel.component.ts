@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { API_URLS } from '../../constants/api.constants';
 
-// Define a User Interface
+// Define User Interface
 interface User {
   id: number;
   name: string;
@@ -18,24 +18,35 @@ interface User {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.css']
+  styleUrls: ['./admin-panel.component.css'],
 })
 export class AdminPanelComponent implements OnInit {
   users: User[] = [];
   activeUsers: number = 0;
+  totalUsers: number = 0;
   pendingRequests: number = 0;
   loading: boolean = true;
   errorMessage: string = '';
   deletingUserId: number | null = null;
+
+  userName: string = 'Admin'; 
+  userRole: string = 'ADMIN'; 
 
   private http = inject(HttpClient);
   private router = inject(Router);
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.loadAdminDetails();
   }
 
-  /** Fetch all users from the backend */
+  /** ✅ Fetch logged-in admin details from session */
+  private loadAdminDetails(): void {
+    this.userName = sessionStorage.getItem('userName') || 'Admin';
+    this.userRole = sessionStorage.getItem('userRole') || 'ADMIN';
+  }
+
+  /** ✅ Fetch all users excluding admin users */
   fetchUsers(): void {
     this.loading = true;
     this.errorMessage = '';
@@ -45,7 +56,7 @@ export class AdminPanelComponent implements OnInit {
         next: (response) => {
           if (response.status === 'SUCCESS' && Array.isArray(response.data)) {
             this.users = response.data
-              .filter(user => user.role === 'USER')
+              .filter(user => user.role !== 'ADMIN') 
               .map(user => ({
                 id: user.userId,
                 name: user.username,
@@ -54,7 +65,8 @@ export class AdminPanelComponent implements OnInit {
                 role: user.role
               }));
 
-            this.activeUsers = this.users.length;
+            this.totalUsers = this.users.length;
+            this.activeUsers = this.users.filter(user => user.role !== 'INACTIVE').length;
             this.pendingRequests = Math.floor(Math.random() * 5); // Mock pending requests
           } else {
             this.errorMessage = 'Unexpected response format from server.';
@@ -69,7 +81,7 @@ export class AdminPanelComponent implements OnInit {
       });
   }
 
-  /** Delete user */
+  /** ✅ Delete a user */
   deleteUser(userId: number): void {
     if (!confirm('Are you sure you want to delete this user?')) {
       return;
@@ -84,14 +96,17 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
 
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${authToken}` });
+    const headers = new HttpHeaders({ Authorization: `Bearer ${authToken}` });
     const params = new HttpParams().set('userId', userId.toString());
 
-    this.http.delete<{ status: string; message: string }>(API_URLS.USER_ENDPOINT, { headers, params })
+    this.http
+      .delete<{ status: string; message: string }>(API_URLS.USER_ENDPOINT, { headers, params })
       .subscribe({
         next: (response) => {
           if (response.status === 'SUCCESS') {
             this.users = this.users.filter(user => user.id !== userId);
+            this.totalUsers--;
+            this.activeUsers = this.users.filter(user => user.role !== 'INACTIVE').length;
             alert(response.message);
           } else {
             this.errorMessage = 'Failed to delete user!';
@@ -104,5 +119,20 @@ export class AdminPanelComponent implements OnInit {
           this.deletingUserId = null;
         }
       });
+  }
+
+  /**
+   * ✅ Navigates to User Profile page.
+   */
+  navigateToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  /**
+   * ✅ Logs out the user and redirects to login page.
+   */
+  logout(): void {
+    sessionStorage.clear(); 
+    this.router.navigate(['/login']);
   }
 }
