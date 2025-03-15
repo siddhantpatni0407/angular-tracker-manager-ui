@@ -34,6 +34,14 @@ export class Nifty50StocksDataComponent implements OnInit {
     'lastPrice',
     'lastUpdateTime',
     'chartTodayPath',
+    'change',
+    'totalTradedVolume',
+    'totalTradedValue',
+    'ffmc',
+    'nearWKH',
+    'nearWKL',
+    'perChange365d',
+    'perChange30d',
   ]; // Default selected columns
 
   allColumns: { value: string; label: string }[] = [
@@ -48,6 +56,14 @@ export class Nifty50StocksDataComponent implements OnInit {
     { value: 'lastPrice', label: 'Last Price' },
     { value: 'lastUpdateTime', label: 'Last Update' },
     { value: 'chartTodayPath', label: 'Chart' },
+    { value: 'change', label: 'Change' },
+    { value: 'totalTradedVolume', label: 'Total Traded Volume' },
+    { value: 'totalTradedValue', label: 'Total Traded Value' },
+    { value: 'ffmc', label: 'FFMC' },
+    { value: 'nearWKH', label: 'Near WKH' },
+    { value: 'nearWKL', label: 'Near WKL' },
+    { value: 'perChange365d', label: '365d % Change' },
+    { value: 'perChange30d', label: '30d % Change' },
   ];
 
   private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;
@@ -93,6 +109,14 @@ export class Nifty50StocksDataComponent implements OnInit {
             lastPrice: stock.lastPrice,
             lastUpdateTime: stock.lastUpdateTime,
             chartTodayPath: stock.chartTodayPath || 'assets/default-chart.png',
+            change: stock.change,
+            totalTradedVolume: stock.totalTradedVolume,
+            totalTradedValue: stock.totalTradedValue,
+            ffmc: stock.ffmc,
+            nearWKH: stock.nearWKH,
+            nearWKL: stock.nearWKL,
+            perChange365d: stock.perChange365d,
+            perChange30d: stock.perChange30d,
           }));
           this.applyFilter();
         } else {
@@ -150,7 +174,6 @@ export class Nifty50StocksDataComponent implements OnInit {
     }
     this.updateVisibleColumns();
   }
-  
 
   areAllColumnsSelected(): boolean {
     return this.selectedColumns.length === this.allColumns.length;
@@ -177,8 +200,6 @@ export class Nifty50StocksDataComponent implements OnInit {
     const mandatoryColumns: string[] = ['priority', 'symbol']; // Explicitly define as string[]
     return mandatoryColumns.includes(columnValue);
   }
-  
-  
 
   exportToExcel(): void {
     const currentDate = new Date();
@@ -217,6 +238,14 @@ export class Nifty50StocksDataComponent implements OnInit {
         'Low',
         'Last Price',
         'Last Update',
+        'Change',
+        'Total Traded Volume',
+        'Total Traded Value',
+        'FFMC',
+        'Near WKH',
+        'Near WKL',
+        '365d % Change',
+        '30d % Change',
       ],
     ];
 
@@ -232,6 +261,14 @@ export class Nifty50StocksDataComponent implements OnInit {
         stock.dayLow,
         stock.lastPrice,
         stock.lastUpdateTime,
+        stock.change,
+        stock.totalTradedVolume,
+        stock.totalTradedValue,
+        stock.ffmc,
+        stock.nearWKH,
+        stock.nearWKL,
+        stock.perChange365d,
+        stock.perChange30d,
       ]);
     });
 
