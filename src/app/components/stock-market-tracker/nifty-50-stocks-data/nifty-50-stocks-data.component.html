@@ -162,6 +162,24 @@
             <th *ngIf="isColumnVisible('symbol')" (click)="sortTable('symbol')">
               Symbol
             </th>
+            <th
+              *ngIf="isColumnVisible('companyName')"
+              (click)="sortTable('companyName')"
+            >
+              Company Name
+            </th>
+            <th
+              *ngIf="isColumnVisible('industry')"
+              (click)="sortTable('industry')"
+            >
+              Industry
+            </th>
+            <th
+              *ngIf="isColumnVisible('listingDate')"
+              (click)="sortTable('listingDate')"
+            >
+              Listing Date
+            </th>
             <th *ngIf="isColumnVisible('open')" (click)="sortTable('open')">
               Open
             </th>
@@ -257,6 +275,13 @@
             <td *ngIf="isColumnVisible('priority')">{{ i + 1 }}</td>
             <td *ngIf="isColumnVisible('symbol')" class="stock-symbol">
               {{ stock.symbol }}
+            </td>
+            <td *ngIf="isColumnVisible('companyName')">
+              {{ stock.companyName }}
+            </td>
+            <td *ngIf="isColumnVisible('industry')">{{ stock.industry }}</td>
+            <td *ngIf="isColumnVisible('listingDate')">
+              {{ stock.listingDate }}
             </td>
             <td
               *ngIf="isColumnVisible('open')"

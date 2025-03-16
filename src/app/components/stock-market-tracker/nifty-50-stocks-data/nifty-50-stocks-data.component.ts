@@ -48,6 +48,9 @@ export class Nifty50StocksDataComponent implements OnInit {
   allColumns: { value: string; label: string }[] = [
     { value: 'priority', label: '#' },
     { value: 'symbol', label: 'Symbol' },
+    { value: 'companyName', label: 'Company Name' },
+    { value: 'industry', label: 'Industry' },
+    { value: 'listingDate', label: 'Listing Date' },
     { value: 'open', label: 'Open' },
     { value: 'previousClose', label: 'Previous Close' },
     { value: 'yearHigh', label: 'Year High' },
@@ -100,6 +103,9 @@ export class Nifty50StocksDataComponent implements OnInit {
           this.stocks = response.data.data.map((stock: any) => ({
             priority: stock.priority || 0,
             symbol: stock.symbol,
+            companyName: stock.meta?.companyName || 'N/A',
+            industry: stock.meta?.industry || 'N/A',
+            listingDate: stock.meta?.listingDate || 'N/A',
             series: stock.series ?? 'N/A',
             open: stock.open,
             previousClose: stock.previousClose,
