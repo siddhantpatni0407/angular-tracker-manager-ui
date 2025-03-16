@@ -115,3 +115,27 @@ th:hover::after {
     font-size: 14px;
   }
 }
+/* Custom styles for the response message */
+.response-message {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.9); /* Light background for better readability */
+  display: inline-block;
+  margin-top: 8px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
+  max-width: 100%; /* Ensure it doesn't exceed the container width */
+}
+
+/* Success message styling */
+.text-success {
+  color: #28a745; /* Green color for success */
+}
+
+/* Error message styling */
+.text-danger {
+  color: #dc3545; /* Red color for error */
+}

@@ -22,6 +22,7 @@ export class Nifty50StocksDataComponent implements OnInit {
   isLoading = false;
   sortColumn: string = '';
   sortDirection: boolean = true;
+  apiResponseMessage: string = '';
   selectedColumns: string[] = [
     'priority',
     'symbol',
@@ -86,12 +87,12 @@ export class Nifty50StocksDataComponent implements OnInit {
 
   fetchStockData(): void {
     this.isLoading = true;
-
-    // Append a timestamp to the API URL to prevent caching
+    this.apiResponseMessage = '';
+  
     const params = new HttpParams()
       .set('index', 'NIFTY 50')
-      .set('timestamp', Date.now().toString()); // Prevent browser caching
-
+      .set('timestamp', Date.now().toString());
+  
     this.http.get<any>(this.apiUrl, { params }).subscribe(
       (response) => {
         console.log('Backend Response:', response);
@@ -119,17 +120,28 @@ export class Nifty50StocksDataComponent implements OnInit {
             perChange30d: stock.perChange30d,
           }));
           this.applyFilter();
+          this.apiResponseMessage = 'Data fetched successfully!';
         } else {
           console.warn('No stock data available.');
           this.stocks = [];
+          this.apiResponseMessage = 'No stock data available.';
         }
         this.isLoading = false;
+        this.clearMessageAfterTimeout();
       },
       (error) => {
         console.error('Error fetching stock data:', error);
         this.isLoading = false;
+        this.apiResponseMessage = 'Error fetching stock data. Please try again.';
+        this.clearMessageAfterTimeout();
       }
     );
+  }
+
+  clearMessageAfterTimeout(): void {
+    setTimeout(() => {
+      this.apiResponseMessage = '';
+    }, 3000);
   }
 
   applyFilter(): void {
