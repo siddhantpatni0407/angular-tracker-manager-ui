@@ -13,6 +13,6 @@ export const API_URLS = {
     FETCH_ALL_USERS_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user/fetch',
     USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user',
     VEHICLE_FUEL_EXPENSE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/fuel-expense',
-    STOCK_MARKET_NIFTY_DATA_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-data'
+    STOCK_MARKET_NIFTY_DATA_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-data',
+    VEHICLE_SERVICING_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/service',
   };
-  

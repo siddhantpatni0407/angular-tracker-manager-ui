@@ -10,8 +10,8 @@ export class ServicingDetailsComponent {
   constructor(private router: Router) {}
 
   // Navigate to add servicing page
-  navigateToAddServicing() {
-    this.router.navigate(['/add-servicing']);
+  navigateToAddVehicleService() {
+    this.router.navigate(['/add-vehicle-service']);
   }
 
   // Navigate to view servicing page

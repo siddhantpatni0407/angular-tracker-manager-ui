@@ -19,7 +19,7 @@ import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/
 import { StockMarketTrackerComponent } from './components/stock-market-tracker/stock-market-tracker.component';
 import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty-stock-data/nifty-stock-data.component';
 import { ServicingDetailsComponent } from './components/vehicle-tracker/servicing-details/servicing-details.component';
-
+import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -41,6 +41,7 @@ const routes: Routes = [
   { path: 'fuel-statistics', component: FuelStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'fuel-reports', component: FuelReportsComponent, canActivate: [AuthGuard] },
   { path: 'servicing-details', component: ServicingDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'add-vehicle-service', component: AddVehicleServiceComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 
