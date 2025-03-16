@@ -57,6 +57,13 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
+   * Navigates to Credenetial Tracker page.
+   */
+  navigateToCredentialTracker(): void {
+    this.router.navigate(['/credential-tracker']);
+  }
+
+  /**
    * Navigates to User Profile page.
    */
   navigateToProfile(): void {

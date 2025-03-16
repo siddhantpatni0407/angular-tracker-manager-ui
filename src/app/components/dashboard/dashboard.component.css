@@ -8,7 +8,11 @@
 }
 
 .gradient-red {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* Red Gradient */
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #8E2DE2, #4A00E0);
 }
 
 /* Hover Effect */
@@ -18,13 +22,13 @@
 
 .hover-effect:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Card Styling */
 .tracker-card {
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -40,7 +44,21 @@
   background-color: rgba(255, 255, 255, 1);
 }
 
-/* Animation */
-.animate__animated {
-  animation-duration: 1s;
+/* Adjustments for Smaller Cards */
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
 }

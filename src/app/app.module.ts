@@ -27,6 +27,7 @@ import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty
 import { ServicingDetailsComponent } from './components/vehicle-tracker/servicing-details/servicing-details.component';
 import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
 import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
+import { CredentialTrackerComponent } from './components/credential-tracker/credential-tracker.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servic
     ServicingDetailsComponent,
     AddVehicleServiceComponent,
     ViewVehicleServiceComponent,
+    CredentialTrackerComponent,
     ReactiveFormsModule
   ],
   imports: [

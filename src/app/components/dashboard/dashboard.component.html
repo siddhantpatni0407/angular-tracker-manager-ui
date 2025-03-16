@@ -11,34 +11,53 @@
       <i class="bi bi-person-circle"></i> {{ userName }} ({{ userRole }})
     </button>
     <ul class="dropdown-menu dropdown-menu-end">
-      <li><a class="dropdown-item"><i class="bi bi-person-badge"></i> {{ userRole }}</a></li>
-      <li><a class="dropdown-item"><i class="bi bi-person"></i> {{ userName }}</a></li>
-      <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="bi bi-gear"></i> Edit Profile</a></li>
+      <li>
+        <a class="dropdown-item"
+          ><i class="bi bi-person-badge"></i> {{ userRole }}</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item"><i class="bi bi-person"></i> {{ userName }}</a>
+      </li>
+      <li>
+        <a class="dropdown-item" (click)="navigateToProfile()"
+          ><i class="bi bi-gear"></i> Edit Profile</a
+        >
+      </li>
       <li><hr class="dropdown-divider" /></li>
-      <li><a class="dropdown-item text-danger" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      <li>
+        <a class="dropdown-item text-danger" (click)="logout()"
+          ><i class="bi bi-box-arrow-right"></i> Logout</a
+        >
+      </li>
     </ul>
   </div>
 </div>
 
 <!-- Dashboard Content -->
-<div *ngIf="userRole; else notLoggedIn" class="container mt-4">
-  <h2 class="text-center fw-bold text-primary">
+<div *ngIf="userRole; else notLoggedIn" class="container mt-3">
+  <h2 class="text-center fw-bold text-primary mb-3">
     <i class="bi bi-grid-fill"></i> Tracker Management Dashboard
   </h2>
 
-  <p class="text-center text-muted">
+  <p class="text-center text-muted mb-4">
     Welcome, <strong class="text-dark">{{ userName }}</strong>
   </p>
 
-  <div class="row mt-4 justify-content-center">
+  <div class="row g-8 justify-content-center">
     <!-- Medical Tracker -->
-    <div class="col-md-4 mb-3">
-      <div class="card tracker-card gradient-blue shadow-lg rounded-4 border-0 hover-effect">
-        <div class="card-body text-center text-white">
-          <i class="bi bi-clipboard-heart fa-3x mb-3"></i>
-          <h5 class="card-title fw-bold">Medical Tracker</h5>
-          <p>Manage medical records & health logs.</p>
-          <button class="btn btn-light btn-lg shadow-sm px-4" (click)="navigateToMedicalTracker()">
+    <div class="col-md-3">
+      <div
+        class="card tracker-card gradient-blue shadow-sm rounded-3 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white p-3">
+          <i class="bi bi-clipboard-heart fa-2x mb-2"></i>
+          <h5 class="card-title fw-bold mb-2">Medical Tracker</h5>
+          <p class="mb-3">Manage medical records & health logs.</p>
+          <button
+            class="btn btn-light btn-sm shadow-sm px-3"
+            (click)="navigateToMedicalTracker()"
+          >
             <i class="bi bi-arrow-right"></i> Open
           </button>
         </div>
@@ -46,13 +65,18 @@
     </div>
 
     <!-- Vehicle Tracker -->
-    <div class="col-md-4 mb-3">
-      <div class="card tracker-card gradient-green shadow-lg rounded-4 border-0 hover-effect">
-        <div class="card-body text-center text-white">
-          <i class="bi bi-car-front-fill fa-3x mb-3"></i>
-          <h5 class="card-title fw-bold">Vehicle Tracker</h5>
-          <p>Track vehicle expenses & mileage.</p>
-          <button class="btn btn-light btn-lg shadow-sm px-4" (click)="navigateToVehicleTracker()">
+    <div class="col-md-3">
+      <div
+        class="card tracker-card gradient-green shadow-sm rounded-3 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white p-3">
+          <i class="bi bi-car-front-fill fa-2x mb-2"></i>
+          <h5 class="card-title fw-bold mb-2">Vehicle Tracker</h5>
+          <p class="mb-3">Track vehicle expenses & mileage.</p>
+          <button
+            class="btn btn-light btn-sm shadow-sm px-3"
+            (click)="navigateToVehicleTracker()"
+          >
             <i class="bi bi-arrow-right"></i> Open
           </button>
         </div>
@@ -60,13 +84,37 @@
     </div>
 
     <!-- Stock Market Tracker -->
-    <div class="col-md-4 mb-3">
-      <div class="card tracker-card gradient-red shadow-lg rounded-4 border-0 hover-effect">
-        <div class="card-body text-center text-white">
-          <i class="bi bi-graph-up fa-3x mb-3"></i>
-          <h5 class="card-title fw-bold">Stock Market Tracker</h5>
-          <p>Monitor NIFTY 50 stock performance.</p>
-          <button class="btn btn-light btn-lg shadow-sm px-4" (click)="navigateToStockMarketTracker()">
+    <div class="col-md-3">
+      <div
+        class="card tracker-card gradient-red shadow-sm rounded-3 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white p-3">
+          <i class="bi bi-graph-up fa-2x mb-2"></i>
+          <h5 class="card-title fw-bold mb-2">Stock Market Tracker</h5>
+          <p class="mb-3">Monitor NIFTY 50 stock performance.</p>
+          <button
+            class="btn btn-light btn-sm shadow-sm px-3"
+            (click)="navigateToStockMarketTracker()"
+          >
+            <i class="bi bi-arrow-right"></i> Open
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credential Tracker -->
+    <div class="col-md-3">
+      <div
+        class="card tracker-card gradient-purple shadow-sm rounded-3 border-0 hover-effect"
+      >
+        <div class="card-body text-center text-white p-3">
+          <i class="bi bi-key-fill fa-2x mb-2"></i>
+          <h5 class="card-title fw-bold mb-2">Credential Tracker</h5>
+          <p class="mb-3">Manage and track your credentials securely.</p>
+          <button
+            class="btn btn-light btn-sm shadow-sm px-3"
+            (click)="navigateToCredentialTracker()"
+          >
             <i class="bi bi-arrow-right"></i> Open
           </button>
         </div>
@@ -80,7 +128,7 @@
   <div class="container mt-4 text-center">
     <h2 class="text-danger fw-bold">Access Denied</h2>
     <p class="text-muted">You must be logged in to access the dashboard.</p>
-    <button class="btn btn-danger btn-lg shadow-sm" (click)="redirectToLogin()">
+    <button class="btn btn-danger btn-sm shadow-sm" (click)="redirectToLogin()">
       <i class="bi bi-box-arrow-in-right"></i> Login
     </button>
   </div>

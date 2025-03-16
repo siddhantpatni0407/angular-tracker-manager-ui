@@ -21,6 +21,7 @@ import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty
 import { ServicingDetailsComponent } from './components/vehicle-tracker/servicing-details/servicing-details.component';
 import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
 import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
+import { CredentialTrackerComponent } from './components/credential-tracker/credential-tracker.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: 'servicing-details', component: ServicingDetailsComponent, canActivate: [AuthGuard] },
   { path: 'add-vehicle-service', component: AddVehicleServiceComponent, canActivate: [AuthGuard] },
   { path: 'view-vehicle-service', component: ViewVehicleServiceComponent, canActivate: [AuthGuard] },
+  { path: 'credential-tracker', component: CredentialTrackerComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 
