@@ -1,8 +1,7 @@
-<!-- HTML -->
 <div class="container mt-4">
   <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <button class="btn btn-outline-primary" (click)="goBack()">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-outline-primary shadow-sm" (click)="goBack()">
       ⬅ Back to Fuel Expense
     </button>
     <h2 class="text-primary fw-bold">
@@ -12,17 +11,10 @@
   </div>
 
   <!-- Vehicle Selection & Filter Input -->
-  <div class="row g-3 align-items-center">
+  <div class="row g-3 align-items-center mb-4">
     <div class="col-md-4">
-      <label for="vehicleSelect" class="form-label fw-bold"
-        >🚗 Select Vehicle</label
-      >
-      <select
-        class="form-select shadow-sm"
-        id="vehicleSelect"
-        [(ngModel)]="selectedVehicleId"
-        (change)="updateSelectedVehicle()"
-      >
+      <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
+      <select class="form-select shadow-sm" id="vehicleSelect" [(ngModel)]="selectedVehicleId" (change)="updateSelectedVehicle()">
         <option value="" selected>-- Select a vehicle --</option>
         <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
           {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
@@ -32,77 +24,38 @@
 
     <div class="col-md-4">
       <label class="form-label fw-bold">🔍 Search Services</label>
-      <input
-        type="text"
-        class="form-control shadow-sm"
-        placeholder="Filter by service type, cost, or date..."
-        [(ngModel)]="searchText"
-        (input)="filterServices()"
-      />
+      <input type="text" class="form-control shadow-sm" placeholder="Filter by service type, cost, or date..." [(ngModel)]="searchText" (input)="filterServices()" />
     </div>
 
-    <!-- Export Dropdown -->
-    <div class="col-md-4 text-end" style="position: relative; z-index: 1050">
+    <!-- Export Dropdown (Fixed Alignment) -->
+    <div class="col-md-4 text-md-end position-relative">
       <label class="form-label fw-bold d-block">📤 Export</label>
       <div class="btn-group">
-        <button
-          class="btn btn-primary dropdown-toggle shadow-sm"
-          type="button"
-          id="exportDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <button class="btn btn-primary dropdown-toggle shadow-sm" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           Export Data
         </button>
-        <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1051">
-          <li>
-            <a class="dropdown-item" (click)="exportToExcel()">
-              <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" (click)="exportToPDF()">
-              <i class="bi bi-file-earmark-pdf"></i> Export to PDF
-            </a>
-          </li>
+        <ul class="dropdown-menu dropdown-menu-end" style="position: absolute; z-index: 1051">
+          <li><a class="dropdown-item" (click)="exportToExcel()"><i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel</a></li>
+          <li><a class="dropdown-item" (click)="exportToPDF()"><i class="bi bi-file-earmark-pdf"></i> Export to PDF</a></li>
         </ul>
       </div>
     </div>
   </div>
 
   <!-- Vehicle Service Table with Scroll -->
-  <div class="table-responsive" style="max-height: 400px; overflow-y: auto">
-    <table class="table table-hover table-bordered text-center shadow-sm">
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover table-bordered table-striped text-center">
       <thead class="table-dark sticky-top">
         <tr>
           <th>#</th>
-          <th (click)="sortServices('serviceDate')" class="sortable">
-            📅 Date ⬍
-          </th>
-          <th
-            (click)="sortServices('vehicleRegistrationNumber')"
-            class="sortable"
-          >
-            🚗 Vehicle ⬍
-          </th>
-          <th (click)="sortServices('serviceType')" class="sortable">
-            🛠 Service Type ⬍
-          </th>
-          <th (click)="sortServices('serviceCost')" class="sortable">
-            💲 Service Cost (₹) ⬍
-          </th>
-          <th (click)="sortServices('serviceCenter')" class="sortable">
-            🏢 Service Center ⬍
-          </th>
-          <th (click)="sortServices('odometerReading')" class="sortable">
-            📏 Odometer Reading ⬍
-          </th>
-          <th (click)="sortServices('location')" class="sortable">
-            📍 Location ⬍
-          </th>
-          <th (click)="sortServices('nextServiceDue')" class="sortable">
-            ⏳ Next Service Due ⬍
-          </th>
+          <th (click)="sortServices('serviceDate')" class="sortable">📅 Date ⬍</th>
+          <th (click)="sortServices('vehicleRegistrationNumber')" class="sortable">🚗 Vehicle ⬍</th>
+          <th (click)="sortServices('serviceType')" class="sortable">🛠 Service Type ⬍</th>
+          <th (click)="sortServices('serviceCost')" class="sortable">💲 Service Cost (₹) ⬍</th>
+          <th (click)="sortServices('serviceCenter')" class="sortable">🏢 Service Center ⬍</th>
+          <th (click)="sortServices('odometerReading')" class="sortable">📏 Odometer Reading ⬍</th>
+          <th (click)="sortServices('location')" class="sortable">📍 Location ⬍</th>
+          <th (click)="sortServices('nextServiceDue')" class="sortable">⏳ Next Service Due ⬍</th>
         </tr>
       </thead>
       <tbody>
@@ -120,9 +73,7 @@
 
         <!-- No Data Found Row -->
         <tr *ngIf="filteredServices.length === 0">
-          <td colspan="9" class="text-center text-muted">
-            ⚠️ No service records found.
-          </td>
+          <td colspan="9" class="text-center text-muted">⚠️ No service records found.</td>
         </tr>
 
         <!-- Total Row -->
