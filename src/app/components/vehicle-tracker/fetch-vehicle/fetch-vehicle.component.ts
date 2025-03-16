@@ -18,10 +18,22 @@ export class FetchVehicleComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
   searchTerm: string = '';
+  userId!: number; // Non-null assertion operator
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
+    // Fetch userId from session storage (assuming it is stored there after login)
+    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
+
+    console.log('User ID from session:', this.userId); // Debugging line
+
+    if (!this.userId) {
+      // Handle case if userId is not found in session storage (e.g., redirect to login)
+      this.errorMessage = '❌ User is not authenticated.';
+      return;
+    }
+
     this.fetchVehicles();
   }
 
@@ -29,25 +41,35 @@ export class FetchVehicleComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
-      next: (response) => {
-        if (response.status === 'SUCCESS' && Array.isArray(response.data) && response.data.length > 0) {
-          this.vehicles = response.data;
-          this.filteredVehicles = [...this.vehicles]; // Ensure a separate copy
-        } else {
-          this.vehicles = [];
-          this.filteredVehicles = [];
-          this.errorMessage = '🚘 No vehicles registered in the system.';
-        }
-        console.log('Fetched Vehicles:', this.vehicles); // Debugging Log
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching vehicles:', error);
-        this.errorMessage = '❌ Failed to fetch vehicle data. Please try again later.';
-        this.isLoading = false;
-      },
-    });
+    // Modify URL to include the userId as query parameter
+    this.http
+      .get<any>(
+        `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${this.userId}`
+      )
+      .subscribe({
+        next: (response) => {
+          if (
+            response.status === 'SUCCESS' &&
+            Array.isArray(response.data) &&
+            response.data.length > 0
+          ) {
+            this.vehicles = response.data;
+            this.filteredVehicles = [...this.vehicles]; // Ensure a separate copy
+          } else {
+            this.vehicles = [];
+            this.filteredVehicles = [];
+            this.errorMessage = `🚘 No vehicles found for the user with ID: ${this.userId}`;
+          }
+          console.log('Fetched Vehicles:', this.vehicles); // Debugging Log
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching vehicles:', error);
+          this.errorMessage =
+            '❌ Failed to fetch vehicle data. Please try again later.';
+          this.isLoading = false;
+        },
+      });
   }
 
   deleteVehicle(vehicleId: number) {
@@ -55,20 +77,26 @@ export class FetchVehicleComponent implements OnInit {
       return;
     }
 
-    this.http.delete(`${API_URLS.DELETE_VEHICLE_ENDPOINT}?vehicleId=${vehicleId}`).subscribe({
-      next: (response: any) => {
-        if (response.status === 'SUCCESS') {
-          alert('✅ Vehicle deleted successfully!');
-          this.fetchVehicles();
-        } else {
-          alert('⚠️ Vehicle deletion failed.');
-        }
-      },
-      error: (error) => {
-        console.error('Error deleting vehicle:', error);
-        alert(error.status === 404 ? '⚠️ Vehicle not found.' : '❌ Failed to delete the vehicle. Please try again.');
-      },
-    });
+    this.http
+      .delete(`${API_URLS.DELETE_VEHICLE_ENDPOINT}?vehicleId=${vehicleId}`)
+      .subscribe({
+        next: (response: any) => {
+          if (response.status === 'SUCCESS') {
+            alert('✅ Vehicle deleted successfully!');
+            this.fetchVehicles();
+          } else {
+            alert('⚠️ Vehicle deletion failed.');
+          }
+        },
+        error: (error) => {
+          console.error('Error deleting vehicle:', error);
+          alert(
+            error.status === 404
+              ? '⚠️ Vehicle not found.'
+              : '❌ Failed to delete the vehicle. Please try again.'
+          );
+        },
+      });
   }
 
   updateVehicle(vehicle: any) {
@@ -84,13 +112,21 @@ export class FetchVehicleComponent implements OnInit {
       return;
     }
 
-    this.filteredVehicles = this.vehicles.filter(vehicle =>
-      (vehicle.vehicleModel?.toLowerCase() ?? '').includes(searchLower) ||
-      (vehicle.registrationNumber?.toLowerCase() ?? '').includes(searchLower) ||
-      (vehicle.vehicleCompany?.toLowerCase() ?? '').includes(searchLower)
+    this.filteredVehicles = this.vehicles.filter(
+      (vehicle) =>
+        (vehicle.vehicleModel?.toLowerCase() ?? '').includes(searchLower) ||
+        (vehicle.registrationNumber?.toLowerCase() ?? '').includes(
+          searchLower
+        ) ||
+        (vehicle.vehicleCompany?.toLowerCase() ?? '').includes(searchLower)
     );
 
-    console.log('Search Term:', this.searchTerm, 'Filtered Vehicles:', this.filteredVehicles); // Debugging Log
+    console.log(
+      'Search Term:',
+      this.searchTerm,
+      'Filtered Vehicles:',
+      this.filteredVehicles
+    ); // Debugging Log
   }
 
   goToVehicleTracker() {

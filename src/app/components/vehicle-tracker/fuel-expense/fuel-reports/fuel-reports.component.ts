@@ -23,6 +23,8 @@ export class FuelReportsComponent implements OnInit {
   paymentMode: string = '';
   location: string = '';
 
+  userId!: number; // Non-null assertion operator
+
   constructor(
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
@@ -30,15 +32,19 @@ export class FuelReportsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Fetch userId from session storage (assuming it is stored there after login)
+    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
     this.loadVehicles();
     this.loadFuelExpenses();
   }
 
   loadVehicles(): void {
-    this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
+    const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${this.userId}`;
+
+    this.http.get<any>(url).subscribe({
       next: (response) => {
         this.vehicles = response.data || response;
-        this.cdr.detectChanges();
+        this.cdr.detectChanges(); // Force UI update
       },
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
@@ -62,7 +68,8 @@ export class FuelReportsComponent implements OnInit {
       const matchesPaymentMode =
         !this.paymentMode || expense.paymentMode === this.paymentMode;
       const matchesLocation =
-        !this.location || expense.location.toLowerCase().includes(this.location.toLowerCase());
+        !this.location ||
+        expense.location.toLowerCase().includes(this.location.toLowerCase());
 
       // Convert date strings to Date objects for comparison
       const expenseDate = new Date(expense.date);
@@ -72,7 +79,12 @@ export class FuelReportsComponent implements OnInit {
       const matchesDateRange =
         (!start || expenseDate >= start) && (!end || expenseDate <= end);
 
-      return matchesVehicle && matchesDateRange && matchesPaymentMode && matchesLocation;
+      return (
+        matchesVehicle &&
+        matchesDateRange &&
+        matchesPaymentMode &&
+        matchesLocation
+      );
     });
 
     this.cdr.detectChanges();

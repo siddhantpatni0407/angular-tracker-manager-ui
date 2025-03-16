@@ -35,6 +35,8 @@ export class RegisterVehicleComponent {
 
   registerVehicle() {
     this.submitted = true;
+
+    // Check if registration number is valid
     this.registrationError = !this.validateRegistrationNumber();
 
     // Check mandatory fields
@@ -54,27 +56,43 @@ export class RegisterVehicleComponent {
       return;
     }
 
+    // Retrieve userId from session storage
+    const userId = sessionStorage.getItem('userId');
+
+    if (!userId) {
+      this.errorMessage = '❌ User ID not found. Please log in again.';
+      return;
+    }
+
+    // Add userId to vehicleData before sending
+    this.vehicleData.userId = parseInt(userId, 10);
+
+    // Start loading state
     this.isLoading = true;
     this.successMessage = '';
     this.errorMessage = '';
 
-    this.http.post(API_URLS.VEHICLE_REGISTRATION_ENDPOINT, this.vehicleData).subscribe({
-      next: (response: any) => {
-        if (response.status === 'SUCCESS') {
-          this.successMessage = 'Vehicle registered successfully!';
-          this.resetForm();
-          this.submitted = false;
-        } else {
-          this.errorMessage = '⚠️ Failed to register the vehicle.';
-        }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error registering vehicle:', error);
-        this.errorMessage = '❌ Failed to register the vehicle. Please try again.';
-        this.isLoading = false;
-      },
-    });
+    // Send registration request to API
+    this.http
+      .post(API_URLS.VEHICLE_REGISTRATION_ENDPOINT, this.vehicleData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.status === 'SUCCESS') {
+            this.successMessage = 'Vehicle registered successfully!';
+            this.resetForm();
+            this.submitted = false;
+          } else {
+            this.errorMessage = '⚠️ Failed to register the vehicle.';
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error registering vehicle:', error);
+          this.errorMessage =
+            '❌ Failed to register the vehicle. Please try again.';
+          this.isLoading = false;
+        },
+      });
   }
 
   validateRegistrationNumber(): boolean {

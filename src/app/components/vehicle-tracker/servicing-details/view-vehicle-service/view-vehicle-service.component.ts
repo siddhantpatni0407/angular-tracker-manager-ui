@@ -1,28 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { VehicleService } from '../../../../services/vehicle.service';
-import * as XLSX from 'xlsx';
 import { API_URLS } from '../../../../constants/api.constants';
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
-  selector: 'app-view-fuel-expense',
+  selector: 'app-view-vehicle-service',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './view-fuel-expense.component.html',
-  styleUrls: ['./view-fuel-expense.component.css'],
+  templateUrl: './view-vehicle-service.component.html',
+  styleUrls: ['./view-vehicle-service.component.css'],
 })
-export class ViewFuelExpenseComponent implements OnInit {
+export class ViewVehicleServiceComponent implements OnInit {
   vehicles: any[] = [];
-  fuelExpenses: any[] = [];
-  filteredExpenses: any[] = [];
+  vehicleServices: any[] = [];
+  filteredServices: any[] = [];
   selectedVehicleId: string = '';
   selectedRegistrationNumber: string = '';
 
-  userId!: number; // Non-null assertion operator
+  userId!: number;
 
   constructor(
     private vehicleService: VehicleService,
@@ -31,31 +33,27 @@ export class ViewFuelExpenseComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  searchText: string = ''; // ✅ For filtering
+  searchText: string = '';
 
-  sortColumn: string = ''; // ✅ Column being sorted
-  sortDirection: string = 'asc'; // ✅ Sorting order (asc or desc)
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
-    this.loadVehicles(this.userId); // Passing userId as a number
+    this.userId = Number(sessionStorage.getItem('userId'));
+    this.loadVehicles(this.userId);
   }
 
   loadVehicles(userId: number): void {
-    // Changed userId type to number
     const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${userId}`;
-
     this.http.get<any>(url).subscribe({
       next: (response) => {
-        console.log('🚗 Vehicles API Response:', response);
         this.vehicles = response.data || response;
-        this.cdr.detectChanges(); // ✅ Force UI update
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('❌ Error loading vehicles:', err),
+      error: (err) => console.error('Error loading vehicles:', err),
     });
   }
 
-  // Update selected vehicle and fetch expenses
   updateSelectedVehicle(): void {
     const selectedVehicle = this.vehicles.find(
       (v) => v.vehicleId == this.selectedVehicleId
@@ -63,66 +61,60 @@ export class ViewFuelExpenseComponent implements OnInit {
     this.selectedRegistrationNumber = selectedVehicle
       ? selectedVehicle.registrationNumber
       : '';
-
-    console.log('✅ Selected Vehicle ID:', this.selectedVehicleId);
-    console.log(
-      '✅ Selected Registration Number:',
-      this.selectedRegistrationNumber
-    );
-
-    this.fetchFuelExpenses();
+    this.fetchVehicleServices();
   }
 
-  fetchFuelExpenses(): void {
+  fetchVehicleServices(): void {
     if (!this.selectedVehicleId || !this.selectedRegistrationNumber) {
-      this.filteredExpenses = [];
+      this.filteredServices = [];
       return;
     }
 
-    const url = `${API_URLS.VEHICLE_FUEL_EXPENSE_ENDPOINT}?vehicleId=${this.selectedVehicleId}&registrationNumber=${this.selectedRegistrationNumber}`;
-
+    const url = `${API_URLS.VEHICLE_SERVICING_ENDPOINT}?vehicleId=${this.selectedVehicleId}`;
     this.http.get<any>(url).subscribe({
       next: (response) => {
-        this.fuelExpenses = response.status === 'SUCCESS' ? response.data : [];
-        this.filterExpenses(); // ✅ Apply filtering on initial data load
+        this.vehicleServices =
+          response.status === 'SUCCESS' ? response.data : [];
+        this.filterServices();
       },
       error: () => {
-        this.fuelExpenses = [];
-        this.filteredExpenses = [];
+        this.vehicleServices = [];
+        this.filteredServices = [];
       },
     });
   }
 
-  // Calculate total quantity and amount
-  getTotalQuantity(): string {
-    const total = this.filteredExpenses.reduce(
-      (sum, expense) => sum + Number(expense.quantity),
+  getTotalServiceCost(): string {
+    const total = this.filteredServices.reduce(
+      (sum, service) => sum + service.serviceCost,
       0
     );
-
-    const roundedTotal = Math.round(total * 100) / 100;
-
-    return roundedTotal.toFixed(2);
+    return total.toFixed(2);
   }
 
-  getTotalAmount(): string {
-    const total = this.filteredExpenses.reduce(
-      (sum, expense) => sum + expense.amount,
-      0
+  filterServices(): void {
+    const searchLower = this.searchText.toLowerCase();
+
+    this.filteredServices = this.vehicleServices.filter(
+      (service) =>
+        service.serviceType?.toLowerCase().includes(searchLower) ||
+        service.serviceCenter?.toLowerCase().includes(searchLower) ||
+        service.serviceDate?.toLowerCase().includes(searchLower) ||
+        service.odometerReading?.toString().includes(searchLower) ||
+        service.location?.toLowerCase().includes(searchLower) ||
+        service.nextServiceDue?.toLowerCase().includes(searchLower)
     );
-    return total.toFixed(2); // Ensures exactly two decimal places
   }
 
-  sortExpenses(column: string): void {
+  sortServices(column: string): void {
     if (this.sortColumn === column) {
-      // Toggle between ascending and descending order
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
       this.sortColumn = column;
       this.sortDirection = 'asc';
     }
 
-    this.filteredExpenses.sort((a, b) => {
+    this.filteredServices.sort((a, b) => {
       let valueA = a[column];
       let valueB = b[column];
 
@@ -137,30 +129,23 @@ export class ViewFuelExpenseComponent implements OnInit {
     });
   }
 
-  filterExpenses(): void {
-    const searchLower = this.searchText.toLowerCase();
-
-    this.filteredExpenses = this.fuelExpenses.filter(
-      (expense) =>
-        expense.location?.toLowerCase().includes(searchLower) ||
-        expense.paymentMode?.toLowerCase().includes(searchLower) ||
-        expense.fuelFilledDate?.toLowerCase().includes(searchLower)
-    );
+  getVehicleRegistrationNumber(vehicleId: string): string {
+    const vehicle = this.vehicles.find((v) => v.vehicleId === vehicleId);
+    return vehicle ? vehicle.registrationNumber : 'Unknown';
   }
 
-  // ✅ Export Table Data to Excel with Auto Column Widths, Borders & Table Style
   exportToExcel(): void {
     const currentDate = new Date();
     const formattedDate = currentDate
       .toISOString()
       .replace(/[-T:]/g, '')
       .split('.')[0]; // YYYYMMDD_HHMMSS format
-    const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.xlsx`;
+    const fileName = `Vehicle_Service_${this.selectedRegistrationNumber}_${formattedDate}.xlsx`;
 
     const sheetData: any[] = [
       [
         {
-          v: `Fuel Expense - ${this.selectedRegistrationNumber}`,
+          v: `Vehicle Service - ${this.selectedRegistrationNumber}`,
           t: 's',
           s: {
             font: { bold: true, sz: 14, color: { rgb: '500050' } },
@@ -176,27 +161,27 @@ export class ViewFuelExpenseComponent implements OnInit {
         },
       ],
       [
-        'Date',
+        'Service Date',
         'Vehicle',
-        'Quantity (L)',
-        'Rate (₹)',
-        'Amount (₹)',
-        'Odometer',
+        'Service Type',
+        'Service Cost (₹)',
+        'Service Center',
+        'Odometer Reading',
         'Location',
-        'Payment Mode',
+        'Next Service Due',
       ],
     ];
 
-    this.filteredExpenses.forEach((expense) => {
+    this.filteredServices.forEach((service) => {
       sheetData.push([
-        expense.fuelFilledDate,
-        expense.vehicleRegistrationNumber,
-        expense.quantity,
-        expense.rate,
-        expense.amount,
-        expense.odometerReading,
-        expense.location,
-        expense.paymentMode,
+        service.serviceDate,
+        service.vehicleRegistrationNumber,
+        service.serviceType,
+        service.serviceCost,
+        service.serviceCenter,
+        service.odometerReading,
+        service.location,
+        service.nextServiceDue,
       ]);
     });
 
@@ -204,9 +189,9 @@ export class ViewFuelExpenseComponent implements OnInit {
     sheetData.push([
       'Total',
       '',
-      this.getTotalQuantity(),
       '',
-      this.getTotalAmount(),
+      this.getTotalServiceCost(),
+      '',
       '',
       '',
       '',
@@ -248,15 +233,14 @@ export class ViewFuelExpenseComponent implements OnInit {
 
     // Create and append the workbook
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Fuel Expenses');
+    XLSX.utils.book_append_sheet(wb, ws, 'Vehicle Service');
     XLSX.writeFile(wb, fileName);
   }
 
-  // ✅ Export Table Data to PDF with Full Page Borders & Styled Table
   exportToPDF(): void {
     const currentDate = new Date();
     const formattedDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-    const fileName = `Fuel_Expense_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
+    const fileName = `Vehicle_Service_${this.selectedRegistrationNumber}_${formattedDate}.pdf`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {
@@ -264,7 +248,7 @@ export class ViewFuelExpenseComponent implements OnInit {
         const pageWidth = doc.internal.pageSize.width;
 
         // ✅ Header Text (Centered)
-        const headerText = `Fuel Expense - ${this.selectedRegistrationNumber}`;
+        const headerText = `Vehicle Service - ${this.selectedRegistrationNumber}`;
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(18);
         doc.setTextColor(80, 0, 80); // Dark Purple
@@ -280,16 +264,17 @@ export class ViewFuelExpenseComponent implements OnInit {
         doc.setFillColor(186, 146, 213); // Light Purple
         doc.rect(10, 18, pageWidth - 20, 10, 'F'); // Header Background
 
-        const tableData = this.filteredExpenses.map((expense, index) => [
+        // Map service data with vehicle registration number
+        const tableData = this.filteredServices.map((service, index) => [
           index + 1,
-          expense.fuelFilledDate,
-          expense.vehicleRegistrationNumber,
-          expense.quantity,
-          expense.rate,
-          expense.amount,
-          expense.odometerReading,
-          expense.location,
-          expense.paymentMode,
+          service.serviceDate,
+          this.getVehicleRegistrationNumber(service.vehicleId), // Ensure vehicle registration is fetched correctly
+          service.serviceType,
+          service.serviceCost,
+          service.serviceCenter,
+          service.odometerReading,
+          service.location,
+          service.nextServiceDue,
         ]);
 
         // ✅ Append Total Row (Only Bold, No Background Highlight)
@@ -297,9 +282,9 @@ export class ViewFuelExpenseComponent implements OnInit {
           '',
           'Total',
           '',
-          this.getTotalQuantity(),
           '',
-          this.getTotalAmount(),
+          this.getTotalServiceCost(),
+          '',
           '',
           '',
           '',
@@ -310,14 +295,14 @@ export class ViewFuelExpenseComponent implements OnInit {
           head: [
             [
               '#',
-              'Date',
+              'Service Date',
               'Vehicle',
-              'Quantity (L)',
-              'Rate (₹)',
-              'Amount (₹)',
-              'Odometer',
+              'Service Type',
+              'Service Cost (₹)',
+              'Service Center',
+              'Odometer Reading',
               'Location',
-              'Payment Mode',
+              'Next Service Due',
             ],
           ],
           body: tableData,
@@ -382,8 +367,7 @@ export class ViewFuelExpenseComponent implements OnInit {
     });
   }
 
-  // Navigate back to Fuel Expense Dashboard
-  goBack() {
-    this.router.navigate(['/fuel-expense']);
+  goBack(): void {
+    this.router.navigate(['/servicing-details']);
   }
 }

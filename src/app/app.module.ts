@@ -24,6 +24,9 @@ import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expen
 import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/fuel-reports/fuel-reports.component';
 import { StockMarketTrackerComponent } from './components/stock-market-tracker/stock-market-tracker.component';
 import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty-stock-data/nifty-stock-data.component';
+import { ServicingDetailsComponent } from './components/vehicle-tracker/servicing-details/servicing-details.component';
+import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
+import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty
     ViewFuelExpenseComponent,
     FuelStatisticsComponent,
     FuelReportsComponent,
+    ServicingDetailsComponent,
+    AddVehicleServiceComponent,
+    ViewVehicleServiceComponent,
     ReactiveFormsModule
   ],
   imports: [

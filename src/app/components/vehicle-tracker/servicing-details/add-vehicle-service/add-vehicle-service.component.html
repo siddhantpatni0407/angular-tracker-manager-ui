@@ -1,0 +1,99 @@
+<div class="container mt-5 position-relative fade-in">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="fw-bold text-primary">
+        <i class="bi bi-car-service"></i> Add Vehicle Servicing
+      </h2>
+
+      <!-- Back to Dashboard Button -->
+      <button class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4 back-btn" (click)="goBack()">
+        <i class="bi bi-arrow-left-circle"></i> Back
+      </button>
+    </div>
+
+    <!-- Form Section -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg rounded-lg custom-card">
+          <!-- Card Header -->
+          <div class="card-header bg-gradient-to-r from-primary to-teal text-white text-center py-4">
+            <h4>Vehicle Servicing Entry</h4>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="servicingForm" (ngSubmit)="submitServicing()">
+              <!-- Vehicle Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">🚗 Select Vehicle</label>
+                <select formControlName="vehicleId" class="form-select custom-select">
+                  <option value="" disabled selected>-- Select a vehicle --</option>
+                  <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+                    {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Service Date -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">📅 Service Date</label>
+                <input type="date" class="form-control custom-input" formControlName="serviceDate" />
+              </div>
+
+              <!-- Odometer Reading -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">📏 Odometer Reading</label>
+                <input type="number" class="form-control custom-input" formControlName="odometerReading" />
+              </div>
+
+              <!-- Service Type -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">🛠️ Service Type</label>
+                <input type="text" class="form-control custom-input" formControlName="serviceType" />
+              </div>
+
+              <!-- Service Center -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">🏢 Service Center</label>
+                <input type="text" class="form-control custom-input" formControlName="serviceCenter" />
+              </div>
+
+              <!-- Service Manager -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">👨‍🔧 Service Manager</label>
+                <input type="text" class="form-control custom-input" formControlName="serviceManager" />
+              </div>
+
+              <!-- Location -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">📍 Location</label>
+                <input type="text" class="form-control custom-input" formControlName="location" />
+              </div>
+
+              <!-- Next Service Due -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">📅 Next Service Due</label>
+                <input type="date" class="form-control custom-input" formControlName="nextServiceDue" />
+              </div>
+
+              <!-- Service Cost -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">💰 Service Cost</label>
+                <input type="number" class="form-control custom-input" formControlName="serviceCost" />
+              </div>
+
+              <!-- Remarks -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">📝 Remarks</label>
+                <textarea class="form-control custom-input" formControlName="remarks"></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 animated-btn" [disabled]="servicingForm.invalid">
+                ✅ Save Vehicle Servicing
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
