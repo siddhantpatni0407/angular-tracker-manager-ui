@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container">
     <!-- Home Link -->
-    <a class="navbar-brand fw-bold fs-4" routerLink="/">
-      🏠 Home
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" routerLink="/">
+      <i class="bi bi-house-door-fill me-2"></i> Home
     </a>
 
     <!-- Centered Tracker Manager Title -->
-    <a class="navbar-brand fw-bold fs-4 mx-auto title-highlight" routerLink="/">
-      📊 Tracker Manager
+    <a class="navbar-brand fw-bold fs-4 mx-auto title-highlight d-flex align-items-center" routerLink="/">
+      <i class="bi bi-speedometer2 me-2"></i> Tracker Manager
     </a>
 
     <!-- Mobile Toggle Button -->
@@ -21,41 +21,43 @@
     </button>
 
     <!-- Navigation Links -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto"> <!-- Use ms-auto to push content to the right -->
+        <!-- Date, Refresh, and Dark Mode Toggle -->
+        <li class="nav-item d-flex align-items-center me-3">
+          <div class="date-display d-flex align-items-center">
+            <i class="bi bi-calendar-event me-2"></i> {{ currentDate | date: 'medium' }}
+          </div>
+        </li>
+
+        <li class="nav-item d-flex align-items-center me-3">
+          <button
+            class="btn refresh-btn d-flex align-items-center"
+            (click)="refreshPage()"
+            title="Refresh Page"
+          >
+            <i class="bi bi-arrow-repeat fs-5"></i>
+          </button>
+        </li>
+
+        <li class="nav-item d-flex align-items-center me-3">
+          <button
+            class="btn mode-toggle d-flex align-items-center"
+            (click)="toggleDarkMode()"
+            title="Toggle Dark Mode"
+          >
+            <i class="bi bi-moon-fill fs-5" *ngIf="isDarkMode"></i>
+            <i class="bi bi-sun-fill fs-5" *ngIf="!isDarkMode"></i>
+          </button>
+        </li>
+
         <!-- Logout Button (Only if Logged In) -->
         <li class="nav-item" *ngIf="isLoggedIn">
-          <a class="nav-link fw-semibold logout-btn" (click)="logout()">
-            🚪 Logout
+          <a class="nav-link fw-semibold logout-btn d-flex align-items-center" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
           </a>
         </li>
       </ul>
-    </div>
-
-    <!-- Date, Refresh, and Dark Mode Toggle -->
-    <div class="d-flex align-items-center">
-      <div class="date-display me-3">
-        📅 {{ currentDate | date: 'medium' }}
-      </div>
-
-      <!-- Refresh Button -->
-      <button
-        class="btn refresh-btn me-3"
-        (click)="refreshPage()"
-        title="Refresh Page"
-      >
-        <i class="bi bi-arrow-repeat fs-5"></i>
-      </button>
-
-      <!-- Dark Mode Toggle -->
-      <button
-        class="btn mode-toggle"
-        (click)="toggleDarkMode()"
-        title="Toggle Dark Mode"
-      >
-        <i class="bi bi-moon-fill fs-5" *ngIf="isDarkMode"></i>
-        <i class="bi bi-sun-fill fs-5" *ngIf="!isDarkMode"></i>
-      </button>
     </div>
   </div>
 </nav>
