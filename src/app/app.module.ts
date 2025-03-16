@@ -23,7 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FuelStatisticsComponent } from './components/vehicle-tracker/fuel-expense/fuel-statistics/fuel-statistics.component';
 import { FuelReportsComponent } from './components/vehicle-tracker/fuel-expense/fuel-reports/fuel-reports.component';
 import { StockMarketTrackerComponent } from './components/stock-market-tracker/stock-market-tracker.component';
-import { Nifty50StocksDataComponent } from './components/stock-market-tracker/nifty-50-stocks-data/nifty-50-stocks-data.component';
+import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty-stock-data/nifty-stock-data.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { Nifty50StocksDataComponent } from './components/stock-market-tracker/ni
     MedicalTrackerComponent, // Added Medical Tracker component
     VehicleTrackerComponent, // Added Vehicle Tracker component
     StockMarketTrackerComponent,
-    Nifty50StocksDataComponent,
+    NiftyStockDataComponent,
     RegisterVehicleComponent,
     FetchVehicleComponent,
     UpdateUserComponent,

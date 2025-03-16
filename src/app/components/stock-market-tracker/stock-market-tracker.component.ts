@@ -13,7 +13,7 @@ export class StockMarketTrackerComponent {
     this.router.navigate(['/dashboard']);
   }
 
-  viewNifty50Data() {
-    this.router.navigate(['/nifty-50-data']);
+  viewNiftyStockData() {
+    this.router.navigate(['/nifty-stock-data']);
   }
 }

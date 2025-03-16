@@ -12,10 +12,10 @@ import { API_URLS } from '../../../constants/api.constants';
   selector: 'app-nifty-50-stocks-data',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './nifty-50-stocks-data.component.html',
-  styleUrls: ['./nifty-50-stocks-data.component.css'],
+  templateUrl: './nifty-stock-data.component.html',
+  styleUrls: ['./nifty-stock-data.component.css'],
 })
-export class Nifty50StocksDataComponent implements OnInit {
+export class NiftyStockDataComponent implements OnInit {
   stocks: any[] = [];
   filteredStocks: any[] = [];
   filterText: string = '';
@@ -243,7 +243,7 @@ export class Nifty50StocksDataComponent implements OnInit {
       .toISOString()
       .replace(/[-T:]/g, '')
       .split('.')[0]; // YYYYMMDD_HHMMSS format
-    const fileName = `Nifty_50_Stock_Data_${formattedDate}.xlsx`;
+    const fileName = `Nifty_Stock_Data_${formattedDate}.xlsx`;
 
     const sheetData: any[] = [
       [
@@ -347,7 +347,7 @@ export class Nifty50StocksDataComponent implements OnInit {
   exportToPDF(): void {
     const currentDate = new Date();
     const formattedDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-    const fileName = `Nifty_50_Stock_Data_${formattedDate}.pdf`;
+    const fileName = `Nifty_Stock_Data_${formattedDate}.pdf`;
 
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then((autoTable) => {

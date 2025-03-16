@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Nifty50StocksDataComponent } from './nifty-50-stocks-data.component';
+import { NiftyStockDataComponent } from './nifty-stock-data.component';
 
 describe('Nifty50StocksDataComponent', () => {
-  let component: Nifty50StocksDataComponent;
-  let fixture: ComponentFixture<Nifty50StocksDataComponent>;
+  let component: NiftyStockDataComponent;
+  let fixture: ComponentFixture<NiftyStockDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Nifty50StocksDataComponent]
+      imports: [NiftyStockDataComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Nifty50StocksDataComponent);
+    fixture = TestBed.createComponent(NiftyStockDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
