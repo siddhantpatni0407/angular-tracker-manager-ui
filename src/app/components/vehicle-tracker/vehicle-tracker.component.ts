@@ -27,8 +27,7 @@ export class VehicleTrackerComponent {
   }
 
   viewServicingDetails() {
-    this.router.navigate(['/vehicle-tracker']);
-    //this.router.navigate(['/servicing-details']);
+    this.router.navigate(['/servicing-details']);
   }
 
   viewTyreDetails() {
