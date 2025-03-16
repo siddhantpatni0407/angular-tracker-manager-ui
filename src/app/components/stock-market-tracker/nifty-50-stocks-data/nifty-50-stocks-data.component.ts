@@ -26,23 +26,26 @@ export class Nifty50StocksDataComponent implements OnInit {
   selectedColumns: string[] = [
     'priority',
     'symbol',
+    'companyName',
+    'industry',
+    //'listingDate',
     'open',
     'previousClose',
-    'yearHigh',
-    'yearLow',
+    //'yearHigh',
+    //'yearLow',
     'dayHigh',
     'dayLow',
     'lastPrice',
     'lastUpdateTime',
     'chartTodayPath',
-    'change',
-    'totalTradedVolume',
-    'totalTradedValue',
-    'ffmc',
-    'nearWKH',
-    'nearWKL',
-    'perChange365d',
-    'perChange30d',
+    //'change',
+    //'totalTradedVolume',
+    //'totalTradedValue',
+    //'ffmc',
+    //'nearWKH',
+    //'nearWKL',
+    //'perChange365d',
+    //'perChange30d',
   ]; // Default selected columns
 
   allColumns: { value: string; label: string }[] = [
@@ -91,11 +94,11 @@ export class Nifty50StocksDataComponent implements OnInit {
   fetchStockData(): void {
     this.isLoading = true;
     this.apiResponseMessage = '';
-  
+
     const params = new HttpParams()
       .set('index', 'NIFTY 50')
       .set('timestamp', Date.now().toString());
-  
+
     this.http.get<any>(this.apiUrl, { params }).subscribe(
       (response) => {
         console.log('Backend Response:', response);
@@ -138,7 +141,8 @@ export class Nifty50StocksDataComponent implements OnInit {
       (error) => {
         console.error('Error fetching stock data:', error);
         this.isLoading = false;
-        this.apiResponseMessage = 'Error fetching stock data. Please try again.';
+        this.apiResponseMessage =
+          'Error fetching stock data. Please try again.';
         this.clearMessageAfterTimeout();
       }
     );
