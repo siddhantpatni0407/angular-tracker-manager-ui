@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { VehicleService } from '../../../../services/vehicle.service';
@@ -16,6 +22,7 @@ import { API_URLS } from '../../../../constants/api.constants';
 export class AddFuelExpenseComponent implements OnInit {
   fuelExpenseForm!: FormGroup;
   vehicles: any[] = [];
+  userId!: number; // Non-null assertion operator
 
   constructor(
     private vehicleService: VehicleService,
@@ -25,14 +32,20 @@ export class AddFuelExpenseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Fetch userId from session storage (assuming it is stored there after login)
+    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
     this.loadVehicles();
     this.initForm();
   }
 
-  // Load vehicle list from backend
-  private loadVehicles() {
-    this.vehicleService.getVehicles().subscribe({
-      next: (vehicles) => (this.vehicles = vehicles),
+  // Load vehicle list associated with the current user
+  private loadVehicles(): void {
+    const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${this.userId}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        this.vehicles = response.data || response;
+      },
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
   }
@@ -51,8 +64,12 @@ export class AddFuelExpenseComponent implements OnInit {
     });
 
     // Auto-calculate amount (Quantity * Rate)
-    this.fuelExpenseForm.get('quantity')?.valueChanges.subscribe(() => this.updateAmount());
-    this.fuelExpenseForm.get('rate')?.valueChanges.subscribe(() => this.updateAmount());
+    this.fuelExpenseForm
+      .get('quantity')
+      ?.valueChanges.subscribe(() => this.updateAmount());
+    this.fuelExpenseForm
+      .get('rate')
+      ?.valueChanges.subscribe(() => this.updateAmount());
   }
 
   // Calculate amount dynamically
@@ -84,7 +101,9 @@ export class AddFuelExpenseComponent implements OnInit {
     this.trimLocation();
 
     const formData = this.fuelExpenseForm.getRawValue();
-    const selectedVehicle = this.vehicles.find(v => v.vehicleId === formData.vehicleId);
+    const selectedVehicle = this.vehicles.find(
+      (v) => v.vehicleId === formData.vehicleId
+    );
 
     const requestPayload = {
       vehicleId: formData.vehicleId,
@@ -95,24 +114,30 @@ export class AddFuelExpenseComponent implements OnInit {
       amount: formData.amount,
       odometerReading: formData.odometerReading,
       location: formData.location,
-      paymentMode: formData.paymentMode
+      paymentMode: formData.paymentMode,
     };
 
     console.log('🚀 Sending Fuel Expense Data:', requestPayload);
 
     // Call the backend API
-    this.http.post(`${API_URLS.VEHICLE_FUEL_EXPENSE_ENDPOINT}`, requestPayload).subscribe({
-      next: (response: any) => {
-        console.log('✅ Fuel expense added successfully:', response);
-        alert('✅ Fuel expense recorded successfully!');
-        this.fuelExpenseForm.reset();
-        this.fuelExpenseForm.patchValue({ amount: '' }); // Keep amount field disabled
-        this.router.navigate(['/fuel-expense']);
-      },
-      error: (error) => {
-        console.error('❌ Error adding fuel expense:', error);
-        alert(`❌ Failed to record fuel expense: ${error.error?.message || 'Something went wrong'}`);
-      }
-    });
+    this.http
+      .post(`${API_URLS.VEHICLE_FUEL_EXPENSE_ENDPOINT}`, requestPayload)
+      .subscribe({
+        next: (response: any) => {
+          console.log('✅ Fuel expense added successfully:', response);
+          alert('✅ Fuel expense recorded successfully!');
+          this.fuelExpenseForm.reset();
+          this.fuelExpenseForm.patchValue({ amount: '' }); // Keep amount field disabled
+          this.router.navigate(['/fuel-expense']);
+        },
+        error: (error) => {
+          console.error('❌ Error adding fuel expense:', error);
+          alert(
+            `❌ Failed to record fuel expense: ${
+              error.error?.message || 'Something went wrong'
+            }`
+          );
+        },
+      });
   }
 }
