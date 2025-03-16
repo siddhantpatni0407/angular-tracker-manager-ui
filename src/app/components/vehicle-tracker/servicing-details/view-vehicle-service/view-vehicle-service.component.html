@@ -1,9 +1,8 @@
+<!-- HTML -->
 <div class="container mt-4">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <button class="btn btn-outline-primary" (click)="goBack()">
-        ⬅ Back to Fuel Expense
-      </button>
+      <button class="btn btn-outline-primary" (click)="goBack()">⬅ Back to Fuel Expense</button>
       <h2 class="text-primary fw-bold">
         <i class="bi bi-tools"></i> Vehicle Service Records
       </h2>
@@ -13,9 +12,7 @@
     <!-- Vehicle Selection & Filter Input -->
     <div class="row g-3 align-items-center">
       <div class="col-md-4">
-        <label for="vehicleSelect" class="form-label fw-bold">
-          🚗 Select Vehicle
-        </label>
+        <label for="vehicleSelect" class="form-label fw-bold">🚗 Select Vehicle</label>
         <select
           class="form-select shadow-sm"
           id="vehicleSelect"
@@ -96,7 +93,7 @@
           <tr *ngFor="let service of filteredServices; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ service.serviceDate }}</td>
-            <td>{{ service.vehicleRegistrationNumber }}</td>
+            <td>{{ getVehicleRegistrationNumber(service.vehicleId) }}</td> <!-- Updated: show vehicle registration -->
             <td>{{ service.serviceType }}</td>
             <td>{{ service.serviceCost }}</td>
             <td>{{ service.serviceCenter }}</td>

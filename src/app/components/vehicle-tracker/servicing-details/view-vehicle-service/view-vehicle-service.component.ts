@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { VehicleService } from '../../../../services/vehicle.service';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable'; // Import the plugin correctly
-import * as XLSX from 'xlsx';
 import { API_URLS } from '../../../../constants/api.constants';
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-view-vehicle-service',
@@ -45,7 +45,6 @@ export class ViewVehicleServiceComponent implements OnInit {
 
   loadVehicles(userId: number): void {
     const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${userId}`;
-
     this.http.get<any>(url).subscribe({
       next: (response) => {
         this.vehicles = response.data || response;
@@ -62,7 +61,6 @@ export class ViewVehicleServiceComponent implements OnInit {
     this.selectedRegistrationNumber = selectedVehicle
       ? selectedVehicle.registrationNumber
       : '';
-
     this.fetchVehicleServices();
   }
 
@@ -72,8 +70,7 @@ export class ViewVehicleServiceComponent implements OnInit {
       return;
     }
 
-    const url = `${API_URLS.VEHICLE_SERVICING_ENDPOINT}?vehicleId=${this.selectedVehicleId}&registrationNumber=${this.selectedRegistrationNumber}`;
-
+    const url = `${API_URLS.VEHICLE_SERVICING_ENDPOINT}?vehicleId=${this.selectedVehicleId}`;
     this.http.get<any>(url).subscribe({
       next: (response) => {
         this.vehicleServices =
@@ -127,6 +124,11 @@ export class ViewVehicleServiceComponent implements OnInit {
         service.serviceCenter?.toLowerCase().includes(searchLower) ||
         service.serviceDate?.toLowerCase().includes(searchLower)
     );
+  }
+
+  getVehicleRegistrationNumber(vehicleId: string): string {
+    const vehicle = this.vehicles.find((v) => v.vehicleId === vehicleId);
+    return vehicle ? vehicle.registrationNumber : 'Unknown';
   }
 
   exportToExcel(): void {
@@ -244,10 +246,11 @@ export class ViewVehicleServiceComponent implements OnInit {
         doc.setFillColor(186, 146, 213); // Light Purple
         doc.rect(10, 18, pageWidth - 20, 10, 'F'); // Header Background
 
+        // Map service data with vehicle registration number
         const tableData = this.filteredServices.map((service, index) => [
           index + 1,
           service.serviceDate,
-          service.vehicleRegistrationNumber,
+          this.getVehicleRegistrationNumber(service.vehicleId), // Ensure vehicle registration is fetched correctly
           service.serviceType,
           service.serviceCost,
           service.serviceCenter,
