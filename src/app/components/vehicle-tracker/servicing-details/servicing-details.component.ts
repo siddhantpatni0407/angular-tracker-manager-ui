@@ -15,8 +15,8 @@ export class ServicingDetailsComponent {
   }
 
   // Navigate to view servicing page
-  navigateToViewServicing() {
-    this.router.navigate(['/view-servicing']);
+  navigateToViewVehicleService() {
+    this.router.navigate(['/view-vehicle-service']);
   }
 
   // Navigate to servicing statistics page

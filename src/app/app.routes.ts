@@ -19,6 +19,7 @@ import { StockMarketTrackerComponent } from './components/stock-market-tracker/s
 import { NiftyStockDataComponent } from './components/stock-market-tracker/nifty-stock-data/nifty-stock-data.component';
 import { ServicingDetailsComponent } from './components/vehicle-tracker/servicing-details/servicing-details.component';
 import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
+import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -40,6 +41,7 @@ export const appRoutes: Routes = [
   { path: 'fuel-reports', component: FuelReportsComponent, canActivate: [AuthGuard] },
   { path: 'servicing-details', component: ServicingDetailsComponent, canActivate: [AuthGuard] },
   { path: 'add-vehicle-service', component: AddVehicleServiceComponent, canActivate: [AuthGuard] },
+  { path: 'view-vehicle-service', component: ViewVehicleServiceComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];

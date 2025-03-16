@@ -99,3 +99,6 @@ This project is licensed under the MIT License.
 -   npm install file-saver xlsx --save
 -   npm install @types/file-saver --save-dev
 -   npm install @types/xlsx --save-dev
+-   npm install jspdf --save
+-   npm install jspdf-autotable --save
+

@@ -1,0 +1,122 @@
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-primary" (click)="goBack()">
+        ⬅ Back to Fuel Expense
+      </button>
+      <h2 class="text-primary fw-bold">
+        <i class="bi bi-tools"></i> Vehicle Service Records
+      </h2>
+      <div></div>
+    </div>
+  
+    <!-- Vehicle Selection & Filter Input -->
+    <div class="row g-3 align-items-center">
+      <div class="col-md-4">
+        <label for="vehicleSelect" class="form-label fw-bold">
+          🚗 Select Vehicle
+        </label>
+        <select
+          class="form-select shadow-sm"
+          id="vehicleSelect"
+          [(ngModel)]="selectedVehicleId"
+          (change)="updateSelectedVehicle()"
+        >
+          <option value="" selected>-- Select a vehicle --</option>
+          <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">
+            {{ vehicle.registrationNumber }} - {{ vehicle.vehicleModel }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="col-md-4">
+        <label class="form-label fw-bold">🔍 Search Services</label>
+        <input
+          type="text"
+          class="form-control shadow-sm"
+          placeholder="Filter by service type, cost, or date..."
+          [(ngModel)]="searchText"
+          (input)="filterServices()"
+        />
+      </div>
+  
+      <!-- Export Dropdown -->
+      <div class="col-md-4 text-end" style="position: relative; z-index: 1050">
+        <label class="form-label fw-bold d-block">📤 Export</label>
+        <div class="btn-group">
+          <button
+            class="btn btn-primary dropdown-toggle shadow-sm"
+            type="button"
+            id="exportDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Export Data
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1051">
+            <li>
+              <a class="dropdown-item" (click)="exportToExcel()">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="exportToPDF()">
+                <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Vehicle Service Table with Scroll -->
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+      <table class="table table-hover table-bordered text-center shadow-sm">
+        <thead class="table-dark sticky-top">
+          <tr>
+            <th>#</th>
+            <th (click)="sortServices('serviceDate')" class="sortable">
+              📅 Date ⬍
+            </th>
+            <th (click)="sortServices('vehicleRegistrationNumber')" class="sortable">
+              🚗 Vehicle ⬍
+            </th>
+            <th (click)="sortServices('serviceType')" class="sortable">
+              🛠 Service Type ⬍
+            </th>
+            <th (click)="sortServices('serviceCost')" class="sortable">
+              💲 Service Cost (₹) ⬍
+            </th>
+            <th (click)="sortServices('serviceCenter')" class="sortable">
+              🏢 Service Center ⬍
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of filteredServices; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ service.serviceDate }}</td>
+            <td>{{ service.vehicleRegistrationNumber }}</td>
+            <td>{{ service.serviceType }}</td>
+            <td>{{ service.serviceCost }}</td>
+            <td>{{ service.serviceCenter }}</td>
+          </tr>
+  
+          <!-- No Data Found Row -->
+          <tr *ngIf="filteredServices.length === 0">
+            <td colspan="6" class="text-center text-muted">
+              ⚠️ No service records found.
+            </td>
+          </tr>
+  
+          <!-- Total Row -->
+          <tr class="table-warning fw-bold" *ngIf="filteredServices.length > 0">
+            <td colspan="4">Total</td>
+            <td>{{ getTotalServiceCost() }}</td>
+            <td colspan="1"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
