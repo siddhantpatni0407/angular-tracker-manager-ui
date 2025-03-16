@@ -22,6 +22,8 @@ export class ViewFuelExpenseComponent implements OnInit {
   selectedVehicleId: string = '';
   selectedRegistrationNumber: string = '';
 
+  userId!: number; // Non-null assertion operator
+
   constructor(
     private vehicleService: VehicleService,
     private http: HttpClient,
@@ -35,11 +37,15 @@ export class ViewFuelExpenseComponent implements OnInit {
   sortDirection: string = 'asc'; // ✅ Sorting order (asc or desc)
 
   ngOnInit(): void {
-    this.loadVehicles();
+    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
+    this.loadVehicles(this.userId); // Passing userId as a number
   }
 
-  loadVehicles(): void {
-    this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
+  loadVehicles(userId: number): void {
+    // Changed userId type to number
+    const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${userId}`;
+
+    this.http.get<any>(url).subscribe({
       next: (response) => {
         console.log('🚗 Vehicles API Response:', response);
         this.vehicles = response.data || response;

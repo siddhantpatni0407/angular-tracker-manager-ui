@@ -23,18 +23,28 @@ export class FuelStatisticsComponent implements OnInit {
   totalQuantity: number = 0;
   averageRate: number = 0;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
+  userId!: number; // Non-null assertion operator
+
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    // Fetch userId from session storage (assuming it is stored there after login)
+    this.userId = Number(sessionStorage.getItem('userId')); // Adjust this based on how the userId is stored
     this.loadVehicles();
   }
 
   loadVehicles(): void {
-    this.http.get<any>(API_URLS.FETCH_ALL_VEHICLE_ENDPOINT).subscribe({
+    const url = `${API_URLS.FETCH_VEHICLES_BY_USER_ENDPOINT}?userId=${this.userId}`;
+
+    this.http.get<any>(url).subscribe({
       next: (response) => {
         console.log('🚗 Vehicles API Response:', response);
         this.vehicles = response.data || response;
-        this.cdr.detectChanges();
+        this.cdr.detectChanges(); // ✅ Force UI update
       },
       error: (err) => console.error('❌ Error loading vehicles:', err),
     });
@@ -48,7 +58,11 @@ export class FuelStatisticsComponent implements OnInit {
       ? selectedVehicle.registrationNumber
       : '';
 
-    console.log('✅ Selected Vehicle:', this.selectedVehicleId, this.selectedRegistrationNumber);
+    console.log(
+      '✅ Selected Vehicle:',
+      this.selectedVehicleId,
+      this.selectedRegistrationNumber
+    );
 
     this.fetchFuelExpenses();
   }
@@ -77,11 +91,18 @@ export class FuelStatisticsComponent implements OnInit {
   }
 
   updateFuelStats(): void {
-    this.totalAmount = this.fuelExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-    this.totalQuantity = this.fuelExpenses.reduce((sum, expense) => sum + expense.quantity, 0);
-    
+    this.totalAmount = this.fuelExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+    this.totalQuantity = this.fuelExpenses.reduce(
+      (sum, expense) => sum + expense.quantity,
+      0
+    );
+
     // ✅ Average Rate Calculation (Total Amount / Total Quantity)
-    this.averageRate = this.totalQuantity > 0 ? this.totalAmount / this.totalQuantity : 0;
+    this.averageRate =
+      this.totalQuantity > 0 ? this.totalAmount / this.totalQuantity : 0;
 
     console.log('📊 Updated Fuel Statistics:', {
       totalAmount: this.totalAmount,
@@ -91,7 +112,6 @@ export class FuelStatisticsComponent implements OnInit {
 
     this.cdr.detectChanges();
   }
-
 
   goBack(): void {
     this.router.navigate(['/fuel-expense']);

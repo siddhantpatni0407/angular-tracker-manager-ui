@@ -7,6 +7,7 @@ export const API_URLS = {
     VERIFY_OTP_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/auth/verify-otp',
     VEHICLE_REGISTRATION_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/register',
     FETCH_ALL_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/fetch',
+    FETCH_VEHICLES_BY_USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user-vehicle/fetch',
     DELETE_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle',
     UPDATE_VEHICLE_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle',
     FETCH_ALL_USERS_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/user/fetch',

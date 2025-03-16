@@ -52,8 +52,9 @@ export class LoginComponent {
         if (response.status === 'SUCCESS' && response.token) {
           // Store the token, role, and user name in sessionStorage
           sessionStorage.setItem('authToken', response.token);
+          sessionStorage.setItem('userId', response.userId);
           sessionStorage.setItem('userRole', response.role);
-          sessionStorage.setItem('userName', response.name);  // ✅ Store user name
+          sessionStorage.setItem('userName', response.name);  
   
           // Show success message
           this.successMessage = ` Welcome, ${response.name}! Redirecting...`;
@@ -109,6 +110,7 @@ export class LoginComponent {
           if (response.status === 'SUCCESS' && response.token) {
             sessionStorage.setItem('authToken', response.token);
             sessionStorage.setItem('userRole', response.role.toUpperCase());
+            sessionStorage.setItem('userId', response.userId);
             this.successMessage = '✅ Login successful! Redirecting...';
             setTimeout(
               () => this.redirectUser(response.role.toUpperCase()),
