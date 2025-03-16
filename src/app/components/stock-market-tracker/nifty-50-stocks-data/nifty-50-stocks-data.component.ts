@@ -75,6 +75,9 @@ export class Nifty50StocksDataComponent implements OnInit {
 
   private apiUrl = API_URLS.STOCK_MARKET_NIFTY_DATA_ENDPOINT;
 
+  indexOptions: string[] = ['NIFTY 50', 'NIFTY 100', 'NIFTY 200', 'NIFTY BANK'];
+  selectedIndex: string = 'NIFTY 50'; // Default selected index
+
   constructor(private http: HttpClient, private router: Router) {
     // Detects navigation back to this component and refreshes data
     this.router.events.subscribe((event) => {
@@ -91,12 +94,23 @@ export class Nifty50StocksDataComponent implements OnInit {
     this.fetchStockData();
   }
 
+  // Method to handle index change
+  onIndexChange(index: string): void {
+    this.selectedIndex = index;
+    this.fetchStockData(); // Fetch data with the new index
+  }
+
   fetchStockData(): void {
+    if (!this.selectedIndex) {
+      this.apiResponseMessage = 'Please select an index.';
+      return;
+    }
+
     this.isLoading = true;
     this.apiResponseMessage = '';
 
     const params = new HttpParams()
-      .set('index', 'NIFTY 50')
+      .set('index', this.selectedIndex) // Use the selected index
       .set('timestamp', Date.now().toString());
 
     this.http.get<any>(this.apiUrl, { params }).subscribe(
@@ -141,12 +155,12 @@ export class Nifty50StocksDataComponent implements OnInit {
       (error) => {
         console.error('Error fetching stock data:', error);
         this.isLoading = false;
-        this.apiResponseMessage =
-          'Error fetching stock data. Please try again.';
+        this.apiResponseMessage = 'Error fetching stock data. Please try again.';
         this.clearMessageAfterTimeout();
       }
     );
   }
+
 
   clearMessageAfterTimeout(): void {
     setTimeout(() => {

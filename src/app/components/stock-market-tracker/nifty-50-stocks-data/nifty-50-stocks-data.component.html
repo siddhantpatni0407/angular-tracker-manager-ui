@@ -7,6 +7,7 @@
     >
       ⬅️ Back
     </button>
+
     <div class="d-flex justify-content-center align-items-center mb-3">
       <img
         src="https://www.nseindia.com/assets/images/NSE_Logo.svg"
@@ -14,7 +15,9 @@
         width="100"
         class="me-3 shadow-sm"
       />
-      <h3 class="text-primary fw-bold m-0">NIFTY 50 - Stock Market Overview</h3>
+      <h3 class="text-primary fw-bold m-0">
+        {{ selectedIndex }} - Stock Market Overview
+      </h3>
     </div>
 
     <div class="d-flex gap-3">
@@ -22,7 +25,7 @@
       <button
         class="btn btn-success btn-lg d-flex align-items-center gap-2"
         (click)="fetchStockData()"
-        [disabled]="isLoading"
+        [disabled]="isLoading || !selectedIndex"
       >
         🔄 Refresh
       </button>
@@ -60,10 +63,10 @@
     </div>
   </div>
 
-  <!-- Filter Input & Column Configuration -->
+  <!-- Column Configuration, Index Dropdown, and Filter (No spaces between) -->
   <div class="row g-3 align-items-center mb-3">
-    <!-- Column Configuration on the left -->
     <div class="col-md-4">
+      <!-- Column Configuration -->
       <div class="btn-group">
         <button
           class="btn btn-primary dropdown-toggle"
@@ -84,9 +87,9 @@
               [checked]="areAllColumnsSelected()"
               (change)="toggleSelectAll($event)"
             />
-            <label class="form-check-label fw-bold" for="selectAll">
-              Select All
-            </label>
+            <label class="form-check-label fw-bold" for="selectAll"
+              >Select All</label
+            >
           </li>
           <li><hr class="dropdown-divider" /></li>
           <!-- Individual Column Options -->
@@ -100,16 +103,38 @@
               (change)="toggleColumnSelection(column.value, $event)"
               [disabled]="isMandatoryColumn(column.value)"
             />
-            <label class="form-check-label" [for]="column.value">
-              {{ column.label }}
-            </label>
+            <label class="form-check-label" [for]="column.value">{{
+              column.label
+            }}</label>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Filter Input slightly shifted left -->
-    <div class="col-md-5">
+    <div class="col-md-4">
+      <!-- Index Dropdown (Styled with Special Color) -->
+      <div class="dropdown">
+        <button
+          class="btn btn-custom-index dropdown-toggle"
+          type="button"
+          id="indexDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ selectedIndex || "Select Index" }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="indexDropdown">
+          <li *ngFor="let index of indexOptions">
+            <a class="dropdown-item" (click)="onIndexChange(index)">{{
+              index
+            }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <!-- Filter Input -->
       <div class="input-group">
         <span class="input-group-text bg-primary text-white">🔍</span>
         <input
@@ -124,19 +149,17 @@
   </div>
 
   <!-- API Response Message -->
-  <div class="col-md-3">
-    <div
-      *ngIf="apiResponseMessage"
-      [ngClass]="{
-        'text-success': apiResponseMessage.includes('successfully'),
-        'text-danger':
-          apiResponseMessage.includes('Error') ||
-          apiResponseMessage.includes('No stock data')
-      }"
-      class="response-message"
-    >
-      {{ apiResponseMessage }}
-    </div>
+  <div
+    *ngIf="apiResponseMessage"
+    class="response-message"
+    [ngClass]="{
+      'text-success': apiResponseMessage.includes('successfully'),
+      'text-danger':
+        apiResponseMessage.includes('Error') ||
+        apiResponseMessage.includes('No stock data')
+    }"
+  >
+    {{ apiResponseMessage }}
   </div>
 
   <!-- Loading Indicator -->
@@ -303,7 +326,7 @@
             </td>
             <td
               *ngIf="isColumnVisible('yearLow')"
-              class="text-warning fw-semibold"
+              class="text-info fw-semibold"
             >
               {{ stock.yearLow | number : "1.2-2" }}
             </td>
@@ -316,56 +339,38 @@
             <td
               *ngIf="isColumnVisible('lastPrice')"
               [ngClass]="{
-                'text-success fw-bold': stock.lastPrice >= stock.previousClose,
+                'text-success fw-bold': stock.lastPrice > stock.previousClose,
                 'text-danger fw-bold': stock.lastPrice < stock.previousClose
               }"
             >
               {{ stock.lastPrice | number : "1.2-2" }}
             </td>
             <td *ngIf="isColumnVisible('lastUpdateTime')">
-              {{ stock.lastUpdateTime }}
+              {{ stock.lastUpdateTime | date : "short" }}
             </td>
-            <td
-              *ngIf="isColumnVisible('change')"
-              [ngClass]="{
-                'text-success fw-bold': stock.change >= 0,
-                'text-danger fw-bold': stock.change < 0
-              }"
-            >
-              {{ stock.change | number : "1.2-2" }}
+            <td *ngIf="isColumnVisible('change')">
+              {{ stock.change | number : "1.2-2" }}%
             </td>
             <td *ngIf="isColumnVisible('totalTradedVolume')">
-              {{ stock.totalTradedVolume | number : "1.2-2" }}
+              {{ stock.totalTradedVolume | number }}
             </td>
             <td *ngIf="isColumnVisible('totalTradedValue')">
-              {{ stock.totalTradedValue | number : "1.2-2" }}
+              {{ stock.totalTradedValue | number : "1.0-0" }}
             </td>
             <td *ngIf="isColumnVisible('ffmc')">
               {{ stock.ffmc | number : "1.2-2" }}
             </td>
             <td *ngIf="isColumnVisible('nearWKH')">
-              {{ stock.nearWKH | number : "1.2-2" }}
+              {{ stock.nearWKH | percent }}
             </td>
             <td *ngIf="isColumnVisible('nearWKL')">
-              {{ stock.nearWKL | number : "1.2-2" }}
+              {{ stock.nearWKL | percent }}
             </td>
-            <td
-              *ngIf="isColumnVisible('perChange365d')"
-              [ngClass]="{
-                'text-success fw-bold': stock.perChange365d >= 0,
-                'text-danger fw-bold': stock.perChange365d < 0
-              }"
-            >
-              {{ stock.perChange365d | number : "1.2-2" }}%
+            <td *ngIf="isColumnVisible('perChange365d')">
+              {{ stock.perChange365d | percent }}
             </td>
-            <td
-              *ngIf="isColumnVisible('perChange30d')"
-              [ngClass]="{
-                'text-success fw-bold': stock.perChange30d >= 0,
-                'text-danger fw-bold': stock.perChange30d < 0
-              }"
-            >
-              {{ stock.perChange30d | number : "1.2-2" }}%
+            <td *ngIf="isColumnVisible('perChange30d')">
+              {{ stock.perChange30d | percent }}
             </td>
             <td *ngIf="isColumnVisible('chartTodayPath')">
               <img

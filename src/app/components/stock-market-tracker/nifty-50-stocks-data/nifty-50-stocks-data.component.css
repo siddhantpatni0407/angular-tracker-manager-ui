@@ -139,3 +139,23 @@ th:hover::after {
 .text-danger {
   color: #dc3545; /* Red color for error */
 }
+
+.btn-custom-index {
+  background-color: #5c6bc0; /* Custom background color */
+  color: white; /* White text */
+  border-color: #5c6bc0; /* Matching border color */
+}
+
+.btn-custom-index:hover {
+  background-color: #3f51b5; /* Darker shade on hover */
+  border-color: #3f51b5; /* Matching border on hover */
+}
+
+.dropdown-menu {
+  background-color: #f8f9fa; /* Light background for dropdown */
+  border: 1px solid #ddd; /* Subtle border */
+}
+
+.dropdown-item:hover {
+  background-color: #e1e4e8; /* Light hover effect */
+}
