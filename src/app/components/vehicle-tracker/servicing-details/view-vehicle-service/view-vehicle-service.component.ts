@@ -92,6 +92,20 @@ export class ViewVehicleServiceComponent implements OnInit {
     return total.toFixed(2);
   }
 
+  filterServices(): void {
+    const searchLower = this.searchText.toLowerCase();
+
+    this.filteredServices = this.vehicleServices.filter(
+      (service) =>
+        service.serviceType?.toLowerCase().includes(searchLower) ||
+        service.serviceCenter?.toLowerCase().includes(searchLower) ||
+        service.serviceDate?.toLowerCase().includes(searchLower) ||
+        service.odometerReading?.toString().includes(searchLower) ||
+        service.location?.toLowerCase().includes(searchLower) ||
+        service.nextServiceDue?.toLowerCase().includes(searchLower)
+    );
+  }
+
   sortServices(column: string): void {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -113,17 +127,6 @@ export class ViewVehicleServiceComponent implements OnInit {
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
-  }
-
-  filterServices(): void {
-    const searchLower = this.searchText.toLowerCase();
-
-    this.filteredServices = this.vehicleServices.filter(
-      (service) =>
-        service.serviceType?.toLowerCase().includes(searchLower) ||
-        service.serviceCenter?.toLowerCase().includes(searchLower) ||
-        service.serviceDate?.toLowerCase().includes(searchLower)
-    );
   }
 
   getVehicleRegistrationNumber(vehicleId: string): string {
@@ -163,6 +166,9 @@ export class ViewVehicleServiceComponent implements OnInit {
         'Service Type',
         'Service Cost (₹)',
         'Service Center',
+        'Odometer Reading',
+        'Location',
+        'Next Service Due',
       ],
     ];
 
@@ -173,11 +179,23 @@ export class ViewVehicleServiceComponent implements OnInit {
         service.serviceType,
         service.serviceCost,
         service.serviceCenter,
+        service.odometerReading,
+        service.location,
+        service.nextServiceDue,
       ]);
     });
 
     // ✅ Append Total Row (Bold but No Background Highlight)
-    sheetData.push(['Total', '', '', this.getTotalServiceCost(), '']);
+    sheetData.push([
+      'Total',
+      '',
+      '',
+      this.getTotalServiceCost(),
+      '',
+      '',
+      '',
+      '',
+    ]);
 
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(sheetData);
 
@@ -254,10 +272,23 @@ export class ViewVehicleServiceComponent implements OnInit {
           service.serviceType,
           service.serviceCost,
           service.serviceCenter,
+          service.odometerReading,
+          service.location,
+          service.nextServiceDue,
         ]);
 
         // ✅ Append Total Row (Only Bold, No Background Highlight)
-        const totalRow = ['', 'Total', '', '', this.getTotalServiceCost(), ''];
+        const totalRow = [
+          '',
+          'Total',
+          '',
+          '',
+          this.getTotalServiceCost(),
+          '',
+          '',
+          '',
+          '',
+        ];
         tableData.push(totalRow);
 
         (autoTable as any).default(doc, {
@@ -269,6 +300,9 @@ export class ViewVehicleServiceComponent implements OnInit {
               'Service Type',
               'Service Cost (₹)',
               'Service Center',
+              'Odometer Reading',
+              'Location',
+              'Next Service Due',
             ],
           ],
           body: tableData,
