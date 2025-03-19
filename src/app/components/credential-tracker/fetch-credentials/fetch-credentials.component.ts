@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { API_URLS } from '../../../constants/api.constants';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal for modal functionality
 
 @Component({
   selector: 'app-fetch-credentials',
@@ -21,11 +22,13 @@ export class FetchCredentialsComponent implements OnInit {
   searchText: string = ''; // For filtering
   sortColumn: string = ''; // Column being sorted
   sortDirection: string = 'asc'; // Sorting order (asc or desc)
+  selectedCredential: any = null; // To store the selected credential
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal // Inject NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +102,12 @@ export class FetchCredentialsComponent implements OnInit {
   // Toggle password visibility
   togglePasswordVisibility(credential: any): void {
     credential.showPassword = !credential.showPassword;
+  }
+
+  // Open credential modal
+  openCredentialModal(credential: any, modalTemplate: any): void {
+    this.selectedCredential = credential; // Set the selected credential
+    this.modalService.open(modalTemplate, { size: 'lg' }); // Open the modal
   }
 
   // Export credentials to Excel
