@@ -1,11 +1,26 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-credential-tracker',
-  imports: [],
   templateUrl: './credential-tracker.component.html',
-  styleUrl: './credential-tracker.component.css'
+  styleUrls: ['./credential-tracker.component.css']
 })
 export class CredentialTrackerComponent {
+  constructor(private router: Router) {}
 
+  // Navigate to Add Credentials Page
+  navigateToAddCredentials() {
+    this.router.navigate(['/add-credentials']);
+  }
+
+  // Navigate to Fetch Credentials Page
+  navigateToFetchCredentials() {
+    this.router.navigate(['/fetch-credentials']);
+  }
+
+  // Go back to Fuel Expense Tracker
+  goBackToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
 }

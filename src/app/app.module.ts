@@ -28,6 +28,8 @@ import { ServicingDetailsComponent } from './components/vehicle-tracker/servicin
 import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
 import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
 import { CredentialTrackerComponent } from './components/credential-tracker/credential-tracker.component';
+import { AddCredentialsComponent } from './components/credential-tracker/add-credentials/add-credentials.component';
+import { FetchCredentialsComponent } from './components/credential-tracker/fetch-credentials/fetch-credentials.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { CredentialTrackerComponent } from './components/credential-tracker/cred
     AddVehicleServiceComponent,
     ViewVehicleServiceComponent,
     CredentialTrackerComponent,
+    AddCredentialsComponent,
+    FetchCredentialsComponent,
     ReactiveFormsModule
   ],
   imports: [

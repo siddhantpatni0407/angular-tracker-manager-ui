@@ -21,6 +21,8 @@ import { ServicingDetailsComponent } from './components/vehicle-tracker/servicin
 import { AddVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/add-vehicle-service/add-vehicle-service.component';
 import { ViewVehicleServiceComponent } from './components/vehicle-tracker/servicing-details/view-vehicle-service/view-vehicle-service.component';
 import { CredentialTrackerComponent } from './components/credential-tracker/credential-tracker.component';
+import { AddCredentialsComponent } from './components/credential-tracker/add-credentials/add-credentials.component';
+import { FetchCredentialsComponent } from './components/credential-tracker/fetch-credentials/fetch-credentials.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -44,6 +46,8 @@ export const appRoutes: Routes = [
   { path: 'add-vehicle-service', component: AddVehicleServiceComponent, canActivate: [AuthGuard] },
   { path: 'view-vehicle-service', component: ViewVehicleServiceComponent, canActivate: [AuthGuard] },
   { path: 'credential-tracker', component: CredentialTrackerComponent, canActivate: [AuthGuard] },
+  { path: 'add-credentials', component: AddCredentialsComponent, canActivate: [AuthGuard] },
+  { path: 'fetch-credentials', component: FetchCredentialsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];
