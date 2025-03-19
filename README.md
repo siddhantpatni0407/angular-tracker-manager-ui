@@ -101,4 +101,5 @@ This project is licensed under the MIT License.
 -   npm install @types/xlsx --save-dev
 -   npm install jspdf --save
 -   npm install jspdf-autotable --save
+-   ng generate component component-name
 
