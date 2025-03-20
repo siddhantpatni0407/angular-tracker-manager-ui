@@ -1,93 +1,70 @@
-/* 🌟 Custom Navbar with a Vibrant Gradient */
+/* Navbar Styling */
 .custom-navbar {
-  background: linear-gradient(135deg, #0d47a1, #42a5f5); /* Beautiful Blue Gradient */
-  color: white;
-  padding: 15px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  background: linear-gradient(45deg, #6c5ce7, #0984e3); /* Gradient background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 0.75rem 1rem; /* Padding for better spacing */
 }
 
-/* 🌟 Dark Mode Navbar */
-.dark-mode .custom-navbar {
-  background: linear-gradient(135deg, #212121, #424242); /* Dark Grey Gradient */
+.custom-navbar .navbar-brand {
+  color: white !important; /* White text for brand links */
+  transition: transform 0.2s ease-in-out; /* Smooth hover effect */
 }
 
-/* 🔥 Highlighted Title */
-.title-highlight {
-  color: #ffeb3b; /* Bright Yellow */
-  text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease-in-out;
-}
-.title-highlight:hover {
-  color: #fff;
-  text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.6);
+.custom-navbar .navbar-brand:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
 }
 
-/* 🚪 Logout Button */
-.logout-btn {
-  color: white;
-  font-size: 1.1rem;
-  transition: all 0.3s ease-in-out;
-}
-.logout-btn:hover {
-  color: #ff5733 !important;
-  transform: scale(1.1);
-  text-shadow: 2px 2px 6px rgba(255, 87, 51, 0.7);
+.custom-navbar .navbar-toggler {
+  color: white; /* White color for the toggler icon */
 }
 
-/* 📅 Date Display */
-.date-display {
-  color: white;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.4);
+.custom-navbar .navbar-toggler:focus {
+  box-shadow: none; /* Remove focus outline */
 }
 
-/* 🔄 Refresh Button */
-.refresh-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  color: white;
-  transition: all 0.3s ease-in-out;
-}
-.refresh-btn:hover {
-  background-color: #ffeb3b !important;
-  transform: rotate(360deg) scale(1.1);
-  transition: transform 0.6s ease-in-out;
+.custom-navbar .nav-link {
+  color: white !important; /* White text for nav links */
+  font-weight: 500; /* Slightly bold text */
+  transition: color 0.2s ease-in-out; /* Smooth hover effect */
 }
 
-/* 🌙 Dark Mode Toggle */
-.mode-toggle {
-  background-color: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  transition: all 0.3s ease-in-out;
-}
-.mode-toggle:hover {
-  background-color: #ffeb3b;
-  transform: scale(1.1);
+.custom-navbar .nav-link:hover {
+  color: #f8f9fa !important; /* Light grey on hover */
 }
 
-/* 📱 Mobile Navbar Fix */
-@media (max-width: 991px) {
-  .navbar-nav {
-    text-align: center;
-    margin-top: 10px;
-  }
-  .date-display {
-    margin-top: 10px;
-  }
-  .navbar-brand {
-    margin-right: 0 !important;
-  }
-  .navbar-collapse {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 10px;
-  }
+.custom-navbar .date-display {
+  color: white; /* White text for date display */
+  font-weight: 500; /* Slightly bold text */
+}
+
+.custom-navbar .refresh-btn,
+.custom-navbar .mode-toggle {
+  color: white; /* White color for icons */
+  background: none; /* Remove default button background */
+  border: none; /* Remove default button border */
+  transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.custom-navbar .refresh-btn:hover,
+.custom-navbar .mode-toggle:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.custom-navbar .logout-btn {
+  color: white !important; /* White text for logout button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: color 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.custom-navbar .logout-btn:hover {
+  color: #ff6b6b !important; /* Red color on hover */
+}
+
+/* Dark Mode Toggle Icon */
+.custom-navbar .mode-toggle i {
+  transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.custom-navbar .mode-toggle:hover i {
+  transform: rotate(180deg); /* Rotate icon on hover */
 }
