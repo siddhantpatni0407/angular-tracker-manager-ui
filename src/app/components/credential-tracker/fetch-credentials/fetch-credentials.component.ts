@@ -99,6 +99,13 @@ export class FetchCredentialsComponent implements OnInit {
     });
   }
 
+  formatUrl(url: string): string {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return 'https://' + url; // Default to HTTPS if missing
+    }
+    return url;
+  }
+
   // Toggle password visibility
   togglePasswordVisibility(credential: any): void {
     credential.showPassword = !credential.showPassword;
