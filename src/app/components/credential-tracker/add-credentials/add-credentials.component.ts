@@ -10,6 +10,7 @@ import {
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { API_URLS } from '../../../constants/api.constants';
+import { AccountType } from '../../../enums/account-type.enum'; // Import AccountType Enum
 
 @Component({
   selector: 'app-add-credential',
@@ -21,6 +22,7 @@ import { API_URLS } from '../../../constants/api.constants';
 export class AddCredentialsComponent implements OnInit {
   credentialForm!: FormGroup;
   userId!: number; // Non-null assertion operator
+  accountTypes = Object.values(AccountType); // Convert enum to array
 
   constructor(
     private fb: FormBuilder,
@@ -39,8 +41,8 @@ export class AddCredentialsComponent implements OnInit {
     this.credentialForm = this.fb.group({
       accountName: ['', Validators.required],
       accountType: ['', Validators.required],
-      website: ['', Validators.required],
-      url: ['', Validators.required],
+      website: ['', [Validators.required, Validators.pattern(/^(https?:\/\/)?([\w-]+(\.[\w-]+)+\/?)$/)]],
+      url: ['', [Validators.required, Validators.pattern(/^(https?:\/\/)?([\w-]+(\.[\w-]+)+\/?)$/)]],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       mobileNumber: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
@@ -53,6 +55,11 @@ export class AddCredentialsComponent implements OnInit {
   // Navigate back to Credential Tracker
   goBack() {
     this.router.navigate(['/credential-tracker']);
+  }
+
+  // Format URL for opening in a new tab
+  formatUrl(url: string): string {
+    return url.startsWith('http') ? url : `https://${url}`;
   }
 
   // Submit Credential to Backend API
