@@ -11,6 +11,7 @@ interface User {
   email: string;
   mobileNumber: string;
   role: string;
+  isActive: boolean; // Added isActive field
 }
 
 @Component({
@@ -81,13 +82,14 @@ export class AdminPanelComponent implements OnInit {
                 email: user.email,
                 mobileNumber: user.mobileNumber || 'N/A',
                 role: user.role,
+                isActive: user.isActive // Added isActive mapping
               }));
 
             this.totalUsers = this.users.length;
             this.activeUsers = this.users.filter(
-              (user) => user.role !== 'INACTIVE'
+              (user) => user.isActive // Changed from role check to isActive check
             ).length;
-            this.pendingRequests = Math.floor(Math.random() * 5); // Mock pending requests
+            this.pendingRequests = Math.floor(Math.random() * 5);
           } else {
             this.errorMessage = 'Unexpected response format from server.';
           }
@@ -130,7 +132,7 @@ export class AdminPanelComponent implements OnInit {
             this.users = this.users.filter((user) => user.id !== userId);
             this.totalUsers--;
             this.activeUsers = this.users.filter(
-              (user) => user.role !== 'INACTIVE'
+              (user) => user.isActive // Changed from role check to isActive check
             ).length;
             alert(response.message);
           } else {

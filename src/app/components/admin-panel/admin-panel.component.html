@@ -47,7 +47,6 @@
     </div>
   </div>
 
-  <!-- Rest of your admin panel content remains the same -->
   <!-- Admin Dashboard Overview -->
   <div class="row mb-4">
     <div class="col-md-4">
@@ -107,6 +106,7 @@
             <th><i class="bi bi-envelope-fill"></i> Email</th>
             <th><i class="bi bi-phone-fill"></i> Mobile</th>
             <th><i class="bi bi-shield-lock-fill"></i> Role</th>
+            <th><i class="bi bi-power"></i> Status</th>
             <th><i class="bi bi-gear"></i> Actions</th>
           </tr>
         </thead>
@@ -127,7 +127,25 @@
                 {{ user.role }}
               </span>
             </td>
-            <td class="d-flex justify-content-center">
+            <td>
+              <span
+                class="badge rounded-pill"
+                [ngClass]="{
+                  'bg-success': user.isActive,
+                  'bg-secondary': !user.isActive
+                }"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-check-circle-fill': user.isActive,
+                    'bi-x-circle-fill': !user.isActive
+                  }"
+                ></i>
+                {{ user.isActive ? "Active" : "Inactive" }}
+              </span>
+            </td>
+            <td class="d-flex justify-content-center gap-2">
               <!-- Delete Button -->
               <button
                 class="btn btn-sm btn-danger"
