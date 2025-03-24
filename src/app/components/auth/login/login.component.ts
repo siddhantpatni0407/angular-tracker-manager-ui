@@ -18,10 +18,10 @@ export class LoginComponent {
   password: string = '';
   selectedRole: string = '';
   showPassword: boolean = false;
+  showNewPassword: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
-  submitted: boolean = false;
   isForgotPassword: boolean = false;
   isOtpLogin: boolean = false;
   otpRequestedForLogin: boolean = false;
@@ -32,182 +32,215 @@ export class LoginComponent {
   otpForForgotPassword: string = '';
   newPassword: string = '';
 
+  // Security status fields
+  remainingAttempts: number | null = null;
+  accountLocked: boolean = false;
+  lastLoginTime: Date | null = null;
+
   private http = inject(HttpClient);
   private router = inject(Router);
   private authService = inject(AuthService);
 
   // 🚀 Login with Email & Password
   login(): void {
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please enter email and password';
+    if (!this.email || !this.password || !this.selectedRole) {
+      this.errorMessage = 'Please fill all required fields';
       return;
     }
-  
-    const loginPayload = { email: this.email, password: this.password };
-  
+
+    this.resetStatusMessages();
+    this.isLoading = true;
+
+    const loginPayload = {
+      email: this.email,
+      password: this.password,
+      role: this.selectedRole,
+    };
+
     this.authService.login(loginPayload).subscribe({
       next: (response) => {
-        console.log('Login response:', response); // Debugging
-  
+        this.isLoading = false;
+
         if (response.status === 'SUCCESS' && response.token) {
-          // Store the token, role, and user name in sessionStorage
-          sessionStorage.setItem('authToken', response.token);
-          sessionStorage.setItem('userId', response.userId);
-          sessionStorage.setItem('userRole', response.role);
-          sessionStorage.setItem('userName', response.name);  
-  
-          // Show success message
-          this.successMessage = ` Welcome, ${response.name}! Redirecting...`;
-  
-          // Redirect based on role
-          setTimeout(() => this.redirectUser(response.role), 2000);
+          this.handleSuccessfulLogin(response);
         } else {
-          // Handle invalid credentials
-          this.errorMessage = '❌ Invalid credentials!';
+          this.handleFailedLogin(response);
         }
       },
       error: (error) => {
-        console.error('Login error:', error); // Debugging
-        this.errorMessage = '❌ Error logging in. Please try again!';
+        this.isLoading = false;
+        console.error('Login error:', error);
+        this.errorMessage = 'Error logging in. Please try again!';
       },
     });
-  }  
+  }
+
+  private handleSuccessfulLogin(response: any): void {
+    // Store user data
+    sessionStorage.setItem('authToken', response.token);
+    sessionStorage.setItem('userId', response.userId?.toString() || '');
+    sessionStorage.setItem('userRole', response.role);
+    sessionStorage.setItem('userName', response.name || '');
+
+    // Store security info
+    if (response.lastLoginTime) {
+      this.lastLoginTime = new Date(response.lastLoginTime);
+      sessionStorage.setItem('lastLoginTime', this.lastLoginTime.toString());
+    }
+
+    // Show success message
+    this.successMessage = `Welcome back, ${response.name || 'User'}!`;
+
+    // Redirect based on role
+    setTimeout(() => this.redirectUser(response.role), 1500);
+  }
+
+  private handleFailedLogin(response: any): void {
+    this.errorMessage = response.message || 'Invalid credentials!';
+
+    // Display security information
+    if (
+      response.loginAttempts !== undefined &&
+      response.loginAttempts !== null
+    ) {
+      this.remainingAttempts = Math.max(0, 5 - response.loginAttempts);
+    }
+
+    if (response.accountLocked) {
+      this.accountLocked = true;
+      this.errorMessage = 'Account locked. Please contact support.';
+    }
+
+    if (response.lastLoginTime) {
+      this.lastLoginTime = new Date(response.lastLoginTime);
+    }
+  }
 
   redirectUser(role: string) {
-    const normalizedRole = role.toUpperCase();
+    const normalizedRole = role?.toUpperCase();
 
-    if (normalizedRole === 'ADMIN') {
-      this.router.navigate(['/admin-panel']);
-    } else if (normalizedRole === 'USER') {
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.errorMessage = 'Unknown role. Contact support!';
+    switch (normalizedRole) {
+      case 'ADMIN':
+        this.router.navigate(['/admin-panel']);
+        break;
+      case 'USER':
+        this.router.navigate(['/dashboard']);
+        break;
+      default:
+        this.errorMessage = 'Unknown role. Contact support!';
     }
   }
 
   // 🔢 Request OTP & Login with OTP
   loginWithOtp(): void {
+    this.resetStatusMessages();
+    this.isLoading = true;
+
     if (!this.otpRequestedForLogin) {
       // Request OTP
       this.http
-        .post<any>(API_URLS.LOGIN_REQUEST_OTP_ENDPOINT, {
-          email: this.emailForOtp,
-        })
+        .post(API_URLS.LOGIN_REQUEST_OTP_ENDPOINT, { email: this.emailForOtp })
         .subscribe({
           next: () => {
+            this.isLoading = false;
             this.otpRequestedForLogin = true;
-            this.successMessage = '✅ OTP sent to your email!';
+            this.successMessage = 'OTP sent to your email!';
           },
-          error: () => {
-            this.errorMessage = '❌ Failed to send OTP. Please try again.';
+          error: (error) => {
+            this.isLoading = false;
+            console.error('OTP request failed:', error);
+            this.errorMessage = 'Failed to send OTP. Please try again.';
           },
         });
     } else {
       // Verify OTP & Login
       const otpPayload = { email: this.emailForOtp, otp: this.otpForLogin };
-      this.http.post<any>(API_URLS.VERIFY_OTP_ENDPOINT, otpPayload).subscribe({
-        next: (response) => {
+      this.http.post(API_URLS.VERIFY_OTP_ENDPOINT, otpPayload).subscribe({
+        next: (response: any) => {
+          this.isLoading = false;
           if (response.status === 'SUCCESS' && response.token) {
-            sessionStorage.setItem('authToken', response.token);
-            sessionStorage.setItem('userRole', response.role.toUpperCase());
-            sessionStorage.setItem('userId', response.userId);
-            this.successMessage = '✅ Login successful! Redirecting...';
-            setTimeout(
-              () => this.redirectUser(response.role.toUpperCase()),
-              2000
-            );
+            this.handleSuccessfulLogin(response);
           } else {
-            this.errorMessage = '❌ Invalid OTP.';
+            this.errorMessage = response.message || 'Invalid OTP.';
           }
         },
-        error: () => {
-          this.errorMessage = '❌ OTP verification failed.';
+        error: (error) => {
+          this.isLoading = false;
+          console.error('OTP verification failed:', error);
+          this.errorMessage = 'OTP verification failed.';
         },
       });
     }
   }
 
-  // New method to handle form submission
-  onForgotPasswordSubmit(form: any): void {
-    console.log('Forgot Password Form Submitted:', form.value); // Debugging
-    this.requestOtpOrResetPassword();
-  }
-
-  // Existing method
-  requestOtpOrResetPassword(): void {
-    console.log('Request OTP or Reset Password method called'); // Debugging
+  // 🔑 Forgot Password Flow
+  onForgotPasswordSubmit(): void {
+    this.resetStatusMessages();
+    this.isLoading = true;
 
     if (!this.otpRequestedForForgotPassword) {
-      // Request OTP for Forgot Password
-      console.log('Requesting OTP for email:', this.forgotEmail); // Debugging
-
+      // Request OTP
       this.http
-        .post<any>(API_URLS.FORGOT_PASSWORD_REQUEST_OTP_ENDPOINT, {
+        .post(API_URLS.FORGOT_PASSWORD_REQUEST_OTP_ENDPOINT, {
           email: this.forgotEmail,
         })
         .subscribe({
           next: () => {
+            this.isLoading = false;
             this.otpRequestedForForgotPassword = true;
-            this.successMessage = '✅ OTP sent to your email!';
-            console.log('OTP requested successfully'); // Debugging
+            this.successMessage = 'OTP sent to your email!';
           },
           error: (error) => {
-            console.error('OTP request failed:', error); // Debugging
-            this.errorMessage = '❌ Failed to send OTP. Please try again.';
+            this.isLoading = false;
+            console.error('OTP request failed:', error);
+            this.errorMessage = 'Failed to send OTP. Please try again.';
           },
         });
     } else {
       // Reset Password
-      console.log('Resetting password with OTP:', this.otpForForgotPassword); // Debugging
-
       const resetPayload = {
         email: this.forgotEmail,
         otp: this.otpForForgotPassword,
         newPassword: this.newPassword,
       };
 
-      console.log('Reset Password Payload:', resetPayload); // Debugging
-
       this.http
-        .post<any>(API_URLS.FORGOT_PASSWORD_RESET_ENDPOINT, resetPayload)
+        .post(API_URLS.FORGOT_PASSWORD_RESET_ENDPOINT, resetPayload)
         .subscribe({
-          next: (response) => {
-            console.log('Password reset response:', response); // Debugging
+          next: (response: any) => {
+            this.isLoading = false;
             if (response.status === 'SUCCESS') {
-              this.successMessage =
-                '✅ Password reset successful! Redirecting...';
+              this.successMessage = 'Password reset successful!';
               setTimeout(() => this.toggleForgotPassword(), 2000);
             } else {
-              this.errorMessage = '❌ Password reset failed. Please try again.';
+              this.errorMessage = response.message || 'Password reset failed.';
             }
           },
           error: (error) => {
-            console.error('Password reset error:', error); // Debugging
-            this.errorMessage = '❌ Invalid OTP or error resetting password.';
+            this.isLoading = false;
+            console.error('Password reset error:', error);
+            this.errorMessage = 'Invalid OTP or error resetting password.';
           },
         });
     }
   }
 
-  // 🔄 Toggle OTP Login Form
+  // 🔄 Toggle Forms
   toggleOtpLogin(): void {
+    this.resetStatusMessages();
     this.isOtpLogin = !this.isOtpLogin;
     this.otpRequestedForLogin = false;
     this.emailForOtp = '';
     this.otpForLogin = '';
-    this.errorMessage = '';
-    this.successMessage = '';
   }
 
-  // 🔄 Toggle Forgot Password Form
   toggleForgotPassword(): void {
+    this.resetStatusMessages();
     this.isForgotPassword = !this.isForgotPassword;
     this.otpRequestedForForgotPassword = false;
     this.forgotEmail = '';
     this.otpForForgotPassword = '';
     this.newPassword = '';
-    this.errorMessage = '';
-    this.successMessage = '';
   }
 
   // 👀 Toggle Password Visibility
@@ -215,8 +248,17 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  // 🔗 Navigate to Register Page
+  // 🔗 Navigation
   navigateToRegister(): void {
     this.router.navigate(['/register']);
+  }
+
+  // 🛠️ Helper Methods
+  private resetStatusMessages(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.remainingAttempts = null;
+    this.accountLocked = false;
+    // Keep lastLoginTime as it might be useful for display
   }
 }

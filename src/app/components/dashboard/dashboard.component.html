@@ -140,6 +140,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Last Login Notification - Bottom Left -->
+  <div
+    *ngIf="showLastLogin"
+    class="position-fixed bottom-0 start-0 m-3 p-3 bg-light border border-primary rounded shadow-sm text-primary fw-bold"
+    style="z-index: 1000; animation: highlight 2s infinite"
+  >
+    <i class="bi bi-clock-history me-2"></i>
+    Last login: {{ lastLoginTime | date : "medium" }}
+  </div>
 </div>
 
 <!-- Access Denied Section -->
