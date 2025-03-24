@@ -63,6 +63,11 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/credential-tracker']);
   }
 
+  // Added this new method for Financial Tracker
+  navigateToFinancialTracker(): void {
+    this.router.navigate(['/financial-tracker']);
+  }
+
   /**
    * Navigates to User Profile page.
    */
