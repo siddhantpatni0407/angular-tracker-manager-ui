@@ -20,4 +20,19 @@
   .hover-effect:hover {
     background-color: #f1f1f1;
   }
+
+  /* Add this to your admin-panel.component.css */
+@keyframes highlight {
+  0% { box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(13, 110, 253, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); }
+}
+
+.position-fixed {
+  transition: opacity 0.5s ease-out;
+}
+
+.position-fixed.ng-leave {
+  opacity: 0;
+}
   
