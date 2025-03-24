@@ -29,8 +29,10 @@ export class AdminPanelComponent implements OnInit {
   errorMessage: string = '';
   deletingUserId: number | null = null;
 
-  userName: string = 'Admin'; 
-  userRole: string = 'ADMIN'; 
+  userName: string = 'Admin';
+  userRole: string = 'ADMIN';
+  lastLoginTime: string | null = null;
+  showLastLogin: boolean = false;
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -38,12 +40,25 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUsers();
     this.loadAdminDetails();
+    this.setupLastLoginNotification();
   }
 
   /** ✅ Fetch logged-in admin details from session */
   private loadAdminDetails(): void {
     this.userName = sessionStorage.getItem('userName') || 'Admin';
     this.userRole = sessionStorage.getItem('userRole') || 'ADMIN';
+    this.lastLoginTime = sessionStorage.getItem('lastLoginTime');
+  }
+
+  private setupLastLoginNotification(): void {
+    if (this.lastLoginTime) {
+      this.showLastLogin = true;
+
+      // Hide after 10 seconds
+      setTimeout(() => {
+        this.showLastLogin = false;
+      }, 10000);
+    }
   }
 
   /** ✅ Fetch all users excluding admin users */
@@ -51,22 +66,27 @@ export class AdminPanelComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    this.http.get<{ status: string; message: string; data: any[] }>(API_URLS.FETCH_ALL_USERS_ENDPOINT)
+    this.http
+      .get<{ status: string; message: string; data: any[] }>(
+        API_URLS.FETCH_ALL_USERS_ENDPOINT
+      )
       .subscribe({
         next: (response) => {
           if (response.status === 'SUCCESS' && Array.isArray(response.data)) {
             this.users = response.data
-              .filter(user => user.role !== 'ADMIN') 
-              .map(user => ({
+              .filter((user) => user.role !== 'ADMIN')
+              .map((user) => ({
                 id: user.userId,
                 name: user.username,
                 email: user.email,
                 mobileNumber: user.mobileNumber || 'N/A',
-                role: user.role
+                role: user.role,
               }));
 
             this.totalUsers = this.users.length;
-            this.activeUsers = this.users.filter(user => user.role !== 'INACTIVE').length;
+            this.activeUsers = this.users.filter(
+              (user) => user.role !== 'INACTIVE'
+            ).length;
             this.pendingRequests = Math.floor(Math.random() * 5); // Mock pending requests
           } else {
             this.errorMessage = 'Unexpected response format from server.';
@@ -77,7 +97,7 @@ export class AdminPanelComponent implements OnInit {
           this.errorMessage = 'Failed to fetch user data. Please try again!';
           this.loading = false;
           console.error('Fetch Users Error:', err);
-        }
+        },
       });
   }
 
@@ -100,13 +120,18 @@ export class AdminPanelComponent implements OnInit {
     const params = new HttpParams().set('userId', userId.toString());
 
     this.http
-      .delete<{ status: string; message: string }>(API_URLS.USER_ENDPOINT, { headers, params })
+      .delete<{ status: string; message: string }>(API_URLS.USER_ENDPOINT, {
+        headers,
+        params,
+      })
       .subscribe({
         next: (response) => {
           if (response.status === 'SUCCESS') {
-            this.users = this.users.filter(user => user.id !== userId);
+            this.users = this.users.filter((user) => user.id !== userId);
             this.totalUsers--;
-            this.activeUsers = this.users.filter(user => user.role !== 'INACTIVE').length;
+            this.activeUsers = this.users.filter(
+              (user) => user.role !== 'INACTIVE'
+            ).length;
             alert(response.message);
           } else {
             this.errorMessage = 'Failed to delete user!';
@@ -115,9 +140,10 @@ export class AdminPanelComponent implements OnInit {
         },
         error: (err) => {
           console.error('Delete API Error:', err);
-          this.errorMessage = err.error?.message || 'An error occurred while deleting the user.';
+          this.errorMessage =
+            err.error?.message || 'An error occurred while deleting the user.';
           this.deletingUserId = null;
-        }
+        },
       });
   }
 
@@ -132,7 +158,7 @@ export class AdminPanelComponent implements OnInit {
    * ✅ Logs out the user and redirects to login page.
    */
   logout(): void {
-    sessionStorage.clear(); 
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 }

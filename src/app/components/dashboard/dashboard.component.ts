@@ -11,19 +11,18 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  userRole: string = 'Guest'; // Default role
-  userName: string = 'User'; // Default name
+  userRole: string = 'Guest';
+  userName: string = 'User';
+  lastLoginTime: string | null = null;
+  showLastLogin: boolean = false;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.checkAuthentication();
+    this.setupLastLoginNotification();
   }
 
-  /**
-   * Checks if the user is authenticated and sets the name and role accordingly.
-   * Redirects to login page if not authenticated.
-   */
   private checkAuthentication(): void {
     const authToken = sessionStorage.getItem('authToken');
     
@@ -32,6 +31,18 @@ export class DashboardComponent implements OnInit {
     } else {
       this.userRole = sessionStorage.getItem('userRole') || 'Guest';
       this.userName = sessionStorage.getItem('userName') || 'User';
+      this.lastLoginTime = sessionStorage.getItem('lastLoginTime');
+    }
+  }
+
+  private setupLastLoginNotification(): void {
+    if (this.lastLoginTime) {
+      this.showLastLogin = true;
+      
+      // Hide after 10 seconds
+      setTimeout(() => {
+        this.showLastLogin = false;
+      }, 10000);
     }
   }
 
@@ -61,6 +72,11 @@ export class DashboardComponent implements OnInit {
    */
   navigateToCredentialTracker(): void {
     this.router.navigate(['/credential-tracker']);
+  }
+
+  // Added this new method for Financial Tracker
+  navigateToFinancialTracker(): void {
+    this.router.navigate(['/financial-tracker']);
   }
 
   /**

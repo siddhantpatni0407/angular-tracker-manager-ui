@@ -4,6 +4,16 @@
     <i class="bi bi-gear-fill"></i> Admin Panel
   </h2>
 
+  <!-- Last Login Notification - Bottom Left -->
+  <div
+    *ngIf="showLastLogin"
+    class="position-fixed bottom-0 start-0 m-3 p-3 bg-light border border-primary rounded shadow-sm text-primary fw-bold"
+    style="z-index: 1000; animation: highlight 2s infinite"
+  >
+    <i class="bi bi-clock-history me-2"></i>
+    Last login: {{ lastLoginTime | date : "medium" }}
+  </div>
+
   <!-- User Profile Section (Top Right) -->
   <div class="d-flex justify-content-end me-3">
     <div class="dropdown">
@@ -37,6 +47,7 @@
     </div>
   </div>
 
+  <!-- Rest of your admin panel content remains the same -->
   <!-- Admin Dashboard Overview -->
   <div class="row mb-4">
     <div class="col-md-4">
@@ -104,7 +115,7 @@
             <td>{{ i + 1 }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.mobileNumber || 'N/A' }}</td>
+            <td>{{ user.mobileNumber || "N/A" }}</td>
             <td>
               <span
                 class="badge rounded-pill"
@@ -139,7 +150,10 @@
     </div>
 
     <!-- No Users Found Message -->
-    <div *ngIf="!loading && users.length === 0" class="alert alert-info text-center mt-3">
+    <div
+      *ngIf="!loading && users.length === 0"
+      class="alert alert-info text-center mt-3"
+    >
       <i class="bi bi-exclamation-circle"></i> No users found.
     </div>
   </div>
