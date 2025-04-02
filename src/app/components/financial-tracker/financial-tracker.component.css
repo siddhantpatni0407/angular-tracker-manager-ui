@@ -1,0 +1,23 @@
+/* Gradient Backgrounds - Financial Theme */
+.gradient-blue { background: linear-gradient(135deg, #3b82f6, #1e40af); } /* Banking */
+.gradient-green { background: linear-gradient(135deg, #22c55e, #065f46); } /* Accounts */
+.gradient-orange { background: linear-gradient(135deg, #f59e0b, #b45309); } /* Expenses */
+.gradient-purple { background: linear-gradient(135deg, #8b5cf6, #4c1d95); } /* Income */
+.gradient-red { background: linear-gradient(135deg, #ef4444, #7f1d1d); } /* Budget */
+.gradient-teal { background: linear-gradient(135deg, #14b8a6, #0f766e); } /* Investments */
+.gradient-dark { background: linear-gradient(135deg, #374151, #111827); } /* Debts */
+.gradient-pink { background: linear-gradient(135deg, #ec4899, #831843); } /* Reports */
+
+/* Smooth Hover Effects */
+.hover-effect {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon Styling */
+.card-body i {
+  font-size: 2.5rem;
+}
