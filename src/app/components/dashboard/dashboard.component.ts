@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
 
   private checkAuthentication(): void {
     const authToken = sessionStorage.getItem('authToken');
-    
+
     if (!authToken) {
       this.redirectToLogin();
     } else {
@@ -38,12 +38,27 @@ export class DashboardComponent implements OnInit {
   private setupLastLoginNotification(): void {
     if (this.lastLoginTime) {
       this.showLastLogin = true;
-      
+
       // Hide after 10 seconds
       setTimeout(() => {
         this.showLastLogin = false;
       }, 10000);
     }
+  }
+
+  // In your dashboard.component.ts
+  getUserInitials(): string {
+    if (!this.userName) return '?';
+
+    // Split name by spaces and get first letters
+    const names = this.userName.split(' ');
+    let initials = names[0].substring(0, 1).toUpperCase();
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+
+    return initials;
   }
 
   /**

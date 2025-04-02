@@ -2,33 +2,43 @@
 <div class="d-flex justify-content-end me-3 mt-3">
   <div class="dropdown">
     <button
-      class="btn btn-primary dropdown-toggle"
+      class="btn btn-primary dropdown-toggle d-flex align-items-center profile-btn"
       type="button"
       id="userProfileDropdown"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <i class="bi bi-person-circle"></i> {{ userName }} ({{ userRole }})
+      <div class="avatar-circle me-2">
+        <span class="initials">{{ getUserInitials() }}</span>
+      </div>
+      <div class="profile-text">
+        <div class="username">{{ userName }}</div>
+        <div class="role-badge">{{ userRole }}</div>
+      </div>
     </button>
-    <ul class="dropdown-menu dropdown-menu-end">
+    <ul class="dropdown-menu dropdown-menu-end shadow-lg profile-dropdown">
       <li>
-        <a class="dropdown-item"
-          ><i class="bi bi-person-badge"></i> {{ userRole }}</a
-        >
+        <a class="dropdown-item profile-item">
+          <i class="bi bi-person-badge me-2"></i>
+          <span class="fw-bold">Role:</span> {{ userRole }}
+        </a>
       </li>
       <li>
-        <a class="dropdown-item"><i class="bi bi-person"></i> {{ userName }}</a>
+        <a class="dropdown-item profile-item">
+          <i class="bi bi-person me-2"></i>
+          <span class="fw-bold">Username:</span> {{ userName }}
+        </a>
       </li>
       <li>
-        <a class="dropdown-item" (click)="navigateToProfile()"
-          ><i class="bi bi-gear"></i> Edit Profile</a
-        >
+        <a class="dropdown-item profile-item" (click)="navigateToProfile()">
+          <i class="bi bi-gear me-2"></i> Edit Profile
+        </a>
       </li>
       <li><hr class="dropdown-divider" /></li>
       <li>
-        <a class="dropdown-item text-danger" (click)="logout()"
-          ><i class="bi bi-box-arrow-right"></i> Logout</a
-        >
+        <a class="dropdown-item profile-item text-danger" (click)="logout()">
+          <i class="bi bi-box-arrow-right me-2"></i> Logout
+        </a>
       </li>
     </ul>
   </div>
@@ -141,14 +151,27 @@
     </div>
   </div>
 
-  <!-- Last Login Notification - Bottom Left -->
+  <!-- Last Login Notification - Enhanced -->
   <div
     *ngIf="showLastLogin"
-    class="position-fixed bottom-0 start-0 m-3 p-3 bg-light border border-primary rounded shadow-sm text-primary fw-bold"
-    style="z-index: 1000; animation: highlight 2s infinite"
+    class="login-notification toast show"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
   >
-    <i class="bi bi-clock-history me-2"></i>
-    Last login: {{ lastLoginTime | date : "medium" }}
+    <div class="toast-header bg-primary text-white">
+      <strong class="me-auto">
+        <i class="bi bi-clock-history me-2"></i>Last Activity
+      </strong>
+      <button
+        type="button"
+        class="btn-close btn-close-white"
+        (click)="showLastLogin = false"
+      ></button>
+    </div>
+    <div class="toast-body">
+      <b>Last login : </b> {{ lastLoginTime | date : "medium" }}
+    </div>
   </div>
 </div>
 
