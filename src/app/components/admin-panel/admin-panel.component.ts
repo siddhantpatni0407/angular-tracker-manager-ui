@@ -62,6 +62,19 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
+  getUserInitials(): string {
+    if (!this.userName) return '?';
+
+    const names = this.userName.split(' ');
+    let initials = names[0].substring(0, 1).toUpperCase();
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+
+    return initials;
+  }
+
   /** ✅ Fetch all users excluding admin users */
   fetchUsers(): void {
     this.loading = true;
@@ -82,7 +95,7 @@ export class AdminPanelComponent implements OnInit {
                 email: user.email,
                 mobileNumber: user.mobileNumber || 'N/A',
                 role: user.role,
-                isActive: user.isActive // Added isActive mapping
+                isActive: user.isActive, // Added isActive mapping
               }));
 
             this.totalUsers = this.users.length;
