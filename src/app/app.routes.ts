@@ -24,6 +24,7 @@ import { CredentialTrackerComponent } from './components/credential-tracker/cred
 import { AddCredentialsComponent } from './components/credential-tracker/add-credentials/add-credentials.component';
 import { FetchCredentialsComponent } from './components/credential-tracker/fetch-credentials/fetch-credentials.component';
 import { FinancialTrackerComponent } from './components/financial-tracker/financial-tracker.component';
+import { AddBankAccountComponent } from './components/financial-tracker/add-bank-account/add-bank-account.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -50,6 +51,7 @@ export const appRoutes: Routes = [
   { path: 'add-credentials', component: AddCredentialsComponent, canActivate: [AuthGuard] },
   { path: 'fetch-credentials', component: FetchCredentialsComponent, canActivate: [AuthGuard] },
   { path: 'financial-tracker', component: FinancialTrackerComponent, canActivate: [AuthGuard] },
+  { path: 'add-bank-account', component: AddBankAccountComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login by default
   { path: '**', redirectTo: '/login' } // Fallback for unknown routes
 ];

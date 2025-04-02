@@ -1,0 +1,241 @@
+<div class="container mt-5 position-relative fade-in">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-bank"></i> Add New Bank Account
+    </h2>
+
+    <!-- Back to Dashboard Button -->
+    <button
+      class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+      (click)="goToFinancialTracker()"
+    >
+      <i class="bi bi-arrow-left-circle"></i> Financial Tracker
+    </button>
+  </div>
+
+  <!-- Form Section -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg rounded-lg custom-card">
+        <!-- Card Header -->
+        <div
+          class="card-header bg-gradient-to-r from-primary to-teal text-white text-center py-4"
+        >
+          <h4>Bank Account Registration</h4>
+        </div>
+
+        <div class="card-body">
+          <!-- Success Message -->
+          <div
+            *ngIf="successMessage"
+            class="alert alert-success text-center fade-in"
+          >
+            ✅ {{ successMessage }}
+          </div>
+
+          <!-- Error Message -->
+          <div
+            *ngIf="errorMessage"
+            class="alert alert-danger text-center fade-in"
+          >
+            ❌ {{ errorMessage }}
+          </div>
+
+          <form (ngSubmit)="addBankAccount()">
+            <!-- Account Number -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Account Number</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="accountNumber"
+                [(ngModel)]="bankAccountData.accountNumber"
+                (blur)="validateAccountNumber()"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankAccountData.accountNumber"
+                class="text-danger small"
+              >
+                ⚠️ Account Number is required.
+              </div>
+              <div *ngIf="accountNumberError" class="text-danger small">
+                ❌ Account number must be 10-16 digits
+              </div>
+            </div>
+
+            <!-- Account Holder Name -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Account Holder Name</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="accountHolderName"
+                [(ngModel)]="bankAccountData.accountHolderName"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankAccountData.accountHolderName"
+                class="text-danger small"
+              >
+                ⚠️ Account Holder Name is required.
+              </div>
+            </div>
+
+            <!-- Account Type -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Account Type</label>
+              <select
+                class="form-select custom-input"
+                name="accountType"
+                [(ngModel)]="bankAccountData.accountType"
+                required
+              >
+                <option value="" disabled selected>Select Account Type</option>
+                <option value="SAVINGS">Savings</option>
+                <option value="CURRENT">Current</option>
+                <option value="FIXED_DEPOSIT">Fixed Deposit</option>
+                <option value="RECURRING_DEPOSIT">Recurring Deposit</option>
+                <option value="LOAN">Loan</option>
+                <option value="CREDIT_CARD">Credit Card</option>
+              </select>
+              <div
+                *ngIf="submitted && !bankAccountData.accountType"
+                class="text-danger small"
+              >
+                ⚠️ Account Type is required.
+              </div>
+            </div>
+
+            <!-- Bank Name -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Bank Name</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="bankName"
+                [(ngModel)]="bankAccountData.bankName"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankAccountData.bankName"
+                class="text-danger small"
+              >
+                ⚠️ Bank Name is required.
+              </div>
+            </div>
+
+            <!-- Branch Name -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Branch Name</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="branchName"
+                [(ngModel)]="bankAccountData.branchName"
+              />
+            </div>
+
+            <!-- IFSC Code -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">IFSC Code</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="ifscCode"
+                [(ngModel)]="bankAccountData.ifscCode"
+                (blur)="validateIfscCode()"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankAccountData.ifscCode"
+                class="text-danger small"
+              >
+                ⚠️ IFSC Code is required.
+              </div>
+              <div *ngIf="ifscCodeError" class="text-danger small">
+                ❌ Invalid IFSC format (e.g., SBIN0001234)
+              </div>
+            </div>
+
+            <!-- Branch Location -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Branch Location</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="branchLocation"
+                [(ngModel)]="bankAccountData.branchLocation"
+              />
+            </div>
+
+            <!-- Opening Date -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Opening Date</label>
+              <input
+                type="date"
+                class="form-control custom-input"
+                name="openingDate"
+                [(ngModel)]="bankAccountData.openingDate"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankAccountData.openingDate"
+                class="text-danger small"
+              >
+                ⚠️ Opening Date is required.
+              </div>
+            </div>
+
+            <!-- Nominee Name -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Nominee Name</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="nomineeName"
+                [(ngModel)]="bankAccountData.nomineeName"
+              />
+            </div>
+
+            <!-- Account Status -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Account Status</label>
+              <select
+                class="form-select custom-input"
+                name="accountStatus"
+                [(ngModel)]="bankAccountData.accountStatus"
+                required
+              >
+                <option value="ACTIVE" selected>Active</option>
+                <option value="INACTIVE">Inactive</option>
+                <option value="CLOSED">Closed</option>
+                <option value="DORMANT">Dormant</option>
+              </select>
+              <div
+                *ngIf="submitted && !bankAccountData.accountStatus"
+                class="text-danger small"
+              >
+                ⚠️ Account Status is required.
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 rounded-pill py-2 animated-btn"
+              [disabled]="isLoading"
+            >
+              <span
+                *ngIf="isLoading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              <span *ngIf="!isLoading">Add Bank Account</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

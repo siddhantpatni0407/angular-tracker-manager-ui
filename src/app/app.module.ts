@@ -31,6 +31,7 @@ import { CredentialTrackerComponent } from './components/credential-tracker/cred
 import { AddCredentialsComponent } from './components/credential-tracker/add-credentials/add-credentials.component';
 import { FetchCredentialsComponent } from './components/credential-tracker/fetch-credentials/fetch-credentials.component';
 import { FinancialTrackerComponent } from './components/financial-tracker/financial-tracker.component';
+import { AddBankAccountComponent } from './components/financial-tracker/add-bank-account/add-bank-account.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { FinancialTrackerComponent } from './components/financial-tracker/financ
     AddCredentialsComponent,
     FetchCredentialsComponent,
     FinancialTrackerComponent,
+    AddBankAccountComponent,
     ReactiveFormsModule
   ],
   imports: [
