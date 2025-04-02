@@ -16,5 +16,6 @@ export const API_URLS = {
     STOCK_MARKET_NIFTY_DATA_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/stock/nifty-data',
     VEHICLE_SERVICING_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/service',
     CREDENTIALS_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/credentials',
-    BANK_ACCOUNT_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/financial/bank-account'
+    BANK_ACCOUNT_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/financial/bank-account',
+    FETCH_BANK_ACCOUNT_BY_USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/financial/user-bank-account'
   };

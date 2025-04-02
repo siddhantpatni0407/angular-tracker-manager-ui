@@ -1,0 +1,145 @@
+<div class="container mt-5 position-relative">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-bank"></i> My Bank Accounts
+    </h2>
+
+    <!-- Back to Dashboard Button -->
+    <button
+      class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+      (click)="goToDashboard()"
+    >
+      <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Card Section -->
+  <div class="card shadow-lg rounded-4 mt-4">
+    <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+      <h2 class="fw-bold">🏦 Bank Account List</h2>
+    </div>
+    <div class="card-body">
+      <!-- Loading Spinner -->
+      <div *ngIf="isLoading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-secondary">Fetching bank account data...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div
+        *ngIf="errorMessage && !isLoading"
+        class="alert alert-danger text-center fade-in"
+      >
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <!-- Search & Refresh Row -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control rounded-3 shadow-sm"
+            placeholder="🔍 Search account..."
+            [(ngModel)]="searchTerm"
+            (input)="filterAccounts()"
+          />
+        </div>
+        <div class="col-md-6 text-end">
+          <button
+            class="btn btn-outline-primary btn-sm rounded-pill"
+            (click)="fetchBankAccounts()"
+          >
+            🔄 Refresh
+          </button>
+          <button
+            class="btn btn-success btn-sm rounded-pill ms-2"
+            (click)="addNewAccount()"
+          >
+            ➕ Add New Account
+          </button>
+        </div>
+      </div>
+
+      <!-- Accounts Table -->
+      <div
+        *ngIf="filteredAccounts.length > 0 && !isLoading"
+        class="table-responsive mt-3"
+      >
+        <table class="table table-hover table-striped table-bordered shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Account #</th>
+              <th>Bank Name</th>
+              <th>Account Holder</th>
+              <th>Account Type</th>
+              <th>Branch</th>
+              <th>IFSC</th>
+              <th>Opening Date</th>
+              <th>Nominee</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let account of filteredAccounts" @fadeInAnimation>
+              <td>
+                <strong>{{ account.accountNumber }}</strong>
+              </td>
+              <td>{{ account.bankName }}</td>
+              <td>{{ account.accountHolderName }}</td>
+              <td>
+                <span class="badge bg-info">{{ account.accountType }}</span>
+              </td>
+              <td>{{ account.branchName }} ({{ account.branchLocation }})</td>
+              <td>
+                <code>{{ account.ifscCode }}</code>
+              </td>
+              <td>{{ account.openingDate | date : "dd MMM yyyy" }}</td>
+              <td>{{ account.nomineeName || "N/A" }}</td>
+              <td>
+                <span
+                  class="badge bg-success"
+                  *ngIf="account.accountStatus === 'ACTIVE'"
+                  >✅ Active</span
+                >
+                <span
+                  class="badge bg-warning"
+                  *ngIf="account.accountStatus === 'INACTIVE'"
+                  >⚠️ Inactive</span
+                >
+                <span
+                  class="badge bg-danger"
+                  *ngIf="account.accountStatus === 'CLOSED'"
+                  >❌ Closed</span
+                >
+              </td>
+              <td>
+                <button
+                  class="btn btn-warning btn-sm rounded-circle me-2"
+                  (click)="editAccount(account)"
+                >
+                  ✏️
+                </button>
+                <button
+                  class="btn btn-danger btn-sm rounded-circle"
+                  (click)="deleteAccount(account.accountId)"
+                >
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- No Accounts Message -->
+      <div
+        *ngIf="filteredAccounts.length === 0 && !isLoading"
+        class="text-center mt-3"
+      >
+        <p class="text-muted">No bank accounts found.</p>
+      </div>
+    </div>
+  </div>
+</div>

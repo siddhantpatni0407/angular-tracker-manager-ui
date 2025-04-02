@@ -20,7 +20,7 @@ export class FinancialTrackerComponent {
   }
 
   viewBankAccounts() {
-    this.router.navigate(['/bank-accounts']);
+    this.router.navigate(['/view-bank-account']);
   }
 
   // Expense Tracking
