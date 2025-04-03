@@ -1,0 +1,131 @@
+/* Reuse the same styles from your credentials component */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table th,
+  .table td {
+    vertical-align: middle;
+  }
+  
+  .sortable {
+    cursor: pointer;
+  }
+  
+  .sortable:hover {
+    background-color: #e9ecef;
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .dropdown-toggle:focus {
+    box-shadow: none;
+  }
+  
+  .password-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .password-field button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 8px;
+  }
+  
+  .password-field button i {
+    font-size: 1.2rem;
+    color: #3b82f6;
+  }
+  
+  .table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .table-responsive thead th {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(45deg, #7c3aed, #a855f7);
+    color: white;
+    z-index: 1;
+    font-weight: 500;
+    padding: 12px;
+  }
+  
+  @media (max-width: 768px) {
+    .table-responsive {
+      overflow-x: auto;
+    }
+  }
+  
+  /* Additional specific styles for bank cards */
+  .card-detail-row {
+    margin-bottom: 10px;
+  }
+  
+  .card-detail-label {
+    font-weight: bold;
+    color: #6c757d;
+  }
+  
+  .card-detail-value {
+    padding-left: 15px;
+  }
+  
+  .sensitive-data {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sensitive-data button {
+    margin-left: 10px;
+  }
+  
+  .badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+  
+  /* Status badges */
+  .bg-success {
+    background-color: #28a745 !important;
+  }
+  
+  .bg-danger {
+    background-color: #dc3545 !important;
+  }
+  
+  .bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+  }
+  
+  /* Action buttons */
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Modal specific styles */
+  .modal-header {
+    border-bottom: none;
+  }
+  
+  .modal-title {
+    font-weight: 600;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    border-top: none;
+  }

@@ -1,0 +1,492 @@
+<div class="container mt-4">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-outline-primary" (click)="goToManageCards()">
+      ⬅ Back to Manage Cards
+    </button>
+    <h2 class="text-primary fw-bold">
+      <i class="bi bi-credit-card"></i> Bank Cards
+    </h2>
+    <div></div>
+  </div>
+
+  <!-- Bank Account Selection & Filter Input -->
+  <div class="row g-3 align-items-center mb-4">
+    <div class="col-md-4">
+      <label for="bankAccountSelect" class="form-label fw-bold"
+        >🏦 Select Bank Account</label
+      >
+      <select
+        class="form-select shadow-sm"
+        id="bankAccountSelect"
+        [(ngModel)]="selectedAccountId"
+        (change)="updateSelectedAccount()"
+      >
+        <option value="" selected>-- Select a bank account --</option>
+        <option
+          *ngFor="let account of bankAccounts"
+          [value]="account.accountId"
+        >
+          {{ account.accountNumber }} - {{ account.bankName }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label fw-bold">🔍 Search Cards</label>
+      <input
+        type="text"
+        class="form-control shadow-sm"
+        placeholder="Filter by card type, network, or holder..."
+        [(ngModel)]="searchText"
+        (input)="filterCards()"
+      />
+    </div>
+
+    <!-- Export Dropdown -->
+    <div class="col-md-4 text-end" style="position: relative; z-index: 1050">
+      <label class="form-label fw-bold d-block">📤 Export</label>
+      <div class="btn-group">
+        <button
+          class="btn btn-primary dropdown-toggle shadow-sm"
+          type="button"
+          id="exportDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          [disabled]="!selectedAccountId"
+        >
+          Export Data
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1051">
+          <li>
+            <a class="dropdown-item" (click)="exportToExcel()">
+              <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" (click)="exportToPDF()">
+              <i class="bi bi-file-earmark-pdf"></i> Export to PDF
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Table with Scroll -->
+  <div
+    class="table-responsive custom-scrollbar"
+    style="max-height: 500px; overflow-y: auto"
+  >
+    <table
+      class="table table-hover text-center shadow-sm"
+      style="border: 1px solid #000000"
+    >
+      <!-- Custom Header with Gradient Background -->
+      <thead
+        class="sticky-top"
+        style="background: linear-gradient(45deg, #6c5ce7, #0984e3)"
+      >
+        <tr>
+          <th
+            class="text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            #
+          </th>
+          <th
+            (click)="sortCards('cardType')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            💳 Card Type ⬍
+          </th>
+          <th
+            (click)="sortCards('cardNetwork')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            🏦 Card Network ⬍
+          </th>
+          <th
+            (click)="sortCards('cardHolderName')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            👤 Card Holder ⬍
+          </th>
+          <th
+            class="text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            🔢 Card Number
+          </th>
+          <th
+            (click)="sortCards('validThruDate')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            📅 Expiry Date ⬍
+          </th>
+          <th
+            (click)="sortCards('creditLimit')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            💰 Credit Limit ⬍
+          </th>
+          <th
+            (click)="sortCards('availableCredit')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            💵 Available Credit ⬍
+          </th>
+          <th
+            (click)="sortCards('cardStatus')"
+            class="sortable text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            📊 Status ⬍
+          </th>
+          <th
+            class="text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            🔐 CVV
+          </th>
+          <th
+            class="text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            🔑 PIN
+          </th>
+          <th
+            class="text-white py-2"
+            style="font-size: 0.9rem; border: 1px solid #000000"
+          >
+            🛠️ Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let card of filteredCards; let i = index">
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ i + 1 }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.cardType }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.cardNetwork }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.cardHolderName }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            <div class="d-flex align-items-center justify-content-center">
+              <span *ngIf="!card.showFullNumber"
+                >•••• •••• •••• {{ card.lastFourDigits }}</span
+              >
+              <span *ngIf="card.showFullNumber">{{ card.cardNumber }}</span>
+              <button
+                class="btn btn-link p-0 ms-2"
+                (click)="
+                  toggleCardNumberVisibility(card); $event.stopPropagation()
+                "
+              >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-eye': !card.showFullNumber,
+                    'bi-eye-slash': card.showFullNumber
+                  }"
+                ></i>
+              </button>
+            </div>
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.validThruDate | date : "MM/yyyy" }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.creditLimit | currency : "USD" : "symbol" : "1.2-2" }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            {{ card.availableCredit | currency : "USD" : "symbol" : "1.2-2" }}
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            <span
+              class="badge rounded-pill p-2"
+              [ngClass]="{
+                'bg-success': card.cardStatus === 'ACTIVE',
+                'bg-danger': card.cardStatus === 'BLOCKED',
+                'bg-warning': card.cardStatus === 'EXPIRED'
+              }"
+            >
+              {{ card.cardStatus }}
+            </span>
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            <div class="d-flex align-items-center justify-content-center">
+              <span *ngIf="!card.showCvv">•••</span>
+              <span *ngIf="card.showCvv">{{ card.cvv }}</span>
+              <button
+                class="btn btn-link p-0 ms-2"
+                (click)="toggleCvvVisibility(card); $event.stopPropagation()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-eye': !card.showCvv,
+                    'bi-eye-slash': card.showCvv
+                  }"
+                ></i>
+              </button>
+            </div>
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            <div class="d-flex align-items-center justify-content-center">
+              <span *ngIf="!card.showPin">••••</span>
+              <span *ngIf="card.showPin">{{ card.cardPin }}</span>
+              <button
+                class="btn btn-link p-0 ms-2"
+                (click)="togglePinVisibility(card); $event.stopPropagation()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-eye': !card.showPin,
+                    'bi-eye-slash': card.showPin
+                  }"
+                ></i>
+              </button>
+            </div>
+          </td>
+          <td class="align-middle" style="border: 1px solid #000000">
+            <div class="btn-group" role="group">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="
+                  openCardModal(card, cardModal); $event.stopPropagation()
+                "
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-warning"
+                (click)="editCard(card.cardId); $event.stopPropagation()"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteCard(card.cardId); $event.stopPropagation()"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- No Data Found Row -->
+        <tr *ngIf="filteredCards.length === 0">
+          <td
+            colspan="12"
+            class="text-center text-muted py-4"
+            style="border: 1px solid #000000"
+          >
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="bi bi-exclamation-circle me-2"></i>
+              No bank cards found for this account.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Card Details Modal -->
+<ng-template #cardModal let-modal>
+  <div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+      <i class="bi bi-credit-card me-2"></i> Card Details
+    </h5>
+    <button
+      type="button"
+      class="btn-close text-white"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="selectedCard">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <table class="table table-bordered align-middle">
+            <tbody>
+              <tr>
+                <th class="bg-light w-25">Card Type</th>
+                <td>{{ selectedCard.cardType }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">Card Network</th>
+                <td>{{ selectedCard.cardNetwork }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">Card Holder</th>
+                <td>{{ selectedCard.cardHolderName }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">Card Number</th>
+                <td>
+                  <span *ngIf="!selectedCard.showFullNumber"
+                    >•••• •••• •••• {{ selectedCard.lastFourDigits }}</span
+                  >
+                  <span *ngIf="selectedCard.showFullNumber">{{
+                    selectedCard.cardNumber
+                  }}</span>
+                  <button
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="toggleCardNumberVisibility(selectedCard)"
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="{
+                        'bi-eye': !selectedCard.showFullNumber,
+                        'bi-eye-slash': selectedCard.showFullNumber
+                      }"
+                    ></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Valid From</th>
+                <td>{{ selectedCard.validFromDate | date : "MM/yyyy" }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">Valid Thru</th>
+                <td>{{ selectedCard.validThruDate | date : "MM/yyyy" }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">CVV</th>
+                <td>
+                  <span *ngIf="!selectedCard.showCvv">•••</span>
+                  <span *ngIf="selectedCard.showCvv">{{
+                    selectedCard.cvv
+                  }}</span>
+                  <button
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="toggleCvvVisibility(selectedCard)"
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="{
+                        'bi-eye': !selectedCard.showCvv,
+                        'bi-eye-slash': selectedCard.showCvv
+                      }"
+                    ></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">PIN</th>
+                <td>
+                  <span *ngIf="!selectedCard.showPin">••••</span>
+                  <span *ngIf="selectedCard.showPin">{{
+                    selectedCard.cardPin
+                  }}</span>
+                  <button
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="togglePinVisibility(selectedCard)"
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="{
+                        'bi-eye': !selectedCard.showPin,
+                        'bi-eye-slash': selectedCard.showPin
+                      }"
+                    ></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Credit Limit</th>
+                <td>
+                  {{
+                    selectedCard.creditLimit
+                      | currency : "USD" : "symbol" : "1.2-2"
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Available Credit</th>
+                <td>
+                  {{
+                    selectedCard.availableCredit
+                      | currency : "USD" : "symbol" : "1.2-2"
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Billing Cycle Day</th>
+                <td>{{ selectedCard.billingCycleDay }}</td>
+              </tr>
+              <tr>
+                <th class="bg-light">Status</th>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-success': selectedCard.cardStatus === 'ACTIVE',
+                      'bg-danger': selectedCard.cardStatus === 'BLOCKED',
+                      'bg-warning': selectedCard.cardStatus === 'EXPIRED'
+                    }"
+                  >
+                    {{ selectedCard.cardStatus }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Contactless</th>
+                <td>
+                  <i
+                    class="bi"
+                    [ngClass]="{
+                      'bi-check-circle-fill text-success':
+                        selectedCard.isContactless,
+                      'bi-x-circle-fill text-danger':
+                        !selectedCard.isContactless
+                    }"
+                  ></i>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Virtual Card</th>
+                <td>
+                  <i
+                    class="bi"
+                    [ngClass]="{
+                      'bi-check-circle-fill text-success':
+                        selectedCard.isVirtual,
+                      'bi-x-circle-fill text-danger': !selectedCard.isVirtual
+                    }"
+                  ></i>
+                </td>
+              </tr>
+              <tr>
+                <th class="bg-light">Remarks</th>
+                <td>{{ selectedCard.remarks || "No remarks" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <i class="bi bi-x-circle me-1"></i> Close
+    </button>
+  </div>
+</ng-template>

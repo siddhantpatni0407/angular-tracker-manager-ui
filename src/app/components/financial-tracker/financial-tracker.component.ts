@@ -23,6 +23,10 @@ export class FinancialTrackerComponent {
     this.router.navigate(['/view-bank-account']);
   }
 
+  manageCards() {
+    this.router.navigate(['/manage-cards']);
+  }
+
   // Expense Tracking
   viewExpenses() {
     this.router.navigate(['/expense-tracker']);

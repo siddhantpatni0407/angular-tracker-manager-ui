@@ -1,0 +1,65 @@
+/* Reuse the same styles from your bank account component */
+.bg-gradient-to-r {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+  }
+  
+  .custom-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .custom-input {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .custom-input:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+  }
+  
+  .animated-btn {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .animated-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Additional specific styles for card form */
+  .form-check-input:checked {
+    background-color: #2575fc;
+    border-color: #2575fc;
+  }
+  
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+  }
+  
+  .form-switch .form-check-label {
+    margin-left: 0.5em;
+  }
