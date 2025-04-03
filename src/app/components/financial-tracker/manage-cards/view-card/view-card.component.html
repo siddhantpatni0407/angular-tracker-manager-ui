@@ -209,10 +209,10 @@
             {{ card.validThruDate | date : "MM/yyyy" }}
           </td>
           <td class="align-middle" style="border: 1px solid #000000">
-            {{ card.creditLimit | currency : "USD" : "symbol" : "1.2-2" }}
+            {{ card.creditLimit | currency : "INR" : "symbol" : "1.2-2" }}
           </td>
           <td class="align-middle" style="border: 1px solid #000000">
-            {{ card.availableCredit | currency : "USD" : "symbol" : "1.2-2" }}
+            {{ card.availableCredit | currency : "INR" : "symbol" : "1.2-2" }}
           </td>
           <td class="align-middle" style="border: 1px solid #000000">
             <span
@@ -493,7 +493,7 @@
               <td>
                 {{
                   selectedCard.creditLimit
-                    | currency : "USD" : "symbol" : "1.2-2"
+                     | currency : "INR" : "symbol" : "1.2-2"
                 }}
               </td>
             </tr>
@@ -502,7 +502,7 @@
               <td>
                 {{
                   selectedCard.availableCredit
-                    | currency : "USD" : "symbol" : "1.2-2"
+                    | currency : "INR" : "symbol" : "1.2-2"
                 }}
               </td>
             </tr>
