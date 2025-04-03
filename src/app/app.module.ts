@@ -33,6 +33,9 @@ import { FetchCredentialsComponent } from './components/credential-tracker/fetch
 import { FinancialTrackerComponent } from './components/financial-tracker/financial-tracker.component';
 import { AddBankAccountComponent } from './components/financial-tracker/add-bank-account/add-bank-account.component';
 import { ViewBankAccountComponent } from './components/financial-tracker/view-bank-account/view-bank-account.component';
+import { ManageCardsComponent } from './components/financial-tracker/manage-cards/manage-cards.component';
+import { AddCardComponent } from './components/financial-tracker/manage-cards/add-card/add-card.component';
+import { ViewCardComponent } from './components/financial-tracker/manage-cards/view-card/view-card.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,9 @@ import { ViewBankAccountComponent } from './components/financial-tracker/view-ba
     FinancialTrackerComponent,
     AddBankAccountComponent,
     ViewBankAccountComponent,
+    ManageCardsComponent,
+    AddCardComponent,
+    ViewCardComponent,
     ReactiveFormsModule
   ],
   imports: [

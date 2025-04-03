@@ -27,6 +27,9 @@ import { FetchCredentialsComponent } from './components/credential-tracker/fetch
 import { FinancialTrackerComponent } from './components/financial-tracker/financial-tracker.component';
 import { AddBankAccountComponent } from './components/financial-tracker/add-bank-account/add-bank-account.component';
 import { ViewBankAccountComponent } from './components/financial-tracker/view-bank-account/view-bank-account.component';
+import { ManageCardsComponent } from './components/financial-tracker/manage-cards/manage-cards.component';
+import { AddCardComponent } from './components/financial-tracker/manage-cards/add-card/add-card.component';
+import { ViewCardComponent } from './components/financial-tracker/manage-cards/view-card/view-card.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -56,6 +59,9 @@ const routes: Routes = [
   { path: 'financial-tracker', component: FinancialTrackerComponent, canActivate: [AuthGuard] },
   { path: 'add-bank-account', component: AddBankAccountComponent, canActivate: [AuthGuard] },
   { path: 'view-bank-account', component: ViewBankAccountComponent, canActivate: [AuthGuard] },
+  { path: 'manage-cards', component: ManageCardsComponent, canActivate: [AuthGuard] },
+  { path: 'add-card', component: AddCardComponent, canActivate: [AuthGuard] },
+  { path: 'view-card', component: ViewCardComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 

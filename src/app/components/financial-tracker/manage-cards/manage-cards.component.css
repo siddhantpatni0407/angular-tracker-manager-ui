@@ -1,0 +1,22 @@
+/* Reuse your existing tracker-card styles */
+.tracker-card {
+    transition: all 0.3s ease;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tracker-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+  
+  /* Gradient colors (add to your existing gradients) */
+  .gradient-blue {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  }
+  
+  .gradient-green {
+    background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+  }

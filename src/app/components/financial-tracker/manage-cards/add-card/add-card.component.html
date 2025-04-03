@@ -1,0 +1,350 @@
+<div class="container mt-5 position-relative fade-in">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-credit-card"></i> Add New Bank Card
+    </h2>
+
+    <!-- Back to Dashboard Button -->
+    <button
+      class="btn btn-outline-dark btn-lg shadow-sm rounded-pill px-4"
+      (click)="goToManageCards()"
+    >
+      <i class="bi bi-arrow-left-circle"></i> Manage Cards
+    </button>
+  </div>
+
+  <!-- Form Section -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg rounded-lg custom-card">
+        <!-- Card Header -->
+        <div
+          class="card-header bg-gradient-to-r from-primary to-teal text-white text-center py-4"
+        >
+          <h4>Bank Card Registration</h4>
+        </div>
+
+        <div class="card-body">
+          <!-- Success Message -->
+          <div
+            *ngIf="successMessage"
+            class="alert alert-success text-center fade-in"
+          >
+            ✅ {{ successMessage }}
+          </div>
+
+          <!-- Error Message -->
+          <div
+            *ngIf="errorMessage"
+            class="alert alert-danger text-center fade-in"
+          >
+            ❌ {{ errorMessage }}
+          </div>
+
+          <form (ngSubmit)="addBankCard()">
+            <!-- Bank Account ID -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Bank Account ID</label>
+              <input
+                type="number"
+                class="form-control custom-input"
+                name="bankAccountId"
+                [(ngModel)]="bankCardData.bankAccountId"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.bankAccountId"
+                class="text-danger small"
+              >
+                ⚠️ Bank Account ID is required.
+              </div>
+            </div>
+
+            <!-- Card Type -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card Type</label>
+              <select
+                class="form-select custom-input"
+                name="cardType"
+                [(ngModel)]="bankCardData.cardType"
+                required
+              >
+                <option value="" disabled selected>Select Card Type</option>
+                <option value="DEBIT">Debit</option>
+                <option value="CREDIT">Credit</option>
+                <option value="PREPAID">Prepaid</option>
+              </select>
+              <div
+                *ngIf="submitted && !bankCardData.cardType"
+                class="text-danger small"
+              >
+                ⚠️ Card Type is required.
+              </div>
+            </div>
+
+            <!-- Card Network -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card Network</label>
+              <select
+                class="form-select custom-input"
+                name="cardNetwork"
+                [(ngModel)]="bankCardData.cardNetwork"
+                required
+              >
+                <option value="" disabled selected>Select Card Network</option>
+                <option value="VISA">Visa</option>
+                <option value="MASTERCARD">MasterCard</option>
+                <option value="AMEX">American Express</option>
+                <option value="DISCOVER">Discover</option>
+                <option value="RUPAY">RuPay</option>
+              </select>
+              <div
+                *ngIf="submitted && !bankCardData.cardNetwork"
+                class="text-danger small"
+              >
+                ⚠️ Card Network is required.
+              </div>
+            </div>
+
+            <!-- Card Holder Name -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card Holder Name</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="cardHolderName"
+                [(ngModel)]="bankCardData.cardHolderName"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.cardHolderName"
+                class="text-danger small"
+              >
+                ⚠️ Card Holder Name is required.
+              </div>
+            </div>
+
+            <!-- Card Number -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card Number</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="cardNumber"
+                [(ngModel)]="bankCardData.cardNumber"
+                (blur)="validateCardNumber()"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.cardNumber"
+                class="text-danger small"
+              >
+                ⚠️ Card Number is required.
+              </div>
+              <div *ngIf="cardNumberError" class="text-danger small">
+                ❌ Invalid card number format (must be 13-19 digits)
+              </div>
+            </div>
+
+            <!-- CVV -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">CVV</label>
+              <input
+                type="text"
+                class="form-control custom-input"
+                name="cvv"
+                [(ngModel)]="bankCardData.cvv"
+                (blur)="validateCvv()"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.cvv"
+                class="text-danger small"
+              >
+                ⚠️ CVV is required.
+              </div>
+              <div *ngIf="cvvError" class="text-danger small">
+                ❌ CVV must be 3-4 digits
+              </div>
+            </div>
+
+            <!-- Valid From Date -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Valid From Date</label>
+              <input
+                type="date"
+                class="form-control custom-input"
+                name="validFromDate"
+                [(ngModel)]="bankCardData.validFromDate"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.validFromDate"
+                class="text-danger small"
+              >
+                ⚠️ Valid From Date is required.
+              </div>
+            </div>
+
+            <!-- Valid Thru Date -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Valid Thru Date</label>
+              <input
+                type="date"
+                class="form-control custom-input"
+                name="validThruDate"
+                [(ngModel)]="bankCardData.validThruDate"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.validThruDate"
+                class="text-danger small"
+              >
+                ⚠️ Valid Thru Date is required.
+              </div>
+            </div>
+
+            <!-- Card PIN -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card PIN</label>
+              <input
+                type="password"
+                class="form-control custom-input"
+                name="cardPin"
+                [(ngModel)]="bankCardData.cardPin"
+                (blur)="validateCardPin()"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.cardPin"
+                class="text-danger small"
+              >
+                ⚠️ Card PIN is required.
+              </div>
+              <div *ngIf="cardPinError" class="text-danger small">
+                ❌ PIN must be 4 digits
+              </div>
+            </div>
+
+            <!-- Credit Limit (shown only for credit cards) -->
+            <div class="mb-4" *ngIf="bankCardData.cardType === 'CREDIT'">
+              <label class="form-label fw-bold">Credit Limit</label>
+              <input
+                type="number"
+                class="form-control custom-input"
+                name="creditLimit"
+                [(ngModel)]="bankCardData.creditLimit"
+                step="0.01"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.creditLimit"
+                class="text-danger small"
+              >
+                ⚠️ Credit Limit is required for credit cards.
+              </div>
+            </div>
+
+            <!-- Billing Cycle Day -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Billing Cycle Day</label>
+              <input
+                type="number"
+                class="form-control custom-input"
+                name="billingCycleDay"
+                [(ngModel)]="bankCardData.billingCycleDay"
+                min="1"
+                max="31"
+                required
+              />
+              <div
+                *ngIf="submitted && !bankCardData.billingCycleDay"
+                class="text-danger small"
+              >
+                ⚠️ Billing Cycle Day is required.
+              </div>
+            </div>
+
+            <!-- Card Status -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Card Status</label>
+              <select
+                class="form-select custom-input"
+                name="cardStatus"
+                [(ngModel)]="bankCardData.cardStatus"
+                required
+              >
+                <option value="ACTIVE" selected>Active</option>
+                <option value="BLOCKED">Blocked</option>
+                <option value="EXPIRED">Expired</option>
+              </select>
+              <div
+                *ngIf="submitted && !bankCardData.cardStatus"
+                class="text-danger small"
+              >
+                ⚠️ Card Status is required.
+              </div>
+            </div>
+
+            <!-- Contactless -->
+            <div class="mb-4">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="isContactless"
+                  name="isContactless"
+                  [(ngModel)]="bankCardData.isContactless"
+                />
+                <label class="form-check-label fw-bold" for="isContactless">
+                  Contactless Payment Enabled
+                </label>
+              </div>
+            </div>
+
+            <!-- Virtual Card -->
+            <div class="mb-4">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="isVirtual"
+                  name="isVirtual"
+                  [(ngModel)]="bankCardData.isVirtual"
+                />
+                <label class="form-check-label fw-bold" for="isVirtual">
+                  Virtual/Digital Card
+                </label>
+              </div>
+            </div>
+
+            <!-- Remarks -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Remarks</label>
+              <textarea
+                class="form-control custom-input"
+                name="remarks"
+                [(ngModel)]="bankCardData.remarks"
+                rows="2"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 rounded-pill py-2 animated-btn"
+              [disabled]="isLoading"
+            >
+              <span
+                *ngIf="isLoading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              <span *ngIf="!isLoading">Add Bank Card</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

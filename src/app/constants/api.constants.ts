@@ -17,5 +17,7 @@ export const API_URLS = {
     VEHICLE_SERVICING_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/vehicle/service',
     CREDENTIALS_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/credentials',
     BANK_ACCOUNT_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/financial/bank-account',
-    FETCH_BANK_ACCOUNT_BY_USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/financial/user-bank-account'
+    FETCH_BANK_ACCOUNT_BY_USER_ENDPOINT : 'http://localhost:8069/api/v1/tracker-manager-service/financial/user-bank-account',
+    BANK_CARD_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/financial/bank-card',
+    BANK_CARD_BY_BANK_ID_ENDPOINT: 'http://localhost:8069/api/v1/tracker-manager-service/financial/bank-card/bank-id'
   };
