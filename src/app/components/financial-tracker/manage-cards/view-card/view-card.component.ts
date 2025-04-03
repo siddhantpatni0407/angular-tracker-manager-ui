@@ -148,6 +148,20 @@ export class ViewCardComponent implements OnInit {
     });
   }
 
+  // Component properties
+  isCardFlipped = false;
+
+  // Component methods
+  flipCard(): void {
+    this.isCardFlipped = !this.isCardFlipped;
+  }
+
+  formatCardNumber(cardNumber: string): string {
+    if (!cardNumber) return '';
+    // Format as XXXX XXXX XXXX XXXX
+    return cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+  }
+
   toggleCardNumberVisibility(card: any) {
     card.showFullNumber = !card.showFullNumber;
   }

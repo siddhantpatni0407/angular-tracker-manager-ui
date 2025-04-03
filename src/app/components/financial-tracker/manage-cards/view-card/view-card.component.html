@@ -321,166 +321,208 @@
   </div>
   <div class="modal-body">
     <div *ngIf="selectedCard">
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <table class="table table-bordered align-middle">
-            <tbody>
-              <tr>
-                <th class="bg-light w-25">Card Type</th>
-                <td>{{ selectedCard.cardType }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">Card Network</th>
-                <td>{{ selectedCard.cardNetwork }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">Card Holder</th>
-                <td>{{ selectedCard.cardHolderName }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">Card Number</th>
-                <td>
-                  <span *ngIf="!selectedCard.showFullNumber"
-                    >•••• •••• •••• {{ selectedCard.lastFourDigits }}</span
-                  >
-                  <span *ngIf="selectedCard.showFullNumber">{{
-                    selectedCard.cardNumber
-                  }}</span>
-                  <button
-                    class="btn btn-sm btn-outline-secondary ms-2"
-                    (click)="toggleCardNumberVisibility(selectedCard)"
-                  >
-                    <i
-                      class="bi"
-                      [ngClass]="{
-                        'bi-eye': !selectedCard.showFullNumber,
-                        'bi-eye-slash': selectedCard.showFullNumber
-                      }"
-                    ></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Valid From</th>
-                <td>{{ selectedCard.validFromDate | date : "MM/yyyy" }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">Valid Thru</th>
-                <td>{{ selectedCard.validThruDate | date : "MM/yyyy" }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">CVV</th>
-                <td>
-                  <span *ngIf="!selectedCard.showCvv">•••</span>
-                  <span *ngIf="selectedCard.showCvv">{{
-                    selectedCard.cvv
-                  }}</span>
-                  <button
-                    class="btn btn-sm btn-outline-secondary ms-2"
-                    (click)="toggleCvvVisibility(selectedCard)"
-                  >
-                    <i
-                      class="bi"
-                      [ngClass]="{
-                        'bi-eye': !selectedCard.showCvv,
-                        'bi-eye-slash': selectedCard.showCvv
-                      }"
-                    ></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">PIN</th>
-                <td>
-                  <span *ngIf="!selectedCard.showPin">••••</span>
-                  <span *ngIf="selectedCard.showPin">{{
-                    selectedCard.cardPin
-                  }}</span>
-                  <button
-                    class="btn btn-sm btn-outline-secondary ms-2"
-                    (click)="togglePinVisibility(selectedCard)"
-                  >
-                    <i
-                      class="bi"
-                      [ngClass]="{
-                        'bi-eye': !selectedCard.showPin,
-                        'bi-eye-slash': selectedCard.showPin
-                      }"
-                    ></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Credit Limit</th>
-                <td>
-                  {{
-                    selectedCard.creditLimit
-                      | currency : "USD" : "symbol" : "1.2-2"
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Available Credit</th>
-                <td>
-                  {{
-                    selectedCard.availableCredit
-                      | currency : "USD" : "symbol" : "1.2-2"
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Billing Cycle Day</th>
-                <td>{{ selectedCard.billingCycleDay }}</td>
-              </tr>
-              <tr>
-                <th class="bg-light">Status</th>
-                <td>
-                  <span
-                    class="badge"
-                    [ngClass]="{
-                      'bg-success': selectedCard.cardStatus === 'ACTIVE',
-                      'bg-danger': selectedCard.cardStatus === 'BLOCKED',
-                      'bg-warning': selectedCard.cardStatus === 'EXPIRED'
-                    }"
-                  >
-                    {{ selectedCard.cardStatus }}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Contactless</th>
-                <td>
-                  <i
-                    class="bi"
-                    [ngClass]="{
-                      'bi-check-circle-fill text-success':
-                        selectedCard.isContactless,
-                      'bi-x-circle-fill text-danger':
-                        !selectedCard.isContactless
-                    }"
-                  ></i>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Virtual Card</th>
-                <td>
-                  <i
-                    class="bi"
-                    [ngClass]="{
-                      'bi-check-circle-fill text-success':
-                        selectedCard.isVirtual,
-                      'bi-x-circle-fill text-danger': !selectedCard.isVirtual
-                    }"
-                  ></i>
-                </td>
-              </tr>
-              <tr>
-                <th class="bg-light">Remarks</th>
-                <td>{{ selectedCard.remarks || "No remarks" }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Card Visualization -->
+      <div class="card-visualization mb-4">
+        <div
+          class="credit-card"
+          [ngClass]="{
+            visa: selectedCard.cardNetwork === 'VISA',
+            mastercard: selectedCard.cardNetwork === 'MASTERCARD',
+            amex: selectedCard.cardNetwork === 'AMEX',
+            default: !['VISA', 'MASTERCARD', 'AMEX'].includes(
+              selectedCard.cardNetwork
+            )
+          }"
+        >
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <div class="card-chip"></div>
+            <div class="card-network-logo">
+              <i
+                *ngIf="selectedCard.cardNetwork === 'VISA'"
+                class="bi bi-credit-card-2-front-fill text-white"
+              ></i>
+              <i
+                *ngIf="selectedCard.cardNetwork === 'MASTERCARD'"
+                class="bi bi-credit-card-fill text-white"
+              ></i>
+              <i
+                *ngIf="selectedCard.cardNetwork === 'AMEX'"
+                class="bi bi-credit-card text-white"
+              ></i>
+              <span
+                *ngIf="
+                  !['VISA', 'MASTERCARD', 'AMEX'].includes(
+                    selectedCard.cardNetwork
+                  )
+                "
+                class="text-white"
+              >
+                {{ selectedCard.cardNetwork }}
+              </span>
+            </div>
+          </div>
+          <div class="card-number">
+            <span *ngIf="!selectedCard.showFullNumber"
+              >•••• •••• •••• {{ selectedCard.lastFourDigits }}</span
+            >
+            <span *ngIf="selectedCard.showFullNumber">{{
+              formatCardNumber(selectedCard.cardNumber)
+            }}</span>
+            <button
+              class="btn btn-link p-0 ms-2"
+              (click)="
+                toggleCardNumberVisibility(selectedCard);
+                $event.stopPropagation()
+              "
+            >
+              <i
+                class="bi"
+                [ngClass]="{
+                  'bi-eye-fill text-white': !selectedCard.showFullNumber,
+                  'bi-eye-slash-fill text-white': selectedCard.showFullNumber
+                }"
+              ></i>
+            </button>
+          </div>
+          <div class="card-details">
+            <div class="card-holder">
+              <div class="label">Card Holder</div>
+              <div class="value">{{ selectedCard.cardHolderName }}</div>
+            </div>
+            <div class="card-expiry">
+              <div class="label">Valid Thru</div>
+              <div class="value">
+                {{ selectedCard.validThruDate | date : "MM/yy" }}
+              </div>
+            </div>
+            <div class="card-cvv" *ngIf="selectedCard.showCvv">
+              <div class="label">CVV</div>
+              <div class="value">
+                {{ selectedCard.cvv }}
+                <button
+                  class="btn btn-link p-0 ms-2"
+                  (click)="
+                    toggleCvvVisibility(selectedCard); $event.stopPropagation()
+                  "
+                >
+                  <i class="bi bi-eye-slash-fill text-white"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-cvv" *ngIf="!selectedCard.showCvv">
+              <div class="label">CVV</div>
+              <div class="value">
+                •••
+                <button
+                  class="btn btn-link p-0 ms-2"
+                  (click)="
+                    toggleCvvVisibility(selectedCard); $event.stopPropagation()
+                  "
+                >
+                  <i class="bi bi-eye-fill text-white"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" *ngIf="selectedCard.isContactless">
+            <i class="bi bi-wifi contactless-icon"></i>
+          </div>
         </div>
+      </div>
+
+      <!-- Card Information Table -->
+      <div class="card-info-table">
+        <table class="table table-bordered align-middle">
+          <tbody>
+            <tr>
+              <th class="bg-light w-25">Card Type</th>
+              <td>{{ selectedCard.cardType }}</td>
+            </tr>
+            <tr>
+              <th class="bg-light">Card Network</th>
+              <td>{{ selectedCard.cardNetwork }}</td>
+            </tr>
+            <tr>
+              <th class="bg-light">Card Number</th>
+              <td>
+                <span *ngIf="!selectedCard.showFullNumber"
+                  >•••• •••• •••• {{ selectedCard.lastFourDigits }}</span
+                >
+                <span *ngIf="selectedCard.showFullNumber">{{
+                  formatCardNumber(selectedCard.cardNumber)
+                }}</span>
+                <button
+                  class="btn btn-sm btn-outline-secondary ms-2"
+                  (click)="toggleCardNumberVisibility(selectedCard)"
+                >
+                  <i
+                    class="bi"
+                    [ngClass]="{
+                      'bi-eye': !selectedCard.showFullNumber,
+                      'bi-eye-slash': selectedCard.showFullNumber
+                    }"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <th class="bg-light">PIN</th>
+              <td>
+                <span *ngIf="!selectedCard.showPin">••••</span>
+                <span *ngIf="selectedCard.showPin">{{
+                  selectedCard.cardPin
+                }}</span>
+                <button
+                  class="btn btn-sm btn-outline-secondary ms-2"
+                  (click)="togglePinVisibility(selectedCard)"
+                >
+                  <i
+                    class="bi"
+                    [ngClass]="{
+                      'bi-eye': !selectedCard.showPin,
+                      'bi-eye-slash': selectedCard.showPin
+                    }"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <th class="bg-light">Credit Limit</th>
+              <td>
+                {{
+                  selectedCard.creditLimit
+                    | currency : "USD" : "symbol" : "1.2-2"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <th class="bg-light">Available Credit</th>
+              <td>
+                {{
+                  selectedCard.availableCredit
+                    | currency : "USD" : "symbol" : "1.2-2"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <th class="bg-light">Status</th>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-success': selectedCard.cardStatus === 'ACTIVE',
+                    'bg-danger': selectedCard.cardStatus === 'BLOCKED',
+                    'bg-warning': selectedCard.cardStatus === 'EXPIRED'
+                  }"
+                >
+                  {{ selectedCard.cardStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
